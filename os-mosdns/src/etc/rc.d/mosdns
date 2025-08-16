@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# PROVIDE: mosdns
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# mosdns_enable (bool):   Set to NO by default.
+#                         Set it to YES to enable mosdns.
+# mosdns_config (path):   Set to /usr/local/etc/mosdns/config.yaml by default.
+# mosdns_user (user):     Set to root by default.
+# mosdns_group (group):   Set to wheel by default.
+# mosdns_flags (flags):   Set to empty by default.
+
+. /etc/rc.subr
+
+name=mosdns
+rcvar=mosdns_enable
+
+load_rc_config $name
+
+: ${mosdns_enable:="NO"}
+: ${mosdns_config:="/usr/local/etc/mosdns/config.yaml"}
+: ${mosdns_user:="root"}
+: ${mosdns_group:="wheel"}
+: ${mosdns_flags:=""}
+: ${mosdns_pidfile:="/var/run/mosdns.pid"}
+: ${mosdns_logfile:="/var/log/mosdns.log"}
+
+pidfile="${mosdns_pidfile}"
+command="/usr/sbin/daemon"
+command_args="-f -p ${pidfile} -o ${mosdns_logfile} /usr/local/bin/mosdns start -c ${mosdns_config} ${mosdns_flags}"
+command_interpreter=""
+
+start_precmd="mosdns_prestart"
+stop_postcmd="mosdns_poststop"
+status_cmd="mosdns_status"
+
+mosdns_prestart()
+{
+    # Create log file if it doesn't exist
+    if [ ! -f "${mosdns_logfile}" ]; then
+        touch "${mosdns_logfile}"
+        chown "${mosdns_user}:${mosdns_group}" "${mosdns_logfile}"
+    fi
+    
+    # Create config directory if it doesn't exist
+    if [ ! -d "/usr/local/etc/mosdns" ]; then
+        mkdir -p "/usr/local/etc/mosdns"
+        chown "${mosdns_user}:${mosdns_group}" "/usr/local/etc/mosdns"
+    fi
+    
+    # Check if config file exists
+    if [ ! -f "${mosdns_config}" ]; then
+        echo "Configuration file ${mosdns_config} not found!"
+        return 1
+    fi
+    
+    # Generate configuration from template
+    /usr/local/opnsense/scripts/OPNsense/MosDNS/generate_config.sh
+}
+
+mosdns_poststop()
+{
+    # Clean up pid file
+    if [ -f "${pidfile}" ]; then
+        rm -f "${pidfile}"
+    fi
+}
+
+mosdns_status()
+{
+    if [ -f "${pidfile}" ]; then
+        pid=$(cat "${pidfile}")
+        if kill -0 "${pid}" 2>/dev/null; then
+            echo "${name} is running as pid ${pid}."
+            return 0
+        else
+            echo "${name} is not running but pid file exists."
+            return 1
+        fi
+    else
+        echo "${name} is not running."
+        return 1
+    fi
+}
+
+run_rc_command "$1"

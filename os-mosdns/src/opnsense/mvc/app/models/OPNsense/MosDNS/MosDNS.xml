@@ -1,0 +1,103 @@
+<model>
+    <mount>//OPNsense/MosDNS</mount>
+    <description>MosDNS DNS Forwarder Configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+            <log_level type="OptionField">
+                <default>info</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <debug>debug</debug>
+                    <info>info</info>
+                    <warn>warn</warn>
+                    <error>error</error>
+                </OptionValues>
+            </log_level>
+            <listen_address type="TextField">
+                <default>127.0.0.1</default>
+                <Required>Y</Required>
+                <mask>/^[0-9\.]+$/</mask>
+                <ValidationMessage>Please enter a valid IP address</ValidationMessage>
+            </listen_address>
+            <listen_port type="IntegerField">
+                <default>53</default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+            </listen_port>
+        </general>
+        <upstreams>
+            <upstream type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Name should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </name>
+                <address type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid upstream address</ValidationMessage>
+                </address>
+                <type type="OptionField">
+                    <default>udp</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <tls>DNS over TLS</tls>
+                        <https>DNS over HTTPS</https>
+                    </OptionValues>
+                </type>
+                <timeout type="IntegerField">
+                    <default>5</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                </timeout>
+            </upstream>
+        </upstreams>
+        <plugins>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <forward>Forward</forward>
+                        <udp_server>UDP Server</udp_server>
+                        <tcp_server>TCP Server</tcp_server>
+                        <cache>Cache</cache>
+                        <hosts>Hosts</hosts>
+                        <redirect>Redirect</redirect>
+                        <blackhole>Blackhole</blackhole>
+                    </OptionValues>
+                </type>
+                <args type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Please enter valid plugin arguments</ValidationMessage>
+                </args>
+            </plugin>
+        </plugins>
+        <advanced>
+            <custom_config type="TextField">
+                <Required>N</Required>
+                <ValidationMessage>Please enter valid YAML configuration</ValidationMessage>
+            </custom_config>
+        </advanced>
+    </items>
+</model>

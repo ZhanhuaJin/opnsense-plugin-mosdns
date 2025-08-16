@@ -1,0 +1,17 @@
+bin/mosdns
+etc/inc/plugins.inc.d/mosdns.inc
+etc/rc.d/mosdns
+@sample etc/mosdns/config.yaml.sample
+opnsense/mvc/app/controllers/OPNsense/MosDNS/IndexController.php
+opnsense/mvc/app/models/OPNsense/MosDNS/MosDNS.xml
+opnsense/mvc/app/views/OPNsense/MosDNS/index.volt
+opnsense/scripts/OPNsense/MosDNS/generate_config.sh
+opnsense/scripts/OPNsense/MosDNS/setup.sh
+opnsense/service/conf/actions.d/actions_mosdns.conf
+opnsense/service/templates/OPNsense/MosDNS/mosdns.conf
+@dir etc/mosdns
+@dir opnsense/mvc/app/controllers/OPNsense/MosDNS
+@dir opnsense/mvc/app/models/OPNsense/MosDNS
+@dir opnsense/mvc/app/views/OPNsense/MosDNS
+@dir opnsense/scripts/OPNsense/MosDNS
+@dir opnsense/service/templates/OPNsense/MosDNS

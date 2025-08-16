@@ -1,0 +1,29 @@
+name: os-mosdns
+version: 5.3.3
+origin: dns/os-mosdns
+comment: OPNsense MosDNS Plugin
+desc: |
+  MosDNS is a DNS forwarder with flexible configuration.
+  This plugin provides a web interface for managing MosDNS configuration.
+www: https://github.com/IrineSistiana/mosdns
+maintainer: opnsense@deciso.com
+prefix: /usr/local
+arch: freebsd:13:x86:64
+categories: [dns]
+licenses: [GPLv3]
+deps: {
+}
+files: {
+  /usr/local/bin/mosdns: "-",
+  /usr/local/etc/mosdns/config.yaml: "-",
+  /usr/local/etc/rc.d/mosdns: "-",
+  /usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/IndexController.php: "-",
+  /usr/local/opnsense/mvc/app/models/OPNsense/MosDNS/MosDNS.xml: "-",
+  /usr/local/opnsense/mvc/app/views/OPNsense/MosDNS/index.volt: "-",
+  /usr/local/opnsense/service/conf/actions.d/actions_mosdns.conf: "-",
+  /usr/local/opnsense/service/templates/OPNsense/MosDNS/mosdns.conf: "-",
+  /usr/local/etc/inc/plugins.inc.d/mosdns.inc: "-"
+}
+scripts: {
+  post-install: "/usr/local/opnsense/scripts/OPNsense/MosDNS/setup.sh"
+}

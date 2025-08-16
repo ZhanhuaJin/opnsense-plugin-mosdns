@@ -1,0 +1,21 @@
+MosDNS is a DNS forwarder with flexible configuration capabilities.
+
+This OPNsense plugin provides:
+- Web-based configuration interface for MosDNS
+- Service management (start/stop/restart)
+- YAML configuration editing through forms
+- Real-time status monitoring
+- Log viewing capabilities
+- Support for multiple upstream DNS servers
+- Plugin-based architecture configuration
+
+MosDNS supports various DNS protocols including:
+- Traditional UDP/TCP DNS
+- DNS over HTTPS (DoH)
+- DNS over TLS (DoT)
+
+The plugin integrates seamlessly with OPNsense's service management
+system and provides an intuitive interface for managing DNS forwarding
+rules and upstream server configurations.
+
+WWW: https://github.com/IrineSistiana/mosdns

@@ -1,0 +1,21 @@
+log:
+  level: info
+  file: /var/log/mosdns.log
+
+plugins:
+  - tag: forward_default
+    type: forward
+    args:
+      upstreams:
+        - addr: 8.8.8.8:53
+        - addr: 1.1.1.1:53
+  - tag: udp_server
+    type: udp_server
+    args:
+      entry: forward_default
+      listen: 127.0.0.1:53
+  - tag: tcp_server
+    type: tcp_server
+    args:
+      entry: forward_default
+      listen: 127.0.0.1:53

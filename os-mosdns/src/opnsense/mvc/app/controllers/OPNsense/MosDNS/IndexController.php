@@ -51,7 +51,7 @@ class IndexController extends ControllerBase
      */
     public function pluginsAction()
     {
-        $this->view->pluginsForm = $this->getForm("plugin_types");
+        $this->view->pluginsForm = $this->getForm("plugins");
         $this->view->pick('OPNsense/MosDNS/plugins');
     }
 

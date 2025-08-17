@@ -109,5 +109,48 @@
                 <ValidationMessage>Please enter valid YAML configuration</ValidationMessage>
             </custom_config>
         </advanced>
+        <external_data>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+            <data_files type="ArrayField">
+                <data_file type="ArrayField">
+                    <name type="TextField">
+                        <Required>Y</Required>
+                        <mask>/^[\w\-\.\s]+$/u</mask>
+                        <ValidationMessage>Name should only contain letters, numbers, spaces, dots and dashes.</ValidationMessage>
+                    </name>
+                    <filename type="TextField">
+                        <Required>Y</Required>
+                        <mask>/^[\w\-\.]+$/u</mask>
+                        <ValidationMessage>Filename should only contain letters, numbers, dots and dashes.</ValidationMessage>
+                    </filename>
+                    <url type="UrlField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid URL.</ValidationMessage>
+                    </url>
+                    <backup_url type="UrlField">
+                        <Required>N</Required>
+                        <ValidationMessage>Please enter a valid backup URL.</ValidationMessage>
+                    </backup_url>
+                    <enabled type="BooleanField">
+                        <default>1</default>
+                        <Required>Y</Required>
+                    </enabled>
+                    <auto_update type="BooleanField">
+                        <default>1</default>
+                        <Required>Y</Required>
+                    </auto_update>
+                    <update_interval type="IntegerField">
+                        <default>24</default>
+                        <Required>Y</Required>
+                        <MinimumValue>1</MinimumValue>
+                        <MaximumValue>168</MaximumValue>
+                        <ValidationMessage>Update interval must be between 1 and 168 hours.</ValidationMessage>
+                    </update_interval>
+                </data_file>
+            </data_files>
+        </external_data>
     </items>
 </model>

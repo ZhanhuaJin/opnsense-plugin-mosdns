@@ -26,59 +26,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\MosDNS;
+namespace OPNsense\MosDNS\Api;
 
-use OPNsense\Base\ControllerBase;
+use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
 
 /**
- * Class IndexController
- * @package OPNsense\MosDNS
+ * Class LogsController
+ * @package OPNsense\MosDNS\Api
  */
-class IndexController extends ControllerBase
+class LogsController extends ApiControllerBase
 {
     /**
-     * Index page - General settings
+     * Get service logs
+     * @return array
      */
-    public function indexAction()
+    public function getAction()
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->pick('OPNsense/MosDNS/general');
+        $result = array();
+        if ($this->request->isGet()) {
+            $backend = new Backend();
+            $response = $backend->configdRun("mosdns log");
+            $result["logs"] = $response;
+        }
+        return $result;
     }
 
     /**
-     * Plugins page
+     * Clear service logs
+     * @return array
      */
-    public function pluginsAction()
+    public function clearAction()
     {
-        $this->view->pluginsForm = $this->getForm("plugins");
-        $this->view->pick('OPNsense/MosDNS/plugins');
+        $result = array("result" => "failed");
+        if ($this->request->isPost()) {
+            // Clear log file
+            if (file_exists("/var/log/mosdns.log")) {
+                file_put_contents("/var/log/mosdns.log", "");
+                $result["result"] = "cleared";
+            } else {
+                $result["result"] = "not_found";
+            }
+        }
+        return $result;
     }
-
-    /**
-     * Advanced page
-     */
-    public function advancedAction()
-    {
-        $this->view->advancedForm = $this->getForm("advanced");
-        $this->view->pick('OPNsense/MosDNS/advanced');
-    }
-
-    /**
-     * Statistics page
-     */
-    public function statisticsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/statistics');
-    }
-
-    /**
-     * Logs page
-     */
-    public function logsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/logs');
-    }
-
-
 }

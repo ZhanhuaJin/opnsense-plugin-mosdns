@@ -26,59 +26,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\MosDNS;
+namespace OPNsense\MosDNS\Api;
 
-use OPNsense\Base\ControllerBase;
+use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
 
 /**
- * Class IndexController
- * @package OPNsense\MosDNS
+ * Class StatisticsController
+ * @package OPNsense\MosDNS\Api
  */
-class IndexController extends ControllerBase
+class StatisticsController extends ApiControllerBase
 {
     /**
-     * Index page - General settings
+     * Get service status
+     * @return array
      */
-    public function indexAction()
+    public function statusAction()
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->pick('OPNsense/MosDNS/general');
+        $result = array();
+        if ($this->request->isGet()) {
+            $backend = new Backend();
+            $response = $backend->configdRun("mosdns status");
+            $result["status"] = trim($response);
+            $result["running"] = strpos($response, "running") !== false;
+        }
+        return $result;
     }
 
     /**
-     * Plugins page
+     * Get service statistics
+     * @return array
      */
-    public function pluginsAction()
+    public function getAction()
     {
-        $this->view->pluginsForm = $this->getForm("plugins");
-        $this->view->pick('OPNsense/MosDNS/plugins');
+        $result = array();
+        if ($this->request->isGet()) {
+            // Get basic status
+            $backend = new Backend();
+            $status = $backend->configdRun("mosdns status");
+            $result["status"] = trim($status);
+            $result["running"] = strpos($status, "running") !== false;
+            
+            // Additional statistics can be added here
+            $result["uptime"] = "N/A";
+            $result["queries"] = "N/A";
+            $result["cache_hits"] = "N/A";
+        }
+        return $result;
     }
-
-    /**
-     * Advanced page
-     */
-    public function advancedAction()
-    {
-        $this->view->advancedForm = $this->getForm("advanced");
-        $this->view->pick('OPNsense/MosDNS/advanced');
-    }
-
-    /**
-     * Statistics page
-     */
-    public function statisticsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/statistics');
-    }
-
-    /**
-     * Logs page
-     */
-    public function logsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/logs');
-    }
-
-
 }

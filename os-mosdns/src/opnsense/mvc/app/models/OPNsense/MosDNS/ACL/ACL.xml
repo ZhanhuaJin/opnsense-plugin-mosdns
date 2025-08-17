@@ -1,0 +1,44 @@
+<acl>
+    <page-services-mosdns-general>
+        <name>Services: MosDNS: General</name>
+        <patterns>
+            <pattern>ui/mosdns/</pattern>
+            <pattern>api/mosdns/general/*</pattern>
+        </patterns>
+    </page-services-mosdns-general>
+    <page-services-mosdns-plugins>
+        <name>Services: MosDNS: Plugins</name>
+        <patterns>
+            <pattern>ui/mosdns/plugins/</pattern>
+            <pattern>api/mosdns/plugins/*</pattern>
+        </patterns>
+    </page-services-mosdns-plugins>
+    <page-services-mosdns-advanced>
+        <name>Services: MosDNS: Advanced</name>
+        <patterns>
+            <pattern>ui/mosdns/advanced/</pattern>
+            <pattern>api/mosdns/advanced/*</pattern>
+        </patterns>
+    </page-services-mosdns-advanced>
+    <page-services-mosdns-statistics>
+        <name>Services: MosDNS: Statistics</name>
+        <patterns>
+            <pattern>ui/mosdns/statistics/</pattern>
+            <pattern>api/mosdns/statistics/*</pattern>
+        </patterns>
+    </page-services-mosdns-statistics>
+    <page-services-mosdns-logs>
+        <name>Services: MosDNS: Logs</name>
+        <patterns>
+            <pattern>ui/mosdns/logs/</pattern>
+            <pattern>api/mosdns/logs/*</pattern>
+        </patterns>
+    </page-services-mosdns-logs>
+    <page-services-mosdns>
+        <name>Services: MosDNS (MVC)</name>
+        <patterns>
+            <pattern>ui/mosdns/*</pattern>
+            <pattern>api/mosdns/*</pattern>
+        </patterns>
+    </page-services-mosdns>
+</acl>

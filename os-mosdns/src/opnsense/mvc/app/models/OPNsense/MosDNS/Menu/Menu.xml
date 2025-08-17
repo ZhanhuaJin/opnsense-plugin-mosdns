@@ -1,0 +1,11 @@
+<menu>
+    <Services>
+        <MosDNS VisibleName="MosDNS" cssClass="fa fa-tags fa-fw">
+            <General order="10" url="/ui/mosdns/index"/>
+            <Plugins order="20" url="/ui/mosdns/plugins"/>
+            <Advanced order="30" url="/ui/mosdns/advanced"/>
+            <Statistics order="40" url="/ui/mosdns/statistics"/>
+            <Logs order="50" url="/ui/mosdns/logs"/>
+        </MosDNS>
+    </Services>
+</menu>

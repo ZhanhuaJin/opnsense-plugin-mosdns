@@ -1,0 +1,26 @@
+name: "os-mosdns"
+version: "5.3.3"
+origin: "dns/os-mosdns"
+comment: "OPNsense MosDNS Plugin"
+desc: "MosDNS is a DNS forwarder with flexible configuration.\nThis plugin provides a web interface for managing MosDNS configuration."
+www: "https://github.com/IrineSistiana/mosdns"
+maintainer: "opnsense@deciso.com"
+prefix: "/usr/local"
+arch: "FreeBSD:14:amd64"
+categories: ["dns"]
+licenses: ["GPLv3"]
+flatsize: 16805537
+files: {
+    "usr/local/opnsense/scripts/OPNsense/MosDNS/setup.sh": "1$dab012ed0efe83579e030bc110661f99ae951257dc25951604bfb31984275373",
+    "usr/local/opnsense/scripts/OPNsense/MosDNS/generate_config.sh": "1$47ae2bf49448bb096a86de967b113d5efde9af1e2e9969b90a22218ede1aece8",
+    "usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/IndexController.php": "1$074ad59b3dd5722bba36af75f32b3f8164d404d648e6e9e1bc24ffb95190a060",
+    "usr/local/opnsense/mvc/app/models/OPNsense/MosDNS/Menu.xml": "1$44653ea530b84e83764415aab16cd088054765ca3b4d7ebecfc73e9776e0ca9b",
+    "usr/local/opnsense/mvc/app/models/OPNsense/MosDNS/MosDNS.xml": "1$6cb38c2bdcfb745695c6547a7874280459b950251864eb952693b6ea5144d8ae",
+    "usr/local/opnsense/mvc/app/views/OPNsense/MosDNS/index.volt": "1$f791b1341e39d63982c4589a7bab17256b6dd22205de5ebe7dd013f4eff7ee90",
+    "usr/local/opnsense/service/templates/OPNsense/MosDNS/mosdns.conf": "1$9294142debd43127f1a0283721545bffbbbeea130e96aa34a25078e5cd968ed2",
+    "usr/local/opnsense/service/conf/actions.d/actions_mosdns.conf": "1$260a7003601dc7b0b22dc84cda3f547c77197578261fabb31a00700c4daa453a",
+    "usr/local/etc/mosdns/config.yaml": "1$f73d7ecb52bc920834e86ca6344f3cb37ebc52f0c7f07fe7f916a82ce08cb449",
+    "usr/local/etc/rc.d/mosdns": "1$bfea5a80a2a794804d5a964d2e08fa1e968c432ad549ccc9865420de740e0873",
+    "usr/local/etc/inc/plugins.inc.d/mosdns.inc": "1$3c75600e58bd7d4b36699230d96bb8b7aff8083146e5f4e17bec6d139e454e2f",
+    "usr/local/bin/mosdns": "1$8a3fc62fd9839e29881131baaefc643853b2e904e6bb766d3e717ca3e7135023",
+}

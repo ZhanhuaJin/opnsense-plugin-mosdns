@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>mosdns.general.enabled</id>
+        <label>Enable MosDNS</label>
+        <type>checkbox</type>
+        <help>Enable or disable MosDNS service</help>
+    </field>
+    <field>
+        <id>mosdns.general.log_level</id>
+        <label>Log Level</label>
+        <type>dropdown</type>
+        <help>Set the logging level for MosDNS</help>
+    </field>
+    <field>
+        <id>mosdns.general.listen_address</id>
+        <label>Listen Address</label>
+        <type>text</type>
+        <help>IP address to listen on</help>
+    </field>
+    <field>
+        <id>mosdns.general.listen_port</id>
+        <label>Listen Port</label>
+        <type>text</type>
+        <help>Port to listen on</help>
+    </field>
+</form>

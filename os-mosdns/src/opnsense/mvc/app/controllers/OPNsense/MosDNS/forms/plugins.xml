@@ -1,0 +1,12 @@
+<form>
+    <tab id="plugins-tab" description="MosDNS Plugins Configuration">
+        <subtab id="plugins-general" description="Plugin Management">
+            <field>
+                <id>mosdns.plugins.plugin</id>
+                <label>Plugins</label>
+                <type>listview</type>
+                <help>Configure MosDNS plugins with different tag types</help>
+            </field>
+        </subtab>
+    </tab>
+</form>

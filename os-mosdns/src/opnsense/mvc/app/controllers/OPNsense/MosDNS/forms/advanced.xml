@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>mosdns.advanced.config_file</id>
+        <label>Custom Config File</label>
+        <type>textbox</type>
+        <help>Path to custom MosDNS configuration file</help>
+    </field>
+    <field>
+        <id>mosdns.advanced.custom_args</id>
+        <label>Custom Arguments</label>
+        <type>text</type>
+        <help>Additional command line arguments for MosDNS</help>
+    </field>
+    <field>
+        <id>mosdns.advanced.debug_mode</id>
+        <label>Debug Mode</label>
+        <type>checkbox</type>
+        <help>Enable debug mode for troubleshooting</help>
+    </field>
+    <field>
+        <id>mosdns.advanced.worker_threads</id>
+        <label>Worker Threads</label>
+        <type>text</type>
+        <help>Number of worker threads to use</help>
+    </field>
+</form>

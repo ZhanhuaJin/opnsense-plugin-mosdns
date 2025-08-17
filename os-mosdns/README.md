@@ -16,24 +16,40 @@ This plugin provides a web interface for managing MosDNS DNS forwarder on OPNsen
 
 ### Building the Package
 
-1. Copy the plugin directory to your OPNsense build environment
-2. Build the package:
-   ```bash
-   cd os-mosdns
-   make package
-   ```
+#### Linux Environment
+Since OPNsense uses FreeBSD packages, use the provided cross-platform script:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd opnsense-plugin-mosdns
+
+# Create the package
+./create_package.sh
+
+# Verify the package (optional)
+./verify_package.sh
+```
+
+#### FreeBSD Environment
+```bash
+# Build using make
+cd os-mosdns
+make package
+```
 
 ### Installing the Package
 
-1. Install the generated package on your OPNsense system:
-   ```bash
-   pkg install os-mosdns-5.3.3.pkg
-   ```
+```bash
+# Copy the package to your OPNsense system
+scp os-mosdns-*.txz root@opnsense-ip:/tmp/
 
-2. Refresh the web interface or restart the web server:
-   ```bash
-   configctl webgui restart
-   ```
+# Install on OPNsense
+pkg add /tmp/os-mosdns-*.txz
+
+# Restart the web interface
+configctl webgui restart
+```
 
 ## Usage
 

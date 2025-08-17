@@ -85,6 +85,16 @@
                         <hosts>Hosts</hosts>
                         <redirect>Redirect</redirect>
                         <blackhole>Blackhole</blackhole>
+                        <ip_set>IP Set</ip_set>
+                        <sequence>Sequence</sequence>
+                        <fallback>Fallback</fallback>
+                        <ttl>TTL</ttl>
+                        <prefer_ipv4>Prefer IPv4</prefer_ipv4>
+                        <reject>Reject</reject>
+                        <accept>Accept</accept>
+                        <drop_resp>Drop Response</drop_resp>
+                        <goto>Goto</goto>
+                        <ipset>IPSet</ipset>
                     </OptionValues>
                 </type>
                 <args type="TextField">

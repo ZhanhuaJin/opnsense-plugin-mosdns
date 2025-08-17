@@ -28,57 +28,14 @@
 
 namespace OPNsense\MosDNS;
 
-use OPNsense\Base\ControllerBase;
-use OPNsense\Core\Backend;
+use OPNsense\Base\BaseModel;
 
 /**
- * Class IndexController
+ * Class MosDNS
  * @package OPNsense\MosDNS
  */
-class IndexController extends ControllerBase
+class MosDNS extends BaseModel
 {
-    /**
-     * Index page - General settings
-     */
-    public function indexAction()
-    {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->pick('OPNsense/MosDNS/general');
-    }
-
-    /**
-     * Plugins page
-     */
-    public function pluginsAction()
-    {
-        $this->view->pluginsForm = $this->getForm("plugins");
-        $this->view->pick('OPNsense/MosDNS/plugins');
-    }
-
-    /**
-     * Advanced page
-     */
-    public function advancedAction()
-    {
-        $this->view->advancedForm = $this->getForm("advanced");
-        $this->view->pick('OPNsense/MosDNS/advanced');
-    }
-
-    /**
-     * Statistics page
-     */
-    public function statisticsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/statistics');
-    }
-
-    /**
-     * Logs page
-     */
-    public function logsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/logs');
-    }
-
-
+    // Model implementation is handled by the XML definition
+    // This class serves as the PHP interface for the MosDNS model
 }

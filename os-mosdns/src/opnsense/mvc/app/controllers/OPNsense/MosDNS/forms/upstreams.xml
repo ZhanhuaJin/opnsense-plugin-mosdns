@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>mosdns.upstreams.servers</id>
+        <label>Upstream Servers</label>
+        <type>select_multiple</type>
+        <help>Configure upstream DNS servers</help>
+    </field>
+    <field>
+        <id>mosdns.upstreams.fallback</id>
+        <label>Fallback Servers</label>
+        <type>select_multiple</type>
+        <help>Configure fallback DNS servers</help>
+    </field>
+    <field>
+        <id>mosdns.upstreams.timeout</id>
+        <label>Query Timeout</label>
+        <type>text</type>
+        <help>Timeout for DNS queries in seconds</help>
+    </field>
+</form>

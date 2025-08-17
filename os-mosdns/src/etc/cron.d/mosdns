@@ -1,0 +1,6 @@
+# MosDNS External Data Update Cron Job
+# Update external data files daily at 2:00 AM
+0 2 * * * root /usr/local/bin/python3 /usr/local/opnsense/scripts/OPNsense/MosDNS/download_data_file.py --update >/dev/null 2>&1
+
+# Update external data files weekly on Sunday at 3:00 AM (full refresh)
+0 3 * * 0 root /usr/local/bin/python3 /usr/local/opnsense/scripts/OPNsense/MosDNS/download_data_file.py --force-update >/dev/null 2>&1

@@ -1,0 +1,570 @@
+<model>
+    <mount>//OPNsense/MosDNS/PluginTypes</mount>
+    <description>MosDNS Plugin Types Configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <!-- Cache Plugin Type -->
+        <cache>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <size type="IntegerField">
+                    <default>10240</default>
+                    <Required>Y</Required>
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>1048576</MaximumValue>
+                    <ValidationMessage>Cache size must be between 1024 and 1048576</ValidationMessage>
+                </size>
+                <lazy_cache_ttl type="IntegerField">
+                    <default>86400</default>
+                    <Required>N</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>604800</MaximumValue>
+                    <ValidationMessage>Lazy cache TTL must be between 60 and 604800 seconds</ValidationMessage>
+                </lazy_cache_ttl>
+            </plugin>
+        </cache>
+        
+        <!-- Forward Plugin Type -->
+        <forward>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <concurrent type="IntegerField">
+                    <default>1</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10</MaximumValue>
+                    <ValidationMessage>Concurrent queries must be between 1 and 10</ValidationMessage>
+                </concurrent>
+                <upstreams type="ArrayField">
+                    <addr type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid upstream address</ValidationMessage>
+                    </addr>
+                    <dial_addr type="TextField">
+                        <Required>N</Required>
+                        <ValidationMessage>Please enter a valid dial address</ValidationMessage>
+                    </dial_addr>
+                    <trusted type="BooleanField">
+                        <default>0</default>
+                        <Required>N</Required>
+                    </trusted>
+                </upstreams>
+            </plugin>
+        </forward>
+        
+        <!-- Redirect Plugin Type -->
+        <redirect>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <rules type="ArrayField">
+                    <from type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid source domain</ValidationMessage>
+                    </from>
+                    <to type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid target domain</ValidationMessage>
+                    </to>
+                </rules>
+            </plugin>
+        </redirect>
+        
+        <!-- Hosts Plugin Type -->
+        <hosts>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <files type="ArrayField">
+                    <path type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid file path</ValidationMessage>
+                    </path>
+                </files>
+            </plugin>
+        </hosts>
+        
+        <!-- IP Set Plugin Type -->
+        <ipset>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <files type="ArrayField">
+                    <path type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid file path</ValidationMessage>
+                    </path>
+                </files>
+            </plugin>
+        </ipset>
+        
+        <!-- Sequence Plugin Type -->
+        <sequence>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <steps type="ArrayField">
+                    <exec type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid execution command</ValidationMessage>
+                    </exec>
+                    <matches type="TextField">
+                        <Required>N</Required>
+                        <ValidationMessage>Please enter a valid match condition</ValidationMessage>
+                    </matches>
+                </steps>
+            </plugin>
+        </sequence>
+        
+        <!-- Fallback Plugin Type -->
+        <fallback>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <primary type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid primary sequence tag</ValidationMessage>
+                </primary>
+                <secondary type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid secondary sequence tag</ValidationMessage>
+                </secondary>
+                <threshold type="IntegerField">
+                    <default>500</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10000</MaximumValue>
+                    <ValidationMessage>Threshold must be between 1 and 10000 milliseconds</ValidationMessage>
+                </threshold>
+                <always_standby type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </always_standby>
+            </plugin>
+        </fallback>
+        
+        <!-- Server Plugin Type (UDP/TCP) -->
+        <servers>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <server_type type="OptionField">
+                    <default>udp_server</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <udp_server>UDP Server</udp_server>
+                        <tcp_server>TCP Server</tcp_server>
+                    </OptionValues>
+                </server_type>
+                <entry type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid entry sequence tag</ValidationMessage>
+                </entry>
+                <listen type="TextField">
+                    <default>:53</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid listen address</ValidationMessage>
+                </listen>
+                <timeout type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>300</MaximumValue>
+                    <ValidationMessage>Timeout must be between 1 and 300 seconds</ValidationMessage>
+                </timeout>
+            </plugin>
+        </servers>
+        
+        <!-- Rule Plugin Type -->
+        <rule>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <if type="ArrayField">
+                    <condition type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid condition</ValidationMessage>
+                    </condition>
+                </if>
+                <exec type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid execution command</ValidationMessage>
+                </exec>
+            </plugin>
+        </rule>
+        
+        <!-- Block Plugin Type -->
+        <block>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <block_type type="OptionField">
+                    <default>nxdomain</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <nxdomain>NXDOMAIN</nxdomain>
+                        <refused>REFUSED</refused>
+                        <empty>Empty Response</empty>
+                    </OptionValues>
+                </block_type>
+            </plugin>
+        </block>
+        
+        <!-- Query Log Plugin Type -->
+        <query_log>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <file type="TextField">
+                    <default>/var/log/mosdns_query.log</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid log file path</ValidationMessage>
+                </file>
+                <format type="OptionField">
+                    <default>json</default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <json>JSON</json>
+                        <text>Text</text>
+                    </OptionValues>
+                </format>
+            </plugin>
+        </query_log>
+        
+        <!-- ECS Plugin Type -->
+        <ecs>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <auto type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </auto>
+                <ipv4 type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Please enter a valid IPv4 address</ValidationMessage>
+                </ipv4>
+                <ipv6 type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Please enter a valid IPv6 address</ValidationMessage>
+                </ipv6>
+                <mask4 type="IntegerField">
+                    <default>24</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>32</MaximumValue>
+                </mask4>
+                <mask6 type="IntegerField">
+                    <default>48</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>128</MaximumValue>
+                </mask6>
+            </plugin>
+        </ecs>
+        
+        <!-- Template Plugin Type -->
+        <template>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <rcode type="IntegerField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>23</MaximumValue>
+                    <ValidationMessage>RCODE must be between 0 and 23</ValidationMessage>
+                </rcode>
+                <rr type="ArrayField">
+                    <name type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid domain name</ValidationMessage>
+                    </name>
+                    <type type="OptionField">
+                        <default>A</default>
+                        <Required>Y</Required>
+                        <OptionValues>
+                            <A>A</A>
+                            <AAAA>AAAA</AAAA>
+                            <CNAME>CNAME</CNAME>
+                            <MX>MX</MX>
+                            <TXT>TXT</TXT>
+                        </OptionValues>
+                    </type>
+                    <value type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid record value</ValidationMessage>
+                    </value>
+                    <ttl type="IntegerField">
+                        <default>300</default>
+                        <Required>N</Required>
+                        <MinimumValue>1</MinimumValue>
+                        <MaximumValue>86400</MaximumValue>
+                    </ttl>
+                </rr>
+            </plugin>
+        </template>
+        
+        <!-- Prometheus Plugin Type -->
+        <prometheus>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <addr type="TextField">
+                    <default>:9153</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid listen address</ValidationMessage>
+                </addr>
+                <path type="TextField">
+                    <default>/metrics</default>
+                    <Required>N</Required>
+                    <ValidationMessage>Please enter a valid metrics path</ValidationMessage>
+                </path>
+            </plugin>
+        </prometheus>
+        
+        <!-- TLS Server Plugin Type -->
+        <tls_server>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <entry type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid entry sequence tag</ValidationMessage>
+                </entry>
+                <listen type="TextField">
+                    <default>:853</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid listen address</ValidationMessage>
+                </listen>
+                <cert type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid certificate file path</ValidationMessage>
+                </cert>
+                <key type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid private key file path</ValidationMessage>
+                </key>
+                <timeout type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>300</MaximumValue>
+                    <ValidationMessage>Timeout must be between 1 and 300 seconds</ValidationMessage>
+                </timeout>
+            </plugin>
+        </tls_server>
+        
+        <!-- HTTPS Server Plugin Type -->
+        <https_server>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <entry type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid entry sequence tag</ValidationMessage>
+                </entry>
+                <listen type="TextField">
+                    <default>:443</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid listen address</ValidationMessage>
+                </listen>
+                <cert type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid certificate file path</ValidationMessage>
+                </cert>
+                <key type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid private key file path</ValidationMessage>
+                </key>
+                <path type="TextField">
+                    <default>/dns-query</default>
+                    <Required>N</Required>
+                    <ValidationMessage>Please enter a valid URL path</ValidationMessage>
+                </path>
+                <timeout type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>300</MaximumValue>
+                    <ValidationMessage>Timeout must be between 1 and 300 seconds</ValidationMessage>
+                </timeout>
+            </plugin>
+        </https_server>
+        
+        <!-- TLS Client Plugin Type -->
+        <tls_client>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <addr type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid server address</ValidationMessage>
+                </addr>
+                <server_name type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Please enter a valid server name</ValidationMessage>
+                </server_name>
+                <insecure_skip_verify type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </insecure_skip_verify>
+                <timeout type="IntegerField">
+                    <default>5</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                    <ValidationMessage>Timeout must be between 1 and 60 seconds</ValidationMessage>
+                </timeout>
+            </plugin>
+        </tls_client>
+        
+        <!-- HTTPS Client Plugin Type -->
+        <https_client>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <url type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid HTTPS URL</ValidationMessage>
+                </url>
+                <timeout type="IntegerField">
+                    <default>5</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                    <ValidationMessage>Timeout must be between 1 and 60 seconds</ValidationMessage>
+                </timeout>
+                <insecure_skip_verify type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </insecure_skip_verify>
+            </plugin>
+        </https_client>
+    </items>
+</model>

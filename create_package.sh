@@ -46,9 +46,12 @@ if [ -d "${PLUGIN_DIR}/src/usr" ]; then
     cp -r "${PLUGIN_DIR}/src/usr" "${PACKAGE_DIR}/"
 fi
 
-# Create plist file (file list)
-echo "Creating package file list..."
+# Create plist file (file list) using pkg-plist
+echo "Creating package file list from pkg-plist..."
 cd "${PACKAGE_DIR}"
+
+# Always scan actual files in package directory
+echo "Scanning files in package directory..."
 find . -type f ! -name '+*' | sed 's|^\./||' | sort > "+CONTENTS"
 
 # Create UCL format manifest (required by FreeBSD pkg)

@@ -8,7 +8,7 @@ use OPNsense\MosDNS\ExternalData;
 
 class ExternalDataController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'external_data';
+    protected static $internalModelName = 'externaldata';
     protected static $internalModelClass = 'OPNsense\MosDNS\ExternalData';
 
     /**

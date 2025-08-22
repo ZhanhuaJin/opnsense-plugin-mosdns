@@ -2,7 +2,7 @@
     <tab id="plugins-tab" description="MosDNS Plugins Configuration">
         <subtab id="plugins-general" description="Plugin Management">
             <field>
-                <id>mosdns.plugins.plugin</id>
+                <id>proxy.mosdns.plugins.plugin</id>
                 <label>Plugins</label>
                 <type>listview</type>
                 <help>Configure MosDNS plugins with different tag types</help>

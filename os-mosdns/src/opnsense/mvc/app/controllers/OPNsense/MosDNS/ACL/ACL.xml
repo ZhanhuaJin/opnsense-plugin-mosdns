@@ -1,0 +1,44 @@
+<acl>
+    <page-proxy-mosdns-general>
+        <name>Proxy: MosDNS: General</name>
+        <patterns>
+            <pattern>ui/mosdns/</pattern>
+            <pattern>api/mosdns/general/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-general>
+    <page-proxy-mosdns-plugins>
+        <name>Proxy: MosDNS: Plugins</name>
+        <patterns>
+            <pattern>ui/mosdns/plugins/</pattern>
+            <pattern>api/mosdns/plugins/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-plugins>
+    <page-proxy-mosdns-advanced>
+        <name>Proxy: MosDNS: Advanced</name>
+        <patterns>
+            <pattern>ui/mosdns/advanced/</pattern>
+            <pattern>api/mosdns/advanced/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-advanced>
+    <page-proxy-mosdns-statistics>
+        <name>Proxy: MosDNS: Statistics</name>
+        <patterns>
+            <pattern>ui/mosdns/statistics/</pattern>
+            <pattern>api/mosdns/statistics/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-statistics>
+    <page-proxy-mosdns-logs>
+        <name>Proxy: MosDNS: Logs</name>
+        <patterns>
+            <pattern>ui/mosdns/logs/</pattern>
+            <pattern>api/mosdns/logs/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-logs>
+    <page-proxy-mosdns>
+        <name>Proxy: MosDNS (MVC)</name>
+        <patterns>
+            <pattern>ui/mosdns/*</pattern>
+            <pattern>api/mosdns/*</pattern>
+        </patterns>
+    </page-proxy-mosdns>
+</acl>

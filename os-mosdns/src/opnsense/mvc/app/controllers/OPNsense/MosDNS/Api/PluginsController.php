@@ -28,17 +28,16 @@
 
 namespace OPNsense\MosDNS\Api;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 
 /**
  * Class PluginsController
  * @package OPNsense\MosDNS\Api
  */
-class PluginsController extends ApiMutableModelControllerBase
+class PluginsController extends ApiControllerBase
 {
-    protected static $internalModelName = 'mosdns';
-    protected static $internalModelClass = '\\OPNsense\\MosDNS\\MosDNS';
 
     /**
      * Get plugins settings
@@ -48,8 +47,9 @@ class PluginsController extends ApiMutableModelControllerBase
     {
         $result = array();
         if ($this->request->isGet()) {
-            $mdlMosDNS = $this->getModel();
-            $result['mosdns'] = $mdlMosDNS->getNodes();
+            $config = Config::getInstance()->object();
+            $mosdnsConfig = isset($config->proxy->mosdns) ? $config->proxy->mosdns : new \stdClass();
+            $result['mosdns'] = $mosdnsConfig;
         }
         return $result;
     }
@@ -62,16 +62,24 @@ class PluginsController extends ApiMutableModelControllerBase
     {
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
-            $mdlMosDNS = $this->getModel();
-            $mdlMosDNS->setNodes($this->request->getPost("mosdns"));
-            $valMsgs = $mdlMosDNS->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                $result["validations"]["mosdns." . $msg->getField()] = $msg->getMessage();
+            $config = Config::getInstance()->object();
+            
+            // Ensure proxy section exists
+            if (!isset($config->proxy)) {
+                $config->proxy = new \stdClass();
             }
-            if (count($valMsgs) == 0) {
-                $mdlMosDNS->serializeToConfig();
-                $result["result"] = "saved";
-            }
+            
+            // Update mosdns configuration
+            $config->proxy->mosdns = (object)$this->request->getPost("mosdns");
+            
+            // Save configuration
+            Config::getInstance()->save();
+            
+            // Generate config file and restart service
+            $backend = new Backend();
+            $backend->configdRun('mosdns reconfigure');
+            
+            $result["result"] = "saved";
         }
         return $result;
     }

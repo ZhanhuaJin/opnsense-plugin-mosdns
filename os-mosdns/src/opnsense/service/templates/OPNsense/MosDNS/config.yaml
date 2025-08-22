@@ -1,0 +1,355 @@
+# MosDNS Configuration Template
+# Generated from OPNsense MosDNS Plugin Configuration
+
+log:
+  level: {{ proxy.mosdns.general.log_level|default('info') }}
+  file: "{{ proxy.mosdns.general.log_file|default('/var/log/mosdns.log') }}"
+
+include: []
+
+plugins:
+{% if helpers.exists('proxy.mosdns.plugins.geosite_cn') and proxy.mosdns.plugins.geosite_cn.enabled == '1' %}
+  - tag: geosite_cn
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.geosite_cn.files|default('/usr/local/etc/mosdns/rule/geosite_cn.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.geoip_cn') and proxy.mosdns.plugins.geoip_cn.enabled == '1' %}
+  - tag: geoip_cn
+    type: ip_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.geoip_cn.files|default('/usr/local/etc/mosdns/rule/geoip_cn.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.geosite_no_cn') and proxy.mosdns.plugins.geosite_no_cn.enabled == '1' %}
+  - tag: geosite_no_cn
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.geosite_no_cn.files|default('/usr/local/etc/mosdns/rule/geosite_geolocation-!cn.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.whitelist') and proxy.mosdns.plugins.whitelist.enabled == '1' %}
+  - tag: whitelist
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.whitelist.files|default('/usr/local/etc/mosdns/rule/whitelist.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.blocklist') and proxy.mosdns.plugins.blocklist.enabled == '1' %}
+  - tag: blocklist
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.blocklist.files|default('/usr/local/etc/mosdns/rule/blocklist.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.greylist') and proxy.mosdns.plugins.greylist.enabled == '1' %}
+  - tag: greylist
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.greylist.files|default('/usr/local/etc/mosdns/rule/greylist.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.ddnslist') and proxy.mosdns.plugins.ddnslist.enabled == '1' %}
+  - tag: ddnslist
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.ddnslist.files|default('/usr/local/etc/mosdns/rule/ddnslist.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.hosts') and proxy.mosdns.plugins.hosts.enabled == '1' %}
+  - tag: hosts
+    type: hosts
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.hosts.files|default('/usr/local/etc/mosdns/rule/hosts.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.redirect') and proxy.mosdns.plugins.redirect.enabled == '1' %}
+  - tag: redirect
+    type: redirect
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.redirect.files|default('/usr/local/etc/mosdns/rule/redirect.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.adlist') and proxy.mosdns.plugins.adlist.enabled == '1' %}
+  - tag: adlist
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.adlist.files|default('/usr/local/etc/mosdns/rule/adlist.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.local_ptr') and proxy.mosdns.plugins.local_ptr.enabled == '1' %}
+  - tag: local_ptr
+    type: domain_set
+    args:
+      files:
+        - "{{ proxy.mosdns.plugins.local_ptr.files|default('/usr/local/etc/mosdns/rule/local-ptr.txt') }}"
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.lazy_cache') and proxy.mosdns.plugins.lazy_cache.enabled == '1' %}
+  - tag: lazy_cache
+    type: cache
+    args:
+      size: {{ proxy.mosdns.plugins.lazy_cache.size|default('0') }}
+      lazy_cache_ttl: {{ proxy.mosdns.plugins.lazy_cache.lazy_cache_ttl|default('0') }}
+      dump_file: {{ proxy.mosdns.plugins.lazy_cache.dump_file|default('/etc/mosdns/cache.dump') }}
+      dump_interval: {{ proxy.mosdns.plugins.lazy_cache.dump_interval|default('0') }}
+{% endif %}
+
+  - tag: reject_3
+    type: sequence
+    args:
+      - exec: reject 3
+
+  - tag: reject_blocklist
+    type: sequence
+    args:
+      - exec: query_summary reject_blocklist
+      - exec: $reject_3
+
+  - tag: reject_adlist
+    type: sequence
+    args:
+      - exec: query_summary reject_adlist
+      - exec: $reject_3
+
+  - tag: reject_ptrlist
+    type: sequence
+    args:
+      - exec: query_summary reject_ptrlist
+      - exec: $reject_3
+
+  - tag: reject_qtype65
+    type: sequence
+    args:
+      - exec: query_summary reject_qtype65
+      - exec: $reject_3
+
+{% if helpers.exists('proxy.mosdns.plugins.forward_local') and proxy.mosdns.plugins.forward_local.enabled == '1' %}
+  - tag: forward_local
+    type: forward
+    args:
+      concurrent: {{ proxy.mosdns.plugins.forward_local.concurrent|default('2') }}
+      upstreams:
+{% for upstream in proxy.mosdns.plugins.forward_local.upstreams.split(',') %}
+        - addr: "{{ upstream.strip() }}"
+{% if proxy.mosdns.plugins.forward_local.dial_addr %}
+          dial_addr: "{{ proxy.mosdns.plugins.forward_local.dial_addr }}"
+{% endif %}
+{% if proxy.mosdns.plugins.forward_local.enable_http3 == '1' %}
+          enable_http3: true
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.forward_remote') and proxy.mosdns.plugins.forward_remote.enabled == '1' %}
+  - tag: forward_remote
+    type: forward
+    args:
+      concurrent: {{ proxy.mosdns.plugins.forward_remote.concurrent|default('2') }}
+      upstreams:
+{% for upstream in proxy.mosdns.plugins.forward_remote.upstreams.split(',') %}
+        - addr: "{{ upstream.strip() }}"
+{% if proxy.mosdns.plugins.forward_remote.dial_addr %}
+          dial_addr: "{{ proxy.mosdns.plugins.forward_remote.dial_addr }}"
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.forward_google') and proxy.mosdns.plugins.forward_google.enabled == '1' %}
+  - tag: forward_google
+    type: forward
+    args:
+      concurrent: {{ proxy.mosdns.plugins.forward_google.concurrent|default('1') }}
+      upstreams:
+{% for upstream in proxy.mosdns.plugins.forward_google.upstreams.split(',') %}
+        - addr: "{{ upstream.strip() }}"
+{% if proxy.mosdns.plugins.forward_google.dial_addr %}
+          dial_addr: "{{ proxy.mosdns.plugins.forward_google.dial_addr }}"
+{% endif %}
+{% if proxy.mosdns.plugins.forward_google.socks5 %}
+          socks5: "{{ proxy.mosdns.plugins.forward_google.socks5 }}"
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if helpers.exists('proxy.mosdns.plugins.forward_cf') and proxy.mosdns.plugins.forward_cf.enabled == '1' %}
+  - tag: forward_cf
+    type: forward
+    args:
+      concurrent: {{ proxy.mosdns.plugins.forward_cf.concurrent|default('1') }}
+      upstreams:
+{% for upstream in proxy.mosdns.plugins.forward_cf.upstreams.split(',') %}
+        - addr: "{{ upstream.strip() }}"
+{% if proxy.mosdns.plugins.forward_cf.dial_addr %}
+          dial_addr: "{{ proxy.mosdns.plugins.forward_cf.dial_addr }}"
+{% endif %}
+{% if proxy.mosdns.plugins.forward_cf.socks5 %}
+          socks5: "{{ proxy.mosdns.plugins.forward_cf.socks5 }}"
+{% endif %}
+{% endfor %}
+{% endif %}
+
+  - tag: modify_ttl
+    type: sequence
+    args:
+      - exec: ttl 0-0
+
+  - tag: modify_ddns_ttl
+    type: sequence
+    args:
+      - exec: ttl 5-5
+
+  - tag: local_sequence
+    type: sequence
+    args:
+      - exec: query_summary forward_local
+      - exec: $forward_local
+
+  - tag: remote_sequence
+    type: sequence
+    args:
+      - exec: query_summary forward_remote
+      - exec: $forward_remote
+
+  - tag: forward_google_upstream
+    type: sequence
+    args:
+      - exec: query_summary forward_google
+      - exec: $forward_google
+
+  - tag: forward_cf_upstream
+    type: sequence
+    args:
+      - exec: query_summary forward_cf
+      - exec: $forward_cf
+
+  - tag: has_resp_sequence
+    type: sequence
+    args:
+      - matches: qname $ddnslist
+        exec: $modify_ddns_ttl
+      - matches: "!qname $ddnslist"
+        exec: $modify_ttl
+      - matches: has_resp
+        exec: accept
+
+  - tag: query_is_ddns_domain
+    type: sequence
+    args:
+      - matches: qname $ddnslist
+        exec: $local_sequence
+
+  - tag: query_is_srv_domain
+    type: sequence
+    args:
+      - matches:
+          - qtype 33
+        exec: $forward_google_upstream
+
+  - tag: query_is_mx_domain
+    type: sequence
+    args:
+      - matches:
+          - qtype 15
+        exec: $forward_google_upstream
+
+  - tag: query_is_local_domain
+    type: sequence
+    args:
+      - matches: qname $geosite_cn
+        exec: $local_sequence
+
+  - tag: query_is_no_local_domain
+    type: sequence
+    args:
+      - matches: qname $geosite_no_cn
+        exec: $remote_sequence
+
+  - tag: query_is_whitelist_domain
+    type: sequence
+    args:
+      - matches: qname $whitelist
+        exec: $local_sequence
+
+  - tag: query_is_greylist_domain
+    type: sequence
+    args:
+      - matches: qname $greylist
+        exec: $remote_sequence
+
+  - tag: query_is_reject_domain
+    type: sequence
+    args:
+      - matches: qname $blocklist
+        exec: $reject_blocklist
+      - matches: qname $adlist
+        exec: $reject_adlist
+      - matches:
+          - qtype 12
+          - qname $local_ptr
+        exec: $reject_ptrlist
+      - matches: qtype 65
+        exec: $reject_qtype65
+
+  - tag: fallback_sequence
+    type: sequence
+    args:
+      - exec: $forward_google_upstream
+      - matches: "rcode 2"
+        exec: goto local_sequence
+      - matches: "rcode 3"
+        exec: goto forward_cf_upstream
+      - matches: "rcode 5"
+        exec: goto local_sequence
+      - matches: "resp_ip $geoip_cn"
+        exec: goto remote_sequence
+
+  - tag: main_sequence
+    type: sequence
+    args:
+{% if helpers.exists('proxy.mosdns.plugins.lazy_cache') and proxy.mosdns.plugins.lazy_cache.enabled == '1' %}
+      - exec: $lazy_cache
+{% endif %}
+      - exec: $query_is_reject_domain
+      - exec: $query_is_ddns_domain
+      - exec: $query_is_srv_domain
+      - exec: $query_is_mx_domain
+{% if helpers.exists('proxy.mosdns.plugins.hosts') and proxy.mosdns.plugins.hosts.enabled == '1' %}
+      - exec: $hosts
+{% endif %}
+{% if helpers.exists('proxy.mosdns.plugins.redirect') and proxy.mosdns.plugins.redirect.enabled == '1' %}
+      - exec: $redirect
+{% endif %}
+{% if helpers.exists('proxy.mosdns.plugins.whitelist') and proxy.mosdns.plugins.whitelist.enabled == '1' %}
+      - exec: $query_is_whitelist_domain
+{% endif %}
+{% if helpers.exists('proxy.mosdns.plugins.greylist') and proxy.mosdns.plugins.greylist.enabled == '1' %}
+      - exec: $query_is_greylist_domain
+{% endif %}
+      - exec: $query_is_local_domain
+      - exec: $query_is_no_local_domain
+      - exec: $fallback_sequence
+      - exec: $has_resp_sequence
+
+  - tag: udp_server
+    type: udp_server
+    args:
+      entry: main_sequence
+      listen: "{{ proxy.mosdns.general.listen_address|default('127.0.0.1') }}:{{ proxy.mosdns.general.listen_port|default('53') }}"
+
+  - tag: tcp_server
+    type: tcp_server
+    args:
+      entry: main_sequence
+      listen: "{{ proxy.mosdns.general.listen_address|default('127.0.0.1') }}:{{ proxy.mosdns.general.listen_port|default('53') }}"

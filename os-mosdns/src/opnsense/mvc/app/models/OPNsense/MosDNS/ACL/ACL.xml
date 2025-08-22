@@ -1,44 +1,107 @@
 <acl>
-    <page-services-mosdns-general>
-        <name>Services: MosDNS: General</name>
+    <page-proxy-mosdns-general>
+        <name>Proxy: MosDNS: General</name>
         <patterns>
             <pattern>ui/mosdns/</pattern>
             <pattern>api/mosdns/general/*</pattern>
         </patterns>
-    </page-services-mosdns-general>
-    <page-services-mosdns-plugins>
-        <name>Services: MosDNS: Plugins</name>
+    </page-proxy-mosdns-general>
+    <page-proxy-mosdns-plugins>
+        <name>Proxy: MosDNS: Plugins</name>
         <patterns>
             <pattern>ui/mosdns/plugins/</pattern>
             <pattern>api/mosdns/plugins/*</pattern>
         </patterns>
-    </page-services-mosdns-plugins>
-    <page-services-mosdns-advanced>
-        <name>Services: MosDNS: Advanced</name>
+    </page-proxy-mosdns-plugins>
+    <page-proxy-mosdns-cache>
+        <name>Proxy: MosDNS: Cache</name>
+        <patterns>
+            <pattern>ui/mosdns/cache/</pattern>
+            <pattern>api/mosdns/cache/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-cache>
+    <page-proxy-mosdns-forward>
+        <name>Proxy: MosDNS: Forward</name>
+        <patterns>
+            <pattern>ui/mosdns/forward/</pattern>
+            <pattern>api/mosdns/forward/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-forward>
+    <page-proxy-mosdns-redirect>
+        <name>Proxy: MosDNS: Redirect</name>
+        <patterns>
+            <pattern>ui/mosdns/redirect/</pattern>
+            <pattern>api/mosdns/redirect/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-redirect>
+    <page-proxy-mosdns-hosts>
+        <name>Proxy: MosDNS: Hosts</name>
+        <patterns>
+            <pattern>ui/mosdns/hosts/</pattern>
+            <pattern>api/mosdns/hosts/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-hosts>
+    <page-proxy-mosdns-ipset>
+        <name>Proxy: MosDNS: IPSet</name>
+        <patterns>
+            <pattern>ui/mosdns/ipset/</pattern>
+            <pattern>api/mosdns/ipset/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-ipset>
+    <page-proxy-mosdns-sequence>
+        <name>Proxy: MosDNS: Sequence</name>
+        <patterns>
+            <pattern>ui/mosdns/sequence/</pattern>
+            <pattern>api/mosdns/sequence/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-sequence>
+    <page-proxy-mosdns-fallback>
+        <name>Proxy: MosDNS: Fallback</name>
+        <patterns>
+            <pattern>ui/mosdns/fallback/</pattern>
+            <pattern>api/mosdns/fallback/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-fallback>
+    <page-proxy-mosdns-servers>
+        <name>Proxy: MosDNS: Servers</name>
+        <patterns>
+            <pattern>ui/mosdns/servers/</pattern>
+            <pattern>api/mosdns/servers/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-servers>
+    <page-proxy-mosdns-advanced>
+        <name>Proxy: MosDNS: Advanced</name>
         <patterns>
             <pattern>ui/mosdns/advanced/</pattern>
             <pattern>api/mosdns/advanced/*</pattern>
         </patterns>
-    </page-services-mosdns-advanced>
-    <page-services-mosdns-statistics>
-        <name>Services: MosDNS: Statistics</name>
+    </page-proxy-mosdns-advanced>
+    <page-proxy-mosdns-statistics>
+        <name>Proxy: MosDNS: Statistics</name>
         <patterns>
             <pattern>ui/mosdns/statistics/</pattern>
             <pattern>api/mosdns/statistics/*</pattern>
         </patterns>
-    </page-services-mosdns-statistics>
-    <page-services-mosdns-logs>
-        <name>Services: MosDNS: Logs</name>
+    </page-proxy-mosdns-statistics>
+    <page-proxy-mosdns-logs>
+        <name>Proxy: MosDNS: Logs</name>
         <patterns>
             <pattern>ui/mosdns/logs/</pattern>
             <pattern>api/mosdns/logs/*</pattern>
         </patterns>
-    </page-services-mosdns-logs>
-    <page-services-mosdns>
-        <name>Services: MosDNS (MVC)</name>
+    </page-proxy-mosdns-logs>
+    <page-proxy-mosdns-external-data>
+        <name>Proxy: MosDNS: External Data</name>
+        <patterns>
+            <pattern>ui/mosdns/externaldata/</pattern>
+            <pattern>api/mosdns/externaldata/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-external-data>
+    <page-proxy-mosdns>
+        <name>Proxy: MosDNS (MVC)</name>
         <patterns>
             <pattern>ui/mosdns/*</pattern>
             <pattern>api/mosdns/*</pattern>
         </patterns>
-    </page-services-mosdns>
+    </page-proxy-mosdns>
 </acl>

@@ -6,7 +6,7 @@
 CONFIG_DIR="/usr/local/etc/mosdns"
 CONFIG_FILE="${CONFIG_DIR}/config.yaml"
 TEMPLATE_DIR="/usr/local/opnsense/service/templates/OPNsense/MosDNS"
-TEMPLATE_FILE="${TEMPLATE_DIR}/mosdns.conf"
+TEMPLATE_FILE="${TEMPLATE_DIR}/config.yaml"
 
 # Create config directory if it doesn't exist
 if [ ! -d "${CONFIG_DIR}" ]; then

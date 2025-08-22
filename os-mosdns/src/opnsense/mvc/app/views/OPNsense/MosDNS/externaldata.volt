@@ -2,14 +2,15 @@
     $( document ).ready(function() {
         var data_table_id = "grid-external-data";
         var gridopt = {
-            ajax: false,
+            ajax: true,
             selection: true,
-            multiSelect: true
+            multiSelect: true,
+            url: '/api/mosdns/externaldata/searchDataFile'
         };
         $("#"+data_table_id).UIBootgrid(gridopt);
         
         // Initialize default data files on first load
-        ajaxCall("/api/mosdns/external_data/initializeDefaults", {}, function(data,status) {
+        ajaxCall("/api/mosdns/externaldata/initializeDefaults", {}, function(data,status) {
             if (data['result'] != undefined) {
                 if (data['result'] == 'ok') {
                     $("#"+data_table_id).bootgrid('reload');
@@ -22,7 +23,7 @@
             var rows = $("#"+data_table_id).bootgrid('getSelectedRows');
             if (rows != undefined && rows.length == 1) {
                 $("#downloadDataFile").addClass("fa fa-spinner fa-pulse");
-                ajaxCall("/api/mosdns/external_data/downloadDataFile/" + rows[0], {}, function(data,status) {
+                ajaxCall("/api/mosdns/externaldata/downloadDataFile/" + rows[0], {}, function(data,status) {
                     $("#downloadDataFile").removeClass("fa fa-spinner fa-pulse");
                     if (data['result'] != undefined) {
                         if (data['result'] == 'ok') {
@@ -71,7 +72,7 @@
         // Download all files
         $("#downloadAllFiles").click(function(){
             $("#downloadAllFiles").addClass("fa fa-spinner fa-pulse");
-            ajaxCall("/api/mosdns/external_data/downloadAll", {}, function(data,status) {
+            ajaxCall("/api/mosdns/externaldata/downloadAll", {}, function(data,status) {
                 $("#downloadAllFiles").removeClass("fa fa-spinner fa-pulse");
                 if (data['result'] != undefined) {
                     if (data['result'] == 'ok') {
@@ -111,7 +112,7 @@
         
         // Add new data file
         $("#addDataFile").click(function(){
-            mapDataToFormUI({'frm_DialogExternalData':'/api/mosdns/external_data/getDataFile'}).done(function(){
+            mapDataToFormUI({'frm_DialogExternalData':'/api/mosdns/externaldata/getDataFile'}).done(function(){
                 $('#DialogExternalData').modal('show');
             });
         });
@@ -121,7 +122,7 @@
             $("#grid-external-data a[data-row-id]").on('click', function(e) {
                 e.preventDefault();
                 var uuid = $(this).data("row-id");
-                mapDataToFormUI({'frm_DialogExternalData':'/api/mosdns/external_data/getDataFile/' + uuid}).done(function(){
+                mapDataToFormUI({'frm_DialogExternalData':'/api/mosdns/externaldata/getDataFile/' + uuid}).done(function(){
                     $('#DialogExternalData').modal('show');
                 });
             });
@@ -144,7 +145,7 @@
                         label: "{{ lang._('Yes') }}",
                         action: function(dialogRef){
                             for (var i=0; i < rows.length; i++) {
-                                ajaxCall("/api/mosdns/external_data/delDataFile/" + rows[i], {}, function(data,status) {
+                                ajaxCall("/api/mosdns/externaldata/delDataFile/" + rows[i], {}, function(data,status) {
                                     if (data['result'] != undefined) {
                                         $("#"+data_table_id).bootgrid('reload');
                                     }
@@ -159,7 +160,7 @@
         
         // Save data file
         $("#saveDataFile").click(function(){
-            saveFormToEndpoint("/api/mosdns/external_data/setDataFile", 'frm_DialogExternalData', function(){
+            saveFormToEndpoint("/api/mosdns/externaldata/setDataFile", 'frm_DialogExternalData', function(){
             $("#DialogExternalData").modal('hide');
             $("#"+data_table_id).bootgrid('reload');
         });
@@ -169,7 +170,7 @@
         $("#toggleDataFile").click(function(){
             var rows = $("#"+data_table_id).bootgrid('getSelectedRows');
             if (rows != undefined && rows.length == 1) {
-                ajaxCall("/api/mosdns/external_data/toggleDataFile/" + rows[0], {}, function(data,status) {
+                ajaxCall("/api/mosdns/externaldata/toggleDataFile/" + rows[0], {}, function(data,status) {
                     if (data['result'] != undefined) {
                         $("#"+data_table_id).bootgrid('reload');
                     }
@@ -180,7 +181,7 @@
 </script>
 
 <div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':externalDataForm,'id':'frm_external_data'])}} 
+    {{ partial("layout_partials/base_form",['fields':formDialogExternalData,'id':'frm_external_data'])}} 
     <div class="col-md-12">
         <hr />
         <button class="btn btn-primary" id="downloadAllFiles" type="button"><b>{{ lang._('Download All Files') }}</b> <i class="fa fa-download"></i></button>

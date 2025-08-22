@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function() {
-        var data_get_map = {'frm_PluginsSettings':'/api/mosdns/settings/get'};
+        var data_get_map = {'frm_PluginsSettings':'/api/mosdns/plugins/get'};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
@@ -8,7 +8,7 @@
 
         // Save configuration
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/mosdns/settings/set", formid='frm_PluginsSettings',callback_ok=function(){
+            saveFormToEndpoint(url="/api/mosdns/plugins/set", formid='frm_PluginsSettings',callback_ok=function(){
                 $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
                 ajaxCall(url="/api/mosdns/service/reconfigure", sendData={}, callback=function(data,status) {
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");

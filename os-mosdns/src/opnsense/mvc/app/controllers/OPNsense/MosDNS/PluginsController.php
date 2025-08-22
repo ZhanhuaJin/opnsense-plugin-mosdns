@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (C) 2024 Deciso B.V.
+ * Copyright (C) 2023 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,129 +28,57 @@
 
 namespace OPNsense\MosDNS;
 
-use OPNsense\Base\IndexController as BaseIndexController;
-use OPNsense\Core\Backend;
+use OPNsense\Base\IndexController;
 
 /**
- * Class IndexController
+ * Class PluginsController
  * @package OPNsense\MosDNS
  */
-class IndexController extends BaseIndexController
+class PluginsController extends IndexController
 {
-    /**
-     * Index page - General settings
-     */
     public function indexAction()
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->pick('OPNsense/MosDNS/general');
+        // Redirect to the first submenu item (Cache) when accessing the parent Plugins menu
+        $this->response->redirect('/ui/mosdns/plugins/cache');
     }
 
-    /**
-     * Plugins page
-     */
-    public function pluginsAction()
-    {
-        $this->view->pluginsForm = $this->getForm("plugins");
-        $this->view->pick('OPNsense/MosDNS/plugins');
-    }
-
-    /**
-     * Advanced page
-     */
-    public function advancedAction()
-    {
-        $this->view->advancedForm = $this->getForm("advanced");
-        $this->view->pick('OPNsense/MosDNS/advanced');
-    }
-
-    /**
-     * Statistics page
-     */
-    public function statisticsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/statistics');
-    }
-
-    /**
-     * Logs page
-     */
-    public function logsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/logs');
-    }
-
-    /**
-     * External Data page
-     */
-    public function externalDataAction()
-    {
-        $this->view->formDialogExternalData = $this->getForm("externaldata");
-        $this->view->pick('OPNsense/MosDNS/externaldata');
-    }
-
-    /**
-     * Cache plugin page
-     */
     public function cacheAction()
     {
         $this->view->pick('OPNsense/MosDNS/cache');
     }
 
-    /**
-     * Forward plugin page
-     */
     public function forwardAction()
     {
         $this->view->pick('OPNsense/MosDNS/forward');
     }
 
-    /**
-     * Redirect plugin page
-     */
     public function redirectAction()
     {
         $this->view->pick('OPNsense/MosDNS/redirect');
     }
 
-    /**
-     * Hosts plugin page
-     */
     public function hostsAction()
     {
         $this->view->pick('OPNsense/MosDNS/hosts');
     }
 
-    /**
-     * IPSet plugin page
-     */
     public function ipsetAction()
     {
         $this->view->pick('OPNsense/MosDNS/ipset');
     }
 
-    /**
-     * Sequence plugin page
-     */
     public function sequenceAction()
     {
         $this->view->pick('OPNsense/MosDNS/sequence');
     }
 
-    /**
-     * Fallback plugin page
-     */
     public function fallbackAction()
     {
         $this->view->pick('OPNsense/MosDNS/fallback');
     }
 
-    /**
-     * Servers plugin page
-     */
     public function serversAction()
     {
         $this->view->pick('OPNsense/MosDNS/servers');
     }
-
 }

@@ -25,7 +25,7 @@ opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/upstreams.xml
 opnsense/mvc/app/models/OPNsense/MosDNS/ACL/ACL.xml
 opnsense/mvc/app/models/OPNsense/MosDNS/ExternalData.php
 opnsense/mvc/app/models/OPNsense/MosDNS/ExternalData.xml
-opnsense/mvc/app/models/OPNsense/MosDNS/Menu.xml
+opnsense/mvc/app/models/OPNsense/MosDNS/Menu/Menu.xml
 opnsense/mvc/app/models/OPNsense/MosDNS/MosDNS.php
 opnsense/mvc/app/models/OPNsense/MosDNS/PluginTypes.php
 opnsense/mvc/app/models/OPNsense/MosDNS/PluginTypes.xml

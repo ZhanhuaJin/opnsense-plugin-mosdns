@@ -2,18 +2,18 @@
     <Wall order="55" VisibleName="Wall" cssClass="fa fa-th">
         <MosDNS VisibleName="MosDNS" cssClass="fa fa-tags fa-fw">
             <General order="10" url="/ui/mosdns/"/>
-            <Plugins VisibleName="Plugins" order="20" url="/ui/mosdns/plugins">
-                <Cache order="10" url="/ui/mosdns/plugins/cache"/>
-                <Forward order="20" url="/ui/mosdns/plugins/forward"/>
-                <Redirect order="30" url="/ui/mosdns/plugins/redirect"/>
-                <Hosts order="40" url="/ui/mosdns/plugins/hosts"/>
-                <IPSet order="50" url="/ui/mosdns/plugins/ipset"/>
-                <Sequence order="60" url="/ui/mosdns/plugins/sequence"/>
-                <Fallback order="70" url="/ui/mosdns/plugins/fallback"/>
-                <Servers order="80" url="/ui/mosdns/plugins/servers"/>
+            <Plugins VisibleName="Plugins" order="20" cssClass="fa fa-puzzle-piece fa-fw">
+                <Cache VisibleName="Cache" order="10" url="/ui/mosdns/plugins/cache"/>
+                <Forward VisibleName="Forward" order="20" url="/ui/mosdns/plugins/forward"/>
+                <Redirect VisibleName="Redirect" order="30" url="/ui/mosdns/plugins/redirect"/>
+                <Hosts VisibleName="Hosts" order="40" url="/ui/mosdns/plugins/hosts"/>
+                <IPSet VisibleName="IPSet" order="50" url="/ui/mosdns/plugins/ipset"/>
+                <Sequence VisibleName="Sequence" order="60" url="/ui/mosdns/plugins/sequence"/>
+                <Fallback VisibleName="Fallback" order="70" url="/ui/mosdns/plugins/fallback"/>
+                <Servers VisibleName="Servers" order="80" url="/ui/mosdns/plugins/servers"/>
             </Plugins>
             <Advanced order="30" url="/ui/mosdns/advanced"/>
-            <ExternalData VisibleName="External Data" order="35" url="/ui/mosdns/externaldata"/>
+            <ExternalData VisibleName="External Data" order="35" url="/ui/mosdns/index/externaldata"/>
             <Statistics order="40" url="/ui/mosdns/statistics"/>
             <Logs order="50" url="/ui/mosdns/logs"/>
         </MosDNS>

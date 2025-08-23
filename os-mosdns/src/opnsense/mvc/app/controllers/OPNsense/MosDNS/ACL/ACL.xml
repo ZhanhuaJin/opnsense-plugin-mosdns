@@ -13,6 +13,18 @@
             <pattern>api/mosdns/plugins/*</pattern>
         </patterns>
     </page-proxy-mosdns-plugins>
+    
+    <!-- External Data page access -->
+    <page-proxy-mosdns-externaldata>
+        <name>Proxy: MosDNS: External Data</name>
+        <patterns>
+            <pattern>ui/mosdns/externaldata</pattern>
+            <pattern>ui/mosdns/externaldata/</pattern>
+            <pattern>ui/mosdns/index/externaldata</pattern>
+            <pattern>ui/mosdns/index/externaldata/</pattern>
+            <pattern>api/mosdns/externaldata/*</pattern>
+        </patterns>
+    </page-proxy-mosdns-externaldata>
     <page-proxy-mosdns-advanced>
         <name>Proxy: MosDNS: Advanced</name>
         <patterns>

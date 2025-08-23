@@ -29,7 +29,6 @@
 namespace OPNsense\MosDNS;
 
 use OPNsense\Base\IndexController;
-use OPNsense\MosDNS\ExternalData;
 
 /**
  * Class ExternalDataController
@@ -39,8 +38,8 @@ class ExternalDataController extends IndexController
 {
     public function indexAction()
     {
-        $this->view->externalDataForm = $this->getForm('externaldata');
-        $this->view->externalDataModel = new ExternalData();
+        // align with IndexController::externaldataAction to provide the expected form variable
+        $this->view->formDialogExternalData = $this->getForm('externaldata');
         $this->view->pick('OPNsense/MosDNS/externaldata');
     }
 }

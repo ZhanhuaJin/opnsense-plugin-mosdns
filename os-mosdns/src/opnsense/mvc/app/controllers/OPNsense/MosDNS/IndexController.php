@@ -83,7 +83,7 @@ class IndexController extends BaseIndexController
     /**
      * External Data page
      */
-    public function externalDataAction()
+    public function externaldataAction()
     {
         $this->view->formDialogExternalData = $this->getForm("externaldata");
         $this->view->pick('OPNsense/MosDNS/externaldata');

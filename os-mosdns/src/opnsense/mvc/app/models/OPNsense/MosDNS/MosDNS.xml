@@ -14,5 +14,36 @@
             
 
         </general>
+        
+        <!-- Data Sources -->
+        <datasources>
+            <datasource type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-\.]+$/u</mask>
+                    <ValidationMessage>Name should only contain alphanumeric characters, underscore, dash and dot</ValidationMessage>
+                </name>
+                <url type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>URL is required</ValidationMessage>
+                </url>
+                <backup_url type="TextField">
+                    <Required>N</Required>
+                </backup_url>
+                <description type="TextField">
+                    <Required>N</Required>
+                </description>
+                <update_interval type="IntegerField">
+                    <default>3600</default>
+                    <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                </update_interval>
+            </datasource>
+        </datasources>
     </items>
 </model>

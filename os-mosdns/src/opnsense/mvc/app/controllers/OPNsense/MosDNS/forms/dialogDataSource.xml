@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>datasource.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this data source</help>
+    </field>
+    <field>
+        <id>datasource.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Unique name for this data source</help>
+    </field>
+    <field>
+        <id>datasource.url</id>
+        <label>URL</label>
+        <type>text</type>
+        <help>Primary URL for the data source</help>
+    </field>
+    <field>
+        <id>datasource.backup_url</id>
+        <label>Backup URL</label>
+        <type>text</type>
+        <help>Backup URL to use if primary URL fails</help>
+    </field>
+    <field>
+        <id>datasource.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description for this data source</help>
+    </field>
+    <field>
+        <id>datasource.update_interval</id>
+        <label>Update Interval (seconds)</label>
+        <type>text</type>
+        <help>How often to update this data source (60-86400 seconds)</help>
+    </field>
+</form>

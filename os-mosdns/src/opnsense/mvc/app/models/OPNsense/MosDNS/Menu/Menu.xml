@@ -3,6 +3,7 @@
         <MosDNS VisibleName="MosDNS" cssClass="fa fa-globe fa-fw">
             <General VisibleName="General" order="10" url="/ui/mosdns"/>
             <Plugins VisibleName="Plugins" order="20" cssClass="fa fa-cogs fa-fw" url="/ui/mosdns/plugins"/>
+            <Data VisibleName="Data" order="22" cssClass="fa fa-database fa-fw" url="/ui/mosdns/data"/>
             <Advanced VisibleName="Advanced" order="25" url="/ui/mosdns/advanced"/>
 
             <Statistics VisibleName="Statistics" order="40" url="/ui/mosdns/statistics"/>

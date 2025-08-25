@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>plugins.redirect.enabled</id>
+        <label>Enable Redirect</label>
+        <type>checkbox</type>
+        <help>Enable DNS response redirection</help>
+    </field>
+    <field>
+        <id>plugins.redirect.target</id>
+        <label>Target Address</label>
+        <type>text</type>
+        <help>Target IP address for redirection</help>
+    </field>
+</form>

@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>plugins.ipset.enabled</id>
+        <label>Enable IPSet</label>
+        <type>checkbox</type>
+        <help>Enable IPSet integration</help>
+    </field>
+    <field>
+        <id>plugins.ipset.set_name</id>
+        <label>Set Name</label>
+        <type>text</type>
+        <help>IPSet name for storing IPs</help>
+    </field>
+</form>

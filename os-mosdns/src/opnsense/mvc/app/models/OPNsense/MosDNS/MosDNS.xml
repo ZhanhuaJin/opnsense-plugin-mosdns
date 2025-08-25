@@ -1,0 +1,18 @@
+<model>
+    <mount>//OPNsense/MosDNS</mount>
+    <description>MosDNS Configuration Model</description>
+    <version>1.0.0</version>
+    <items>
+        <!-- General Settings -->
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+                <label>Enable MosDNS</label>
+                <help>Enable or disable the MosDNS service</help>
+            </enabled>
+            
+
+        </general>
+    </items>
+</model>

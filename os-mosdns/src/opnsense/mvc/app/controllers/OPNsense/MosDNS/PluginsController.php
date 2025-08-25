@@ -28,18 +28,19 @@
 
 namespace OPNsense\MosDNS;
 
-use OPNsense\Base\IndexController;
+use OPNsense\Base\ControllerBase;
 
 /**
  * Class PluginsController
  * @package OPNsense\MosDNS
  */
-class PluginsController extends IndexController
+class PluginsController extends ControllerBase
 {
     public function indexAction()
     {
-        // Redirect to the first submenu item (Cache) when accessing the parent Plugins menu
-        $this->response->redirect('/ui/mosdns/plugins/cache');
+        // Set page title for the plugins overview page
+        $this->view->title = "MosDNS Plugins";
+        $this->view->pick('OPNsense/MosDNS/plugins');
     }
 
     public function cacheAction()

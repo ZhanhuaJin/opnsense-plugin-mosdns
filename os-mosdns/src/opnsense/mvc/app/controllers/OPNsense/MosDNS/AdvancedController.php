@@ -42,7 +42,8 @@ class AdvancedController extends ControllerBase
      */
     public function indexAction()
     {
-        $this->view->advancedForm = $this->getForm("advanced");
+        // Set page title for the advanced settings page
+        $this->view->title = "MosDNS Advanced Settings";
         $this->view->pick('OPNsense/MosDNS/advanced');
     }
 }

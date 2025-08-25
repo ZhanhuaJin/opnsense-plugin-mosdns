@@ -1,0 +1,10 @@
+<form>
+    <tab id="general-settings" description="General Settings">
+        <field>
+            <id>mosdns.general.enabled</id>
+            <label>Enable MosDNS</label>
+            <type>checkbox</type>
+            <help><![CDATA[Enable or disable the MosDNS DNS server.]]></help>
+        </field>
+    </tab>
+</form>

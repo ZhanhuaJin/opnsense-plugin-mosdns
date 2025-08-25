@@ -1,0 +1,53 @@
+<form>
+    <tab id="forward-settings" description="Forward Configuration">
+        <subtab id="forward-general" description="Forward Settings">
+            <field>
+                <id>forward.enabled</id>
+                <label>Enable Forward</label>
+                <type>checkbox</type>
+                <help>Enable DNS forwarding to upstream servers</help>
+            </field>
+            <field>
+                <id>forward.tag</id>
+                <label>Forward Tag</label>
+                <type>text</type>
+                <help>Unique identifier for this forward instance</help>
+            </field>
+            <field>
+                <id>forward.concurrent</id>
+                <label>Concurrent Queries</label>
+                <type>text</type>
+                <help>Number of concurrent queries to upstream servers (1-10)</help>
+            </field>
+        </subtab>
+        <subtab id="forward-upstreams" description="Upstream Servers">
+            <field>
+                <id>forward.upstreams</id>
+                <label>Upstream Servers</label>
+                <type>listview</type>
+                <help>Configure upstream DNS servers for forwarding</help>
+                <style>table-responsive</style>
+                <item_template>
+                    <field>
+                        <id>addr</id>
+                        <label>Server Address</label>
+                        <type>text</type>
+                        <help>Upstream server address (e.g., udp://8.8.8.8:53, tcp://1.1.1.1:53)</help>
+                    </field>
+                    <field>
+                        <id>dial_addr</id>
+                        <label>Dial Address</label>
+                        <type>text</type>
+                        <help>Optional dial address for connection</help>
+                    </field>
+                    <field>
+                        <id>trusted</id>
+                        <label>Trusted Server</label>
+                        <type>checkbox</type>
+                        <help>Mark this server as trusted</help>
+                    </field>
+                </item_template>
+            </field>
+        </subtab>
+    </tab>
+</form>

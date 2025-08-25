@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>plugins.forward.enabled</id>
+        <label>Enable Forward</label>
+        <type>checkbox</type>
+        <help>Enable DNS forwarding</help>
+    </field>
+    <field>
+        <id>plugins.forward.upstream</id>
+        <label>Upstream Server</label>
+        <type>text</type>
+        <help>Upstream DNS server address and port</help>
+    </field>
+    <field>
+        <id>plugins.forward.concurrent</id>
+        <label>Concurrent Requests</label>
+        <type>text</type>
+        <help>Number of concurrent requests</help>
+    </field>
+</form>

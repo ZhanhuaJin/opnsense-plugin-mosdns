@@ -566,5 +566,157 @@
                 </insecure_skip_verify>
             </plugin>
         </https_client>
+        
+        <!-- UDP/TCP Server Plugin Type -->
+        <servers>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <entry type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid entry sequence tag</ValidationMessage>
+                </entry>
+                <listen type="TextField">
+                    <default>:53</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid listen address (e.g., :53, 127.0.0.1:53)</ValidationMessage>
+                </listen>
+                <protocol type="OptionField">
+                    <default>udp</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <udp_tcp>UDP+TCP</udp_tcp>
+                    </OptionValues>
+                    <ValidationMessage>Please select a valid protocol</ValidationMessage>
+                </protocol>
+                <timeout type="IntegerField">
+                    <default>5</default>
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>300</MaximumValue>
+                    <ValidationMessage>Timeout must be between 1 and 300 seconds</ValidationMessage>
+                </timeout>
+            </plugin>
+        </servers>
+        
+        <!-- GeoSite CN Plugin Type -->
+        <geosite_cn>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <file type="TextField">
+                    <default>/usr/local/share/v2ray/geosite.dat</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid GeoSite database file path</ValidationMessage>
+                </file>
+            </plugin>
+        </geosite_cn>
+        
+        <!-- GeoIP CN Plugin Type -->
+        <geoip_cn>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <file type="TextField">
+                    <default>/usr/local/share/v2ray/geoip.dat</default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid GeoIP database file path</ValidationMessage>
+                </file>
+            </plugin>
+        </geoip_cn>
+        
+        <!-- Forward Local Plugin Type -->
+        <forward_local>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <upstreams type="ArrayField">
+                    <addr type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid local upstream address</ValidationMessage>
+                    </addr>
+                </upstreams>
+            </plugin>
+        </forward_local>
+        
+        <!-- Forward Remote Plugin Type -->
+        <forward_remote>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <upstreams type="ArrayField">
+                    <addr type="TextField">
+                        <Required>Y</Required>
+                        <ValidationMessage>Please enter a valid remote upstream address</ValidationMessage>
+                    </addr>
+                </upstreams>
+            </plugin>
+        </forward_remote>
+        
+        <!-- Lazy Cache Plugin Type -->
+        <lazy_cache>
+            <plugin type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <tag type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-]+$/</mask>
+                    <ValidationMessage>Tag should only contain alphanumeric characters, underscore and dash</ValidationMessage>
+                </tag>
+                <size type="IntegerField">
+                    <default>10240</default>
+                    <Required>Y</Required>
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>1048576</MaximumValue>
+                    <ValidationMessage>Cache size must be between 1024 and 1048576</ValidationMessage>
+                </size>
+                <lazy_cache_ttl type="IntegerField">
+                    <default>86400</default>
+                    <Required>N</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>604800</MaximumValue>
+                    <ValidationMessage>Lazy cache TTL must be between 60 and 604800 seconds</ValidationMessage>
+                </lazy_cache_ttl>
+            </plugin>
+        </lazy_cache>
     </items>
 </model>

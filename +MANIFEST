@@ -13,9 +13,7 @@ flatsize: 16805537
 files: {
     "usr/local/opnsense/scripts/OPNsense/MosDNS/setup.sh": "1$dab012ed0efe83579e030bc110661f99ae951257dc25951604bfb31984275373",
     "usr/local/opnsense/scripts/OPNsense/MosDNS/generate_config.sh": "1$47ae2bf49448bb096a86de967b113d5efde9af1e2e9969b90a22218ede1aece8",
-    "usr/local/opnsense/scripts/OPNsense/MosDNS/download_data_file.py": "1$485dae32d71e141c5e5ab9a4ac75989e9f013d69948a13b990d0048e6c9e3f7b",
     "usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/IndexController.php": "1$074ad59b3dd5722bba36af75f32b3f8164d404d648e6e9e1bc24ffb95190a060",
-    "usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/ExternalDataController.php": "1$31baabefa51d238bcde1e9e77b11f625ce2e2954203820793125d6358f971e89",
     "usr/local/opnsense/mvc/app/models/OPNsense/MosDNS/Menu.xml": "1$4980ba62e4a038c328ce7dd02ed7059a40973b2908f73b91f048df77da7e3227",
     "usr/local/opnsense/mvc/app/models/OPNsense/MosDNS/PluginTypes.xml": "1$5e496e88df731150c52d0338f0fe60abbb550293b554a34294462b6978ae40d7",
     "usr/local/opnsense/mvc/app/models/OPNsense/MosDNS/MosDNS.xml": "1$6cb38c2bdcfb745695c6547a7874280459b950251864eb952693b6ea5144d8ae",

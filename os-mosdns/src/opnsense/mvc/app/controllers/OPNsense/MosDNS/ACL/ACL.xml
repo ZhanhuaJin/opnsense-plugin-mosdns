@@ -18,10 +18,7 @@
     <page-proxy-mosdns-externaldata>
         <name>Proxy: MosDNS: External Data</name>
         <patterns>
-            <pattern>ui/mosdns/externaldata</pattern>
             <pattern>ui/mosdns/externaldata/</pattern>
-            <pattern>ui/mosdns/index/externaldata</pattern>
-            <pattern>ui/mosdns/index/externaldata/</pattern>
             <pattern>api/mosdns/externaldata/*</pattern>
         </patterns>
     </page-proxy-mosdns-externaldata>
@@ -46,11 +43,4 @@
             <pattern>api/mosdns/logs/*</pattern>
         </patterns>
     </page-proxy-mosdns-logs>
-    <page-proxy-mosdns>
-        <name>Proxy: MosDNS (MVC)</name>
-        <patterns>
-            <pattern>ui/mosdns/*</pattern>
-            <pattern>api/mosdns/*</pattern>
-        </patterns>
-    </page-proxy-mosdns>
 </acl>

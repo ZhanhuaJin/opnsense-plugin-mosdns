@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model>
+    <mount>//OPNsense/MosDNS</mount>
+    <description>MosDNS DNS Server Configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+            <config_file type="TextField">
+                <default>/usr/local/etc/mosdns/config.yaml</default>
+                <Required>N</Required>
+            </config_file>
+        </general>
+        <plugins>
+            <cache>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <size type="IntegerField">
+                    <default>1024</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <Required>N</Required>
+                </size>
+                <lazy_cache_ttl type="IntegerField">
+                    <default>86400</default>
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                </lazy_cache_ttl>
+            </cache>
+            <fallback>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <primary type="TextField">
+                    <default>8.8.8.8</default>
+                    <Required>N</Required>
+                </primary>
+                <secondary type="TextField">
+                    <default>1.1.1.1</default>
+                    <Required>N</Required>
+                </secondary>
+            </fallback>
+            <forward>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <upstream type="TextField">
+                    <default>8.8.8.8:53</default>
+                    <Required>N</Required>
+                </upstream>
+                <concurrent type="IntegerField">
+                    <default>1</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10</MaximumValue>
+                    <Required>N</Required>
+                </concurrent>
+            </forward>
+            <hosts>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <hosts_file type="TextField">
+                    <default>/etc/hosts</default>
+                    <Required>N</Required>
+                </hosts_file>
+            </hosts>
+            <ipset>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <set_name type="TextField">
+                    <default>mosdns</default>
+                    <Required>N</Required>
+                </set_name>
+            </ipset>
+            <redirect>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <target type="TextField">
+                    <default>127.0.0.1</default>
+                    <Required>N</Required>
+                </target>
+            </redirect>
+            <sequence>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <exec type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </exec>
+            </sequence>
+            <servers>
+                <enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </enabled>
+                <listen_addr type="TextField">
+                    <default>:53</default>
+                    <Required>N</Required>
+                </listen_addr>
+                <protocol type="OptionField">
+                    <default>udp</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <both>Both</both>
+                    </OptionValues>
+                </protocol>
+            </servers>
+        </plugins>
+
+    </items>
+</model>

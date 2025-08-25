@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>plugins.sequence.enabled</id>
+        <label>Enable Sequence</label>
+        <type>checkbox</type>
+        <help>Enable sequence execution</help>
+    </field>
+    <field>
+        <id>plugins.sequence.exec</id>
+        <label>Execution Sequence</label>
+        <type>text</type>
+        <help>Sequence execution configuration</help>
+    </field>
+</form>

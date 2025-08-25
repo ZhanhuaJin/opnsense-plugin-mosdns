@@ -16,56 +16,56 @@
     <page-proxy-mosdns-cache>
         <name>Proxy: MosDNS: Cache</name>
         <patterns>
-            <pattern>ui/mosdns/cache/</pattern>
+            <pattern>ui/mosdns/plugins/cache</pattern>
             <pattern>api/mosdns/cache/*</pattern>
         </patterns>
     </page-proxy-mosdns-cache>
     <page-proxy-mosdns-forward>
         <name>Proxy: MosDNS: Forward</name>
         <patterns>
-            <pattern>ui/mosdns/forward/</pattern>
+            <pattern>ui/mosdns/plugins/forward</pattern>
             <pattern>api/mosdns/forward/*</pattern>
         </patterns>
     </page-proxy-mosdns-forward>
     <page-proxy-mosdns-redirect>
         <name>Proxy: MosDNS: Redirect</name>
         <patterns>
-            <pattern>ui/mosdns/redirect/</pattern>
+            <pattern>ui/mosdns/plugins/redirect</pattern>
             <pattern>api/mosdns/redirect/*</pattern>
         </patterns>
     </page-proxy-mosdns-redirect>
     <page-proxy-mosdns-hosts>
         <name>Proxy: MosDNS: Hosts</name>
         <patterns>
-            <pattern>ui/mosdns/hosts/</pattern>
+            <pattern>ui/mosdns/plugins/hosts</pattern>
             <pattern>api/mosdns/hosts/*</pattern>
         </patterns>
     </page-proxy-mosdns-hosts>
     <page-proxy-mosdns-ipset>
         <name>Proxy: MosDNS: IPSet</name>
         <patterns>
-            <pattern>ui/mosdns/ipset/</pattern>
+            <pattern>ui/mosdns/plugins/ipset</pattern>
             <pattern>api/mosdns/ipset/*</pattern>
         </patterns>
     </page-proxy-mosdns-ipset>
     <page-proxy-mosdns-sequence>
         <name>Proxy: MosDNS: Sequence</name>
         <patterns>
-            <pattern>ui/mosdns/sequence/</pattern>
+            <pattern>ui/mosdns/plugins/sequence</pattern>
             <pattern>api/mosdns/sequence/*</pattern>
         </patterns>
     </page-proxy-mosdns-sequence>
     <page-proxy-mosdns-fallback>
         <name>Proxy: MosDNS: Fallback</name>
         <patterns>
-            <pattern>ui/mosdns/fallback/</pattern>
+            <pattern>ui/mosdns/plugins/fallback</pattern>
             <pattern>api/mosdns/fallback/*</pattern>
         </patterns>
     </page-proxy-mosdns-fallback>
     <page-proxy-mosdns-servers>
         <name>Proxy: MosDNS: Servers</name>
         <patterns>
-            <pattern>ui/mosdns/servers/</pattern>
+            <pattern>ui/mosdns/plugins/servers</pattern>
             <pattern>api/mosdns/servers/*</pattern>
         </patterns>
     </page-proxy-mosdns-servers>
@@ -90,18 +90,5 @@
             <pattern>api/mosdns/logs/*</pattern>
         </patterns>
     </page-proxy-mosdns-logs>
-    <page-proxy-mosdns-external-data>
-        <name>Proxy: MosDNS: External Data</name>
-        <patterns>
-            <pattern>ui/mosdns/externaldata/</pattern>
-            <pattern>api/mosdns/externaldata/*</pattern>
-        </patterns>
-    </page-proxy-mosdns-external-data>
-    <page-proxy-mosdns>
-        <name>Proxy: MosDNS (MVC)</name>
-        <patterns>
-            <pattern>ui/mosdns/*</pattern>
-            <pattern>api/mosdns/*</pattern>
-        </patterns>
-    </page-proxy-mosdns>
+
 </acl>

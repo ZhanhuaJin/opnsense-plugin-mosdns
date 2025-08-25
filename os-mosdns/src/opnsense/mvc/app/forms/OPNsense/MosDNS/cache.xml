@@ -1,0 +1,30 @@
+<form>
+    <tab id="cache-settings" description="Cache Configuration">
+        <subtab id="cache-general" description="Cache Settings">
+            <field>
+                <id>cache.enabled</id>
+                <label>Enable Cache</label>
+                <type>checkbox</type>
+                <help>Enable DNS response caching</help>
+            </field>
+            <field>
+                <id>cache.tag</id>
+                <label>Cache Tag</label>
+                <type>text</type>
+                <help>Unique identifier for this cache instance</help>
+            </field>
+            <field>
+                <id>cache.size</id>
+                <label>Cache Size</label>
+                <type>text</type>
+                <help>Maximum number of cached entries (1024-1048576)</help>
+            </field>
+            <field>
+                <id>cache.lazy_cache_ttl</id>
+                <label>Lazy Cache TTL</label>
+                <type>text</type>
+                <help>Time to live for lazy cache entries in seconds (60-604800)</help>
+            </field>
+        </subtab>
+    </tab>
+</form>

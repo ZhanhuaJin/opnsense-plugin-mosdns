@@ -1,20 +1,12 @@
 <script>
     $( document ).ready(function() {
-        var data_get_map = {'frm_AdvancedSettings':'/api/mosdns/settings/get'};
-        mapDataToFormUI(data_get_map).done(function(data){
-            formatTokenizersUI();
-            $('.selectpicker').selectpicker('refresh');
-        });
+        // Initialize selectpickers
+        $('.selectpicker').selectpicker('refresh');
 
-        // Save configuration
+        // Save configuration (placeholder)
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/mosdns/settings/set", formid='frm_AdvancedSettings',callback_ok=function(){
-                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/mosdns/service/reconfigure", sendData={}, callback=function(data,status) {
-                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                    updateServiceControlUI('mosdns');
-                });
-            });
+            // TODO: Implement save functionality when forms are available
+            alert('Save functionality will be implemented when forms are configured.');
         });
     });
 </script>
@@ -24,7 +16,8 @@
     <div class="table-responsive">
         <div class="col-sm-12">
             <h2>{{ lang._('Advanced Configuration') }}</h2>
-            {{ partial("layout_partials/base_form",['fields':advancedForm,'id':'frm_AdvancedSettings']) }}
+            <p>{{ lang._('Configure advanced settings for MosDNS service.') }}</p>
+            <p><em>{{ lang._('Configuration forms will be available in a future update.') }}</em></p>
             <div class="col-md-12">
                 <hr />
                 <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>

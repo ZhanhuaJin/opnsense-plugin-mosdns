@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>forward.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this forward entry</help>
+    </field>
+    <field>
+        <id>forward.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Unique identifier for the forward plugin (formerly Tag)</help>
+    </field>
+    <field>
+        <id>forward.concurrent</id>
+        <label>Concurrent</label>
+        <type>text</type>
+        <help>Number of concurrent queries (1-10)</help>
+    </field>
+    <field>
+        <id>forward.upstreams</id>
+        <label>Upstreams</label>
+        <type>text</type>
+        <help>Upstream DNS servers, one per line (e.g., udp://223.5.5.5)</help>
+    </field>
+</form>

@@ -90,5 +90,13 @@
             <pattern>api/mosdns/logs/*</pattern>
         </patterns>
     </page-proxy-mosdns-logs>
+    <page-mosdns-servers>
+        <name>Services: MosDNS: Servers</name>
+        <description>MosDNS Servers configuration page</description>
+        <patterns>
+            <pattern>ui/mosdns/servers*</pattern>
+            <pattern>api/mosdns/servers*</pattern>
+        </patterns>
+    </page-mosdns-servers>
 
 </acl>

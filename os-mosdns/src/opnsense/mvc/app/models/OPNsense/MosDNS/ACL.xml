@@ -1,0 +1,51 @@
+<acl>
+    <page-user-MosDNS>
+        <name>WebCfg - Services: MosDNS</name>
+        <description>Allow access to MosDNS configuration pages</description>
+        <patterns>
+            <pattern>ui/mosdns/*</pattern>
+        </patterns>
+    </page-user-MosDNS>
+    <page-user-MosDNS-Data>
+        <name>WebCfg - Services: MosDNS: Data</name>
+        <description>Allow access to MosDNS Data configuration</description>
+        <patterns>
+            <pattern>api/mosdns/data/*</pattern>
+        </patterns>
+    </page-user-MosDNS-Data>
+    <page-user-MosDNS-Forward>
+        <name>WebCfg - Services: MosDNS: Forward</name>
+        <description>Allow access to MosDNS Forward configuration</description>
+        <patterns>
+            <pattern>api/mosdns/forward/*</pattern>
+        </patterns>
+    </page-user-MosDNS-Forward>
+    <page-user-MosDNS-Redirect>
+        <name>WebCfg - Services: MosDNS: Redirect</name>
+        <description>Allow access to MosDNS Redirect configuration</description>
+        <patterns>
+            <pattern>api/mosdns/redirect/*</pattern>
+        </patterns>
+    </page-user-MosDNS-Redirect>
+    <page-user-MosDNS-Hosts>
+        <name>WebCfg - Services: MosDNS: Hosts</name>
+        <description>Allow access to MosDNS Hosts configuration</description>
+        <patterns>
+            <pattern>api/mosdns/hosts/*</pattern>
+        </patterns>
+    </page-user-MosDNS-Hosts>
+    <page-user-MosDNS-IPSet>
+        <name>WebCfg - Services: MosDNS: IPSet</name>
+        <description>Allow access to MosDNS IPSet configuration</description>
+        <patterns>
+            <pattern>api/mosdns/ipset/*</pattern>
+        </patterns>
+    </page-user-MosDNS-IPSet>
+    <page-user-MosDNS-Sequence>
+        <name>WebCfg - Services: MosDNS: Sequence</name>
+        <description>Allow access to MosDNS Sequence configuration</description>
+        <patterns>
+            <pattern>api/mosdns/sequence/*</pattern>
+        </patterns>
+    </page-user-MosDNS-Sequence>
+</acl>

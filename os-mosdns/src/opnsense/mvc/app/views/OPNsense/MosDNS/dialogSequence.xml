@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>sequence.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this Sequence entry</help>
+    </field>
+    <field>
+        <id>sequence.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name for this Sequence configuration</help>
+    </field>
+    <field>
+        <id>sequence.exec</id>
+        <label>Exec</label>
+        <type>text</type>
+        <help>Execution configuration for this sequence</help>
+    </field>
+    <field>
+        <id>sequence.matches</id>
+        <label>Matches</label>
+        <type>text</type>
+        <help>Match conditions for this sequence</help>
+    </field>
+</form>

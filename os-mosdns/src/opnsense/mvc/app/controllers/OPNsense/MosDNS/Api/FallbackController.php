@@ -4,153 +4,41 @@ namespace OPNsense\MosDNS\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
-use OPNsense\MosDNS\PluginTypes;
+use OPNsense\MosDNS\MosDNS;
 
 class FallbackController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'plugintypes';
-    protected static $internalModelClass = 'OPNsense\MosDNS\PluginTypes';
-    protected static $internalModelUseSafeDelete = true;
+    protected static $internalModelName = 'fallback';
+    protected static $internalModelClass = 'OPNsense\MosDNS\MosDNS';
 
-    /**
-     * Get fallback plugin configurations
-     * @return array
-     */
-    public function getAction()
+    public function searchFallbackAction()
     {
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdl = $this->getModel();
-            $result['fallback'] = $mdl->fallback->getNodes();
-        }
-        return $result;
+        return $this->searchBase('fallback.fallback', array('enabled', 'name', 'primary', 'secondary', 'threshold', 'always_standby'));
     }
 
-    /**
-     * Get specific fallback plugin by UUID
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function getItemAction($uuid = null)
+    public function getFallbackAction($uuid = null)
     {
-        $mdl = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdl->getNodeByReference('fallback.plugin.' . $uuid);
-            if ($node != null) {
-                return array('fallback' => $node->getNodes());
-            }
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('fallback', 'fallback.fallback', $uuid);
     }
 
-    /**
-     * Add new fallback plugin
-     * @return array
-     */
-    public function addItemAction()
+    public function addFallbackAction()
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost()) {
-            $mdl = $this->getModel();
-            $node = $mdl->fallback->plugin->Add();
-            $node->setNodes($this->request->getPost('fallback'));
-            $valMsgs = $mdl->performValidation();
-            if (count($valMsgs) == 0) {
-                $mdl->serializeToConfig();
-                $result['uuid'] = $node->getAttribute('uuid');
-                $result['result'] = 'saved';
-            } else {
-                $result['validations'] = $valMsgs;
-            }
-        }
-        return $result;
+        return $this->addBase('fallback', 'fallback.fallback');
     }
 
-    /**
-     * Update fallback plugin by UUID
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function setItemAction($uuid)
+    public function delFallbackAction($uuid)
     {
-        if ($this->request->isPost() && $uuid != null) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference('fallback.plugin.' . $uuid);
-                if ($node != null) {
-                    $node->setNodes($this->request->getPost('fallback'));
-                    $valMsgs = $mdl->performValidation();
-                    if (count($valMsgs) == 0) {
-                        $mdl->serializeToConfig();
-                        return array('result' => 'saved');
-                    } else {
-                        return array('result' => 'failed', 'validations' => $valMsgs);
-                    }
-                }
-            }
-        }
-        return array('result' => 'failed');
+        return $this->delBase('fallback.fallback', $uuid);
     }
 
-    /**
-     * Delete fallback plugin by UUID
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function delItemAction($uuid)
+    public function setFallbackAction($uuid)
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost() && $uuid != null) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                if ($mdl->fallback->plugin->del($uuid)) {
-                    $mdl->serializeToConfig();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->setBase('fallback', 'fallback.fallback', $uuid);
     }
 
-    /**
-     * Toggle fallback plugin enabled/disabled
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function toggleItemAction($uuid)
+    public function toggleFallbackAction($uuid)
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost() && $uuid != null) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference('fallback.plugin.' . $uuid);
-                if ($node != null) {
-                    if ($node->enabled->__toString() == '1') {
-                        $node->enabled = '0';
-                    } else {
-                        $node->enabled = '1';
-                    }
-                    $valMsgs = $mdl->performValidation();
-                    if (count($valMsgs) == 0) {
-                        $mdl->serializeToConfig();
-                        $result['result'] = 'saved';
-                    } else {
-                        $result['validations'] = $valMsgs;
-                    }
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Search fallback plugins
-     * @return array
-     */
-    public function searchItemAction()
-    {
-        return $this->searchBase('fallback.plugin', array('enabled', 'tag', 'primary', 'secondary', 'threshold', 'always_standby'));
+        return $this->toggleBase('fallback.fallback', $uuid);
     }
 }

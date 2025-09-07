@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>fallback.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this Fallback entry</help>
+    </field>
+    <field>
+        <id>fallback.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name for this Fallback configuration</help>
+    </field>
+    <field>
+        <id>fallback.primary</id>
+        <label>Primary</label>
+        <type>text</type>
+        <help>Primary DNS server configuration</help>
+    </field>
+    <field>
+        <id>fallback.secondary</id>
+        <label>Secondary</label>
+        <type>text</type>
+        <help>Secondary DNS server configuration</help>
+    </field>
+    <field>
+        <id>fallback.threshold</id>
+        <label>Threshold</label>
+        <type>text</type>
+        <help>Threshold configuration for fallback</help>
+    </field>
+    <field>
+        <id>fallback.always_standby</id>
+        <label>Always Standby</label>
+        <type>checkbox</type>
+        <help>Enable always standby mode</help>
+    </field>
+</form>

@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>hosts.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this hosts entry</help>
+    </field>
+    <field>
+        <id>hosts.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Unique identifier for the hosts plugin</help>
+    </field>
+    <field>
+        <id>hosts.files</id>
+        <label>Files</label>
+        <type>text</type>
+        <help>Host files configuration (e.g., file paths or host entries)</help>
+    </field>
+</form>

@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>servers.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this servers entry</help>
+    </field>
+    <field>
+        <id>servers.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name for this servers entry</help>
+    </field>
+    <field>
+        <id>servers.entry</id>
+        <label>Entry</label>
+        <type>text</type>
+        <help>Entry configuration for the servers</help>
+    </field>
+    <field>
+        <id>servers.listen</id>
+        <label>Listen</label>
+        <type>text</type>
+        <help>Listen address and port for the servers</help>
+    </field>
+    <field>
+        <id>servers.udp_or_tcp</id>
+        <label>UDP or TCP</label>
+        <type>dropdown</type>
+        <help>Protocol type for the servers</help>
+    </field>
+</form>

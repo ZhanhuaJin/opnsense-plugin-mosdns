@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>ipset.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this IPSet entry</help>
+    </field>
+    <field>
+        <id>ipset.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name for this IPSet configuration</help>
+    </field>
+    <field>
+        <id>ipset.files</id>
+        <label>Files</label>
+        <type>text</type>
+        <help>IPSet files configuration</help>
+    </field>
+</form>

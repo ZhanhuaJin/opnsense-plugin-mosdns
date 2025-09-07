@@ -45,5 +45,174 @@
                 </update_interval>
             </datasource>
         </datasources>
+        
+        <!-- Forward Configuration -->
+        <forward>
+            <forward type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-\.]+$/u</mask>
+                    <ValidationMessage>Name should only contain alphanumeric characters, underscore, dash and dot</ValidationMessage>
+                </name>
+                <concurrent type="IntegerField">
+                    <default>2</default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10</MaximumValue>
+                </concurrent>
+                <upstreams type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Upstreams are required</ValidationMessage>
+                </upstreams>
+            </forward>
+        </forward>
+        
+        <!-- Redirect Configuration -->
+        <redirect>
+            <redirect type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-\.]+$/u</mask>
+                    <ValidationMessage>Name should only contain alphanumeric characters, underscore, dash and dot</ValidationMessage>
+                </name>
+                <rules type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Rules are required</ValidationMessage>
+                </rules>
+            </redirect>
+        </redirect>
+        
+        <!-- Hosts Configuration -->
+        <hosts>
+            <hosts type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-\.]+$/u</mask>
+                    <ValidationMessage>Name should only contain alphanumeric characters, underscore, dash and dot</ValidationMessage>
+                </name>
+                <files type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Files are required</ValidationMessage>
+                </files>
+            </hosts>
+        </hosts>
+        
+        <!-- IPSet Configuration -->
+        <ipset>
+            <ipset type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-\.]{1,64}$/u</mask>
+                    <ValidationMessage>Name should be a string between 1 and 64 characters</ValidationMessage>
+                </name>
+                <files type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Files configuration is required</ValidationMessage>
+                </files>
+            </ipset>
+        </ipset>
+        <sequence type="ArrayField">
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+            <name type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <mask>/^[a-zA-Z0-9_\-\.]{1,64}$/u</mask>
+                <ValidationMessage>Name should be a string between 1 and 64 characters</ValidationMessage>
+            </name>
+            <exec type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <ValidationMessage>Exec configuration is required</ValidationMessage>
+            </exec>
+            <matches type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <ValidationMessage>Matches configuration is required</ValidationMessage>
+            </matches>
+        </sequence>
+        <fallback type="ArrayField">
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+            <name type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <mask>/^[a-zA-Z0-9_\-\.]{1,64}$/u</mask>
+                <ValidationMessage>Name should be a string between 1 and 64 characters</ValidationMessage>
+            </name>
+            <primary type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <ValidationMessage>Primary DNS server configuration is required</ValidationMessage>
+            </primary>
+            <secondary type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <ValidationMessage>Secondary DNS server configuration is required</ValidationMessage>
+            </secondary>
+            <threshold type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <ValidationMessage>Threshold configuration is required</ValidationMessage>
+            </threshold>
+            <always_standby type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </always_standby>
+        </fallback>
+        <servers type="ArrayField">
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+            <name type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <mask>/^[\w\-\.]{1,255}$/u</mask>
+                <ValidationMessage>Name should be a string between 1 and 255 characters</ValidationMessage>
+            </name>
+            <entry type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <ValidationMessage>Entry is required</ValidationMessage>
+            </entry>
+            <listen type="TextField">
+                <default></default>
+                <Required>Y</Required>
+                <ValidationMessage>Listen address is required</ValidationMessage>
+            </listen>
+            <udp_or_tcp type="OptionField">
+                <default>udp</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <udp>UDP</udp>
+                    <tcp>TCP</tcp>
+                    <both>Both</both>
+                </OptionValues>
+                <ValidationMessage>Protocol type is required</ValidationMessage>
+            </udp_or_tcp>
+        </servers>
     </items>
 </model>

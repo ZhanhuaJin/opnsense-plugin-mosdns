@@ -4,153 +4,41 @@ namespace OPNsense\MosDNS\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
-use OPNsense\MosDNS\PluginTypes;
+use OPNsense\MosDNS\MosDNS;
 
 class SequenceController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'plugintypes';
-    protected static $internalModelClass = 'OPNsense\MosDNS\PluginTypes';
-    protected static $internalModelUseSafeDelete = true;
+    protected static $internalModelName = 'sequence';
+    protected static $internalModelClass = 'OPNsense\MosDNS\MosDNS';
 
-    /**
-     * Get sequence plugin configurations
-     * @return array
-     */
-    public function getAction()
+    public function searchSequenceAction()
     {
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdl = $this->getModel();
-            $result['sequence'] = $mdl->sequence->getNodes();
-        }
-        return $result;
+        return $this->searchBase('sequence.sequence', array('enabled', 'name', 'exec', 'matches'));
     }
 
-    /**
-     * Get specific sequence plugin by UUID
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function getItemAction($uuid = null)
+    public function getSequenceAction($uuid = null)
     {
-        $mdl = $this->getModel();
-        if ($uuid != null) {
-            $node = $mdl->getNodeByReference('sequence.plugin.' . $uuid);
-            if ($node != null) {
-                return array('sequence' => $node->getNodes());
-            }
-        }
-        return array();
+        $this->sessionClose();
+        return $this->getBase('sequence', 'sequence.sequence', $uuid);
     }
 
-    /**
-     * Add new sequence plugin
-     * @return array
-     */
-    public function addItemAction()
+    public function addSequenceAction()
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost()) {
-            $mdl = $this->getModel();
-            $node = $mdl->sequence->plugin->Add();
-            $node->setNodes($this->request->getPost('sequence'));
-            $valMsgs = $mdl->performValidation();
-            if (count($valMsgs) == 0) {
-                $mdl->serializeToConfig();
-                $result['uuid'] = $node->getAttribute('uuid');
-                $result['result'] = 'saved';
-            } else {
-                $result['validations'] = $valMsgs;
-            }
-        }
-        return $result;
+        return $this->addBase('sequence', 'sequence.sequence');
     }
 
-    /**
-     * Update sequence plugin by UUID
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function setItemAction($uuid)
+    public function delSequenceAction($uuid)
     {
-        if ($this->request->isPost() && $uuid != null) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference('sequence.plugin.' . $uuid);
-                if ($node != null) {
-                    $node->setNodes($this->request->getPost('sequence'));
-                    $valMsgs = $mdl->performValidation();
-                    if (count($valMsgs) == 0) {
-                        $mdl->serializeToConfig();
-                        return array('result' => 'saved');
-                    } else {
-                        return array('result' => 'failed', 'validations' => $valMsgs);
-                    }
-                }
-            }
-        }
-        return array('result' => 'failed');
+        return $this->delBase('sequence.sequence', $uuid);
     }
 
-    /**
-     * Delete sequence plugin by UUID
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function delItemAction($uuid)
+    public function setSequenceAction($uuid)
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost() && $uuid != null) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                if ($mdl->sequence->plugin->del($uuid)) {
-                    $mdl->serializeToConfig();
-                    $result['result'] = 'deleted';
-                } else {
-                    $result['result'] = 'not found';
-                }
-            }
-        }
-        return $result;
+        return $this->setBase('sequence', 'sequence.sequence', $uuid);
     }
 
-    /**
-     * Toggle sequence plugin enabled/disabled
-     * @param string $uuid item unique id
-     * @return array
-     */
-    public function toggleItemAction($uuid)
+    public function toggleSequenceAction($uuid)
     {
-        $result = array('result' => 'failed');
-        if ($this->request->isPost() && $uuid != null) {
-            $mdl = $this->getModel();
-            if ($uuid != null) {
-                $node = $mdl->getNodeByReference('sequence.plugin.' . $uuid);
-                if ($node != null) {
-                    if ($node->enabled->__toString() == '1') {
-                        $node->enabled = '0';
-                    } else {
-                        $node->enabled = '1';
-                    }
-                    $valMsgs = $mdl->performValidation();
-                    if (count($valMsgs) == 0) {
-                        $mdl->serializeToConfig();
-                        $result['result'] = 'saved';
-                    } else {
-                        $result['validations'] = $valMsgs;
-                    }
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Search sequence plugins
-     * @return array
-     */
-    public function searchItemAction()
-    {
-        return $this->searchBase('sequence.plugin', array('enabled', 'tag', 'steps'));
+        return $this->toggleBase('sequence.sequence', $uuid);
     }
 }

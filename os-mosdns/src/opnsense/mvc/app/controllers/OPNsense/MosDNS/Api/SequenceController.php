@@ -41,4 +41,35 @@ class SequenceController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase('sequence.sequence', $uuid);
     }
+
+    // Generic Item methods for frontend compatibility
+    public function searchItemAction()
+    {
+        return $this->searchSequenceAction();
+    }
+
+    public function getItemAction($uuid = null)
+    {
+        return $this->getSequenceAction($uuid);
+    }
+
+    public function addItemAction()
+    {
+        return $this->addSequenceAction();
+    }
+
+    public function delItemAction($uuid)
+    {
+        return $this->delSequenceAction($uuid);
+    }
+
+    public function setItemAction($uuid)
+    {
+        return $this->setSequenceAction($uuid);
+    }
+
+    public function toggleItemAction($uuid)
+    {
+        return $this->toggleSequenceAction($uuid);
+    }
 }

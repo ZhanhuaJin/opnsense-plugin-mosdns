@@ -41,4 +41,35 @@ class ServersController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase('servers.servers', $uuid);
     }
+
+    // Generic Item methods for frontend compatibility
+    public function searchItemAction()
+    {
+        return $this->searchServersAction();
+    }
+
+    public function getItemAction($uuid = null)
+    {
+        return $this->getServersAction($uuid);
+    }
+
+    public function addItemAction()
+    {
+        return $this->addServersAction();
+    }
+
+    public function delItemAction($uuid)
+    {
+        return $this->delServersAction($uuid);
+    }
+
+    public function setItemAction($uuid)
+    {
+        return $this->setServersAction($uuid);
+    }
+
+    public function toggleItemAction($uuid)
+    {
+        return $this->toggleServersAction($uuid);
+    }
 }

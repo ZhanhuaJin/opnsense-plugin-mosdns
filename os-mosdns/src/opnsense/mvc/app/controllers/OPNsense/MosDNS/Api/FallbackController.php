@@ -41,4 +41,35 @@ class FallbackController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase('fallback.fallback', $uuid);
     }
+
+    // Generic Item methods for frontend compatibility
+    public function searchItemAction()
+    {
+        return $this->searchFallbackAction();
+    }
+
+    public function getItemAction($uuid = null)
+    {
+        return $this->getFallbackAction($uuid);
+    }
+
+    public function addItemAction()
+    {
+        return $this->addFallbackAction();
+    }
+
+    public function delItemAction($uuid)
+    {
+        return $this->delFallbackAction($uuid);
+    }
+
+    public function setItemAction($uuid)
+    {
+        return $this->setFallbackAction($uuid);
+    }
+
+    public function toggleItemAction($uuid)
+    {
+        return $this->toggleFallbackAction($uuid);
+    }
 }

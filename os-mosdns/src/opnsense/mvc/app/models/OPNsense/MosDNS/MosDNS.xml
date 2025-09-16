@@ -129,90 +129,102 @@
                 </files>
             </ipset>
         </ipset>
-        <sequence type="ArrayField">
-            <enabled type="BooleanField">
-                <default>1</default>
-                <Required>Y</Required>
-            </enabled>
-            <name type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <mask>/^[a-zA-Z0-9_\-\.]{1,64}$/u</mask>
-                <ValidationMessage>Name should be a string between 1 and 64 characters</ValidationMessage>
-            </name>
-            <exec type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <ValidationMessage>Exec configuration is required</ValidationMessage>
-            </exec>
-            <matches type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <ValidationMessage>Matches configuration is required</ValidationMessage>
-            </matches>
+        
+        <!-- Sequence Configuration -->
+        <sequence>
+            <sequence type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-\.]{1,64}$/u</mask>
+                    <ValidationMessage>Name should be a string between 1 and 64 characters</ValidationMessage>
+                </name>
+                <exec type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Exec configuration is required</ValidationMessage>
+                </exec>
+                <matches type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Matches configuration is required</ValidationMessage>
+                </matches>
+            </sequence>
         </sequence>
-        <fallback type="ArrayField">
-            <enabled type="BooleanField">
-                <default>1</default>
-                <Required>Y</Required>
-            </enabled>
-            <name type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <mask>/^[a-zA-Z0-9_\-\.]{1,64}$/u</mask>
-                <ValidationMessage>Name should be a string between 1 and 64 characters</ValidationMessage>
-            </name>
-            <primary type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <ValidationMessage>Primary DNS server configuration is required</ValidationMessage>
-            </primary>
-            <secondary type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <ValidationMessage>Secondary DNS server configuration is required</ValidationMessage>
-            </secondary>
-            <threshold type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <ValidationMessage>Threshold configuration is required</ValidationMessage>
-            </threshold>
-            <always_standby type="BooleanField">
-                <default>0</default>
-                <Required>Y</Required>
-            </always_standby>
+        
+        <!-- Fallback Configuration -->
+        <fallback>
+            <fallback type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_\-\.]{1,64}$/u</mask>
+                    <ValidationMessage>Name should be a string between 1 and 64 characters</ValidationMessage>
+                </name>
+                <primary type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Primary DNS server configuration is required</ValidationMessage>
+                </primary>
+                <secondary type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Secondary DNS server configuration is required</ValidationMessage>
+                </secondary>
+                <threshold type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Threshold configuration is required</ValidationMessage>
+                </threshold>
+                <always_standby type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </always_standby>
+            </fallback>
         </fallback>
-        <servers type="ArrayField">
-            <enabled type="BooleanField">
-                <default>1</default>
-                <Required>Y</Required>
-            </enabled>
-            <name type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <mask>/^[\w\-\.]{1,255}$/u</mask>
-                <ValidationMessage>Name should be a string between 1 and 255 characters</ValidationMessage>
-            </name>
-            <entry type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <ValidationMessage>Entry is required</ValidationMessage>
-            </entry>
-            <listen type="TextField">
-                <default></default>
-                <Required>Y</Required>
-                <ValidationMessage>Listen address is required</ValidationMessage>
-            </listen>
-            <udp_or_tcp type="OptionField">
-                <default>udp</default>
-                <Required>Y</Required>
-                <OptionValues>
-                    <udp>UDP</udp>
-                    <tcp>TCP</tcp>
-                    <both>Both</both>
-                </OptionValues>
-                <ValidationMessage>Protocol type is required</ValidationMessage>
-            </udp_or_tcp>
+        
+        <!-- Servers Configuration -->
+        <servers>
+            <servers type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^[\w\-\.]{1,255}$/u</mask>
+                    <ValidationMessage>Name should be a string between 1 and 255 characters</ValidationMessage>
+                </name>
+                <entry type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Entry is required</ValidationMessage>
+                </entry>
+                <listen type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <ValidationMessage>Listen address is required</ValidationMessage>
+                </listen>
+                <udp_or_tcp type="OptionField">
+                    <default>udp</default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <udp>UDP</udp>
+                        <tcp>TCP</tcp>
+                        <both>Both</both>
+                    </OptionValues>
+                    <ValidationMessage>Protocol type is required</ValidationMessage>
+                </udp_or_tcp>
+            </servers>
         </servers>
     </items>
 </model>

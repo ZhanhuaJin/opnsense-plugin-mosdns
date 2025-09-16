@@ -1,24 +1,11 @@
-<script>
-    $( document ).ready(function() {
-        // Initialize selectpickers
-        $('.selectpicker').selectpicker('refresh');
-
-        // Save configuration handlers for each plugin
-        $("#saveCache").click(function(){
-            alert('Cache configuration will be available in a future update.');
-        });
-
-        updateServiceControlUI('mosdns');
-    });
-</script>
-
-<!-- MosDNS Plugins Configuration -->
+<!-- MosDNS Plugin Configuration -->
 <div class="content-box" style="padding-bottom: 1.5em;">
     <div class="col-md-12">
-        <h2><i class="fa fa-puzzle-piece"></i> {{ lang._('MosDNS Plugins Configuration') }}</h2>
-        <p>{{ lang._('Configure various MosDNS plugins using the tabs below.') }}</p>
+        <h2><i class="fa fa-cogs"></i> {{ lang._('MosDNS Plugin Configuration') }}</h2>
+        <p>{{ lang._('Configure various MosDNS plugins for advanced DNS management.') }}</p>
+        <hr />
         
-        <!-- Plugin Tabs -->
+        <!-- Tab Navigation -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#cache" aria-controls="cache" role="tab" data-toggle="tab">
@@ -109,6 +96,17 @@
                     <h3><i class="fa fa-arrow-right"></i> {{ lang._('Forward Configuration') }}</h3>
                     <p>{{ lang._('Configure DNS forwarding settings for MosDNS.') }}</p>
                     
+                    <div class="bootgrid-header container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="actionBar">
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table id="forwardGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogForward">
                         <thead>
                             <tr>
@@ -122,15 +120,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     
                     <div class="col-md-12">
@@ -147,6 +136,17 @@
                     <h3><i class="fa fa-share"></i> {{ lang._('Redirect Configuration') }}</h3>
                     <p>{{ lang._('Configure DNS redirection rules for MosDNS.') }}</p>
                     
+                    <div class="bootgrid-header container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="actionBar">
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table id="redirectGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogRedirect">
                         <thead>
                             <tr>
@@ -159,15 +159,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     
                     <div class="col-md-12">
@@ -184,6 +175,17 @@
                     <h3><i class="fa fa-list"></i> {{ lang._('Hosts Configuration') }}</h3>
                     <p>{{ lang._('Configure local hosts file management for MosDNS.') }}</p>
                     
+                    <div class="bootgrid-header container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="actionBar">
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table id="hostsGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogHosts">
                         <thead>
                             <tr>
@@ -196,15 +198,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     
                     <div class="col-md-12">
@@ -221,6 +214,15 @@
                     <h3><i class="fa fa-filter"></i> {{ lang._('IPSet Configuration') }}</h3>
                     <p>{{ lang._('Configure IP set management for MosDNS.') }}</p>
                     
+                    <div class="bootgrid-header container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12 actionBar">
+                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table id="ipsetGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogIpset">
                         <thead>
                             <tr>
@@ -233,15 +235,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     
                     <div class="col-md-12">
@@ -258,6 +251,15 @@
                     <h3><i class="fa fa-sort-numeric-asc"></i> {{ lang._('Sequence Configuration') }}</h3>
                     <p>{{ lang._('Configure plugin execution sequence for MosDNS.') }}</p>
                     
+                    <div class="bootgrid-header container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12 actionBar">
+                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table id="sequenceGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogSequence">
                         <thead>
                             <tr>
@@ -271,15 +273,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     
                     <div class="col-md-12">
@@ -296,6 +289,15 @@
                     <h3><i class="fa fa-life-ring"></i> {{ lang._('Fallback Configuration') }}</h3>
                     <p>{{ lang._('Configure fallback DNS servers for MosDNS.') }}</p>
                     
+                    <div class="bootgrid-header container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12 actionBar">
+                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table id="fallbackGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogFallback">
                         <thead>
                             <tr>
@@ -311,15 +313,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     
                     <div class="col-md-12">
@@ -336,6 +329,15 @@
                     <h3><i class="fa fa-server"></i> {{ lang._('Servers Configuration') }}</h3>
                     <p>{{ lang._('Configure upstream DNS servers for MosDNS.') }}</p>
                     
+                    <div class="bootgrid-header container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12 actionBar">
+                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table id="serversGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogServers">
                         <thead>
                             <tr>
@@ -350,15 +352,6 @@
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                     
                     <div class="col-md-12">
@@ -381,6 +374,7 @@ $(document).ready(function() {
     var gridConfigs = {
         '#cache': {
             gridId: '#cacheGrid',
+            editDialog: 'dialogCache',
             config: {
                 search:'/api/mosdns/cache/searchItem',
                 get:'/api/mosdns/cache/getItem/',
@@ -392,6 +386,7 @@ $(document).ready(function() {
         },
         '#forward': {
             gridId: '#forwardGrid',
+            editDialog: 'dialogForward',
             config: {
                 search:'/api/mosdns/forward/searchItem',
                 get:'/api/mosdns/forward/getItem/',
@@ -403,6 +398,7 @@ $(document).ready(function() {
         },
         '#redirect': {
             gridId: '#redirectGrid',
+            editDialog: 'dialogRedirect',
             config: {
                 search:'/api/mosdns/redirect/searchItem',
                 get:'/api/mosdns/redirect/getItem/',
@@ -414,6 +410,7 @@ $(document).ready(function() {
         },
         '#hosts': {
             gridId: '#hostsGrid',
+            editDialog: 'dialogHosts',
             config: {
                 search:'/api/mosdns/hosts/searchItem',
                 get:'/api/mosdns/hosts/getItem/',
@@ -425,6 +422,7 @@ $(document).ready(function() {
         },
         '#ipset': {
             gridId: '#ipsetGrid',
+            editDialog: 'dialogIpset',
             config: {
                 search:'/api/mosdns/ipset/searchItem',
                 get:'/api/mosdns/ipset/getItem/',
@@ -436,6 +434,7 @@ $(document).ready(function() {
         },
         '#sequence': {
             gridId: '#sequenceGrid',
+            editDialog: 'dialogSequence',
             config: {
                 search:'/api/mosdns/sequence/searchItem',
                 get:'/api/mosdns/sequence/getItem/',
@@ -447,6 +446,7 @@ $(document).ready(function() {
         },
         '#fallback': {
             gridId: '#fallbackGrid',
+            editDialog: 'dialogFallback',
             config: {
                 search:'/api/mosdns/fallback/searchItem',
                 get:'/api/mosdns/fallback/getItem/',
@@ -458,6 +458,7 @@ $(document).ready(function() {
         },
         '#servers': {
             gridId: '#serversGrid',
+            editDialog: 'dialogServers',
             config: {
                 search:'/api/mosdns/servers/searchItem',
                 get:'/api/mosdns/servers/getItem/',
@@ -514,44 +515,19 @@ $(document).ready(function() {
         
         var gridConfig = gridConfigs[tabId];
         var $gridElement = $(gridConfig.gridId);
-        var $tabPane = $(tabId); // This is the tab content pane
         
-        // Enhanced DOM readiness checks
-        if (!$gridElement.length) {
-            console.warn('Grid element not found:', gridConfig.gridId);
-            return;
-        }
-        
-        if (!$tabPane.length) {
-            console.warn('Tab pane not found:', tabId);
-            return;
-        }
-        
-        // Check if tab pane is active (correct way to check tab visibility)
-        if (!$tabPane.hasClass('active') && !$tabPane.hasClass('show')) {
-            console.log('Tab pane not active, skipping initialization:', tabId);
-            return;
-        }
-        
-        // Check if grid container is visible
-        if ($gridElement.is(':hidden') || $tabPane.is(':hidden')) {
-            console.log('Grid or tab pane hidden, delaying initialization:', tabId);
-            // Retry after a short delay
-            setTimeout(function() {
-                if (!gridInited[tabId]) {
-                    console.log('Retrying initialization for:', tabId);
-                    initGridByTab(tabId);
+        // Ensure the grid element exists and is visible
+        if ($gridElement.length && $(tabId).hasClass('active')) {
+            console.log('Initializing grid for visible tab:', tabId);
+            
+            // Clear any existing grid first
+            try {
+                if ($gridElement.data('bootgrid')) {
+                    $gridElement.bootgrid('destroy');
                 }
-            }, 400);
-            return;
-        }
-        
-        try {
-            // Clear the specific grid before initialization
-            console.log('Clearing grid before initialization:', tabId);
-            $gridElement.empty();
-            if ($gridElement.data('bootgrid')) {
-                $gridElement.bootgrid('destroy');
+                $gridElement.empty();
+            } catch (error) {
+                console.warn('Error clearing existing grid:', error);
             }
             
             // Add additional delay for API readiness
@@ -584,19 +560,11 @@ $(document).ready(function() {
                             return response;
                         },
                         failureHandler: function(jqXHR, textStatus, errorThrown) {
-                            console.warn('Grid request failed for', tabId, ':', textStatus, errorThrown, jqXHR.status);
-                            // Suppress all error dialogs and return empty data
-                            if (jqXHR.status === 404 || jqXHR.status === 500 || textStatus === 'error') {
-                                console.log('Suppressing error dialog for', tabId, 'and initializing empty grid');
-                                // Force grid to show with empty data
-                                setTimeout(function() {
-                                    try {
-                                        $gridElement.bootgrid('reload');
-                                    } catch (e) {
-                                        console.warn('Failed to reload grid after error:', e);
-                                    }
-                                }, 100);
-                                return false; // Prevent default error handling
+                            console.error('Grid failure for', tabId, ':', textStatus, errorThrown);
+                            // Return false to prevent default error handling
+                            if (jqXHR.status === 404 || jqXHR.status === 500) {
+                                console.warn('API endpoint not available for', tabId, ', showing empty grid');
+                                return false; // Suppress default error handling
                             }
                             return true; // Allow default error handling for other errors
                         },
@@ -614,137 +582,166 @@ $(document).ready(function() {
                         }
                     }));
                     
+                    // Bind add button click event after grid initialization
+                    $gridElement.on("loaded.rs.jquery.bootgrid", function (e) {
+                        var editDlg = $(this).attr('data-editDialog');
+                        var gridId = $(this).attr('id');
+                        
+                        // Bind add button click event
+                        $(this).find("*[data-action=add]").off('click').on('click', function(){
+                            var gridParams = gridConfig.config;
+                            if (gridParams['get'] != undefined && gridParams['add'] != undefined) {
+                                var urlMap = {};
+                                urlMap['frm_' + editDlg] = gridParams['get'];
+                                mapDataToFormUI(urlMap).done(function(){
+                                    // update selectors
+                                    formatTokenizersUI();
+                                    $('.selectpicker').selectpicker('refresh');
+                                    // clear validation errors (if any)
+                                    clearFormValidation('frm_' + editDlg);
+                                });
+
+                                // show dialog for edit
+                                $('#'+editDlg).modal({backdrop: 'static', keyboard: false});
+                                
+                                // bind save button
+                                $("#btn_"+editDlg+"_save").off('click').on('click', function(){
+                                    saveFormToEndpoint(gridParams['set'],
+                                        'frm_' + editDlg, function(){
+                                            $("#"+editDlg).modal('hide');
+                                            $("#"+gridId).bootgrid("reload");
+                                        }, true);
+                                });
+                            } else {
+                                console.log("[grid] action add missing for", tabId);
+                            }
+                        });
+                        
+                        // Bind delete selected button click event
+                        $(this).find("*[data-action=deleteSelected]").off('click').on('click', function(){
+                            var gridParams = gridConfig.config;
+                            if (gridParams['del'] != undefined) {
+                                stdDialogConfirm('{{ lang._("Confirm removal") }}',
+                                    '{{ lang._("Do you want to remove the selected item?") }}',
+                                    '{{ lang._("Yes") }}', '{{ lang._("Cancel") }}', function () {
+                                    var rows = $("#"+gridId).bootgrid('getSelectedRows');
+                                    if (rows != undefined){
+                                        var deferreds = [];
+                                        $.each(rows, function(key,uuid){
+                                            deferreds.push(ajaxCall(gridParams['del'] + uuid, {}, null));
+                                        });
+                                        $.when.apply(null, deferreds).done(function(){
+                                            $("#"+gridId).bootgrid("reload");
+                                        });
+                                    }
+                                });
+                            } else {
+                                console.log("[grid] action delete missing for", tabId);
+                            }
+                        });
+                    });
+                    
                     gridInited[tabId] = true;
                     console.log('Grid initialized successfully:', tabId);
                 } catch (initError) {
                     console.error('Error during grid initialization for', tabId, ':', initError);
-                    
-                    // Try to recover by clearing and retrying once
-                    if (!gridInited[tabId + '_retry']) {
-                        console.log('Attempting recovery for:', tabId);
-                        gridInited[tabId + '_retry'] = true;
-                        
-                        setTimeout(function() {
-                            try {
-                                $gridElement.empty();
-                                $gridElement.UIBootgrid(gridConfig.config);
-                                gridInited[tabId] = true;
-                                console.log('Grid recovery successful for:', tabId);
-                            } catch (retryError) {
-                                console.error('Grid recovery failed for', tabId, ':', retryError);
-                                gridInited[tabId] = false;
-                            }
-                        }, 300);
-                    } else {
-                        gridInited[tabId] = false;
-                    }
+                    gridInited[tabId] = false;
                 }
-            }, 100);
-            
-        } catch (error) {
-            console.error('Error initializing grid for', tabId, ':', error);
-            // Reset the flag to allow retry
-            gridInited[tabId] = false;
+            }, 300);
+        } else {
+            console.log('Grid element not found for:', tabId);
         }
     }
     
-    // Enhanced tab event binding with better timing and error handling
-    $(document).ready(function() {
-        // Wait for DOM to be fully ready
-        setTimeout(function() {
-            // Bind tab events with multiple selectors for compatibility
-            $('a[data-toggle="tab"], a[data-bs-toggle="tab"]').on('shown.bs.tab shown.tab', function (e) {
-                var targetId = $(e.target).attr('href');
-                console.log('Tab shown event triggered for:', targetId);
-                
-                // Clear all grids first to prevent overlap
-                clearAllGrids();
-                
-                // Force the tab pane to be active before initializing
-                var $targetPane = $(targetId);
-                if ($targetPane.length) {
-                    // Hide all other tab panes first
-                    $('.tab-pane').removeClass('active show');
-                    
-                    // Ensure the target tab pane has the correct classes
-                    $targetPane.addClass('active show');
-                    
-                    // Add a longer delay to ensure DOM is fully updated and API is ready
-                    setTimeout(function() {
-                        console.log('Attempting to initialize grid for:', targetId);
-                        initGridByTab(targetId);
-                    }, 500);
-                }
-                
-                // Update URL hash with error handling
-                try {
-                    if (history.pushState) {
-                        history.pushState(null, null, targetId);
-                    } else {
-                        window.location.hash = targetId;
-                    }
-                } catch (error) {
-                    console.warn('Failed to update URL hash:', error);
-                }
-            });
+    // Bind tab events with multiple selectors for compatibility
+    $('a[data-toggle="tab"], a[data-bs-toggle="tab"]').on('shown.bs.tab shown.tab', function (e) {
+        var targetId = $(e.target).attr('href');
+        console.log('Tab shown event triggered for:', targetId);
+        
+        // Clear all grids first to prevent overlap
+        clearAllGrids();
+        
+        // Force the tab pane to be active before initializing
+        var $targetPane = $(targetId);
+        if ($targetPane.length) {
+            // Hide all other tab panes first
+            $('.tab-pane').removeClass('active show');
             
-            // Also bind to the 'show.bs.tab' event to handle pre-activation
-            $('a[data-toggle="tab"], a[data-bs-toggle="tab"]').on('show.bs.tab show.tab', function (e) {
-                var targetId = $(e.target).attr('href');
-                console.log('Tab show event (before activation) for:', targetId);
-                
-                // Pre-clear grids to ensure clean state
-                clearAllGrids();
-            });
+            // Ensure the target tab pane has the correct classes
+            $targetPane.addClass('active show');
             
-            // Initialize the first active tab or default tab
-            var initialTab = window.location.hash || '#cache';
-            var $initialTabLink = $('a[href="' + initialTab + '"]');
-            
-            if ($initialTabLink.length) {
-                // Clear all grids first
-                clearAllGrids();
-                
-                // Activate the tab first
-                $initialTabLink.tab('show');
-                
-                // Ensure the tab pane is properly activated
-                var $initialPane = $(initialTab);
-                if ($initialPane.length) {
-                    $('.tab-pane').removeClass('active show');
-                    $initialPane.addClass('active show');
-                }
-                
-                // Then initialize its grid with a longer delay
-                setTimeout(function() {
-                    console.log('Initializing initial tab:', initialTab);
-                    initGridByTab(initialTab);
-                }, 600);
+            // Add a longer delay to ensure DOM is fully updated and API is ready
+            setTimeout(function() {
+                console.log('Attempting to initialize grid for:', targetId);
+                initGridByTab(targetId);
+            }, 500);
+        }
+        
+        // Update URL hash with error handling
+        try {
+            if (history.pushState) {
+                history.pushState(null, null, targetId);
             } else {
-                // Fallback to first tab
-                var $firstTab = $('a[data-toggle="tab"], a[data-bs-toggle="tab"]').first();
-                if ($firstTab.length) {
-                    var firstTabId = $firstTab.attr('href');
-                    
-                    // Clear all grids first
-                    clearAllGrids();
-                    
-                    $firstTab.tab('show');
-                    
-                    // Ensure the tab pane is properly activated
-                    var $firstPane = $(firstTabId);
-                    if ($firstPane.length) {
-                        $('.tab-pane').removeClass('active show');
-                        $firstPane.addClass('active show');
-                    }
-                    
-                    setTimeout(function() {
-                        console.log('Initializing fallback tab:', firstTabId);
-                        initGridByTab(firstTabId);
-                    }, 600);
-                }
+                window.location.hash = targetId;
             }
-        }, 200);
+        } catch (error) {
+            console.warn('Failed to update URL hash:', error);
+        }
     });
+    
+    // Also bind to the 'show.bs.tab' event to handle pre-activation
+    $('a[data-toggle="tab"], a[data-bs-toggle="tab"]').on('show.bs.tab show.tab', function (e) {
+        var targetId = $(e.target).attr('href');
+        console.log('Tab show event (before activation) for:', targetId);
+        
+        // Pre-clear grids to ensure clean state
+        clearAllGrids();
+    });
+    
+    // Initialize the first active tab or default tab
+    var initialTab = window.location.hash || '#cache';
+    var $initialTabLink = $('a[href="' + initialTab + '"]');
+    
+    if ($initialTabLink.length) {
+        // Clear all grids first
+        clearAllGrids();
+        
+        // Activate the tab first
+        $initialTabLink.tab('show');
+        
+        // Ensure the tab pane is properly activated
+        var $initialPane = $(initialTab);
+        if ($initialPane.length) {
+            $('.tab-pane').removeClass('active show');
+            $initialPane.addClass('active show');
+        }
+        
+        // Then initialize its grid with a longer delay
+        setTimeout(function() {
+            console.log('Initializing initial tab:', initialTab);
+            initGridByTab(initialTab);
+        }, 1000);
+    } else {
+        // Default to cache tab if no valid hash
+        console.log('No valid tab found, defaulting to cache');
+        clearAllGrids();
+        $('.tab-pane').removeClass('active show');
+        $('#cache').addClass('active show');
+        $('a[href="#cache"]').tab('show');
+        
+        setTimeout(function() {
+            initGridByTab('#cache');
+        }, 1000);
+    }
 });
 </script>
+
+<!-- Dialog definitions for each tab -->
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditForward,'id':'dialogForward','label':lang._('Edit Forward')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRedirect,'id':'dialogRedirect','label':lang._('Edit Redirect')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditHosts,'id':'dialogHosts','label':lang._('Edit Hosts')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditIpset,'id':'dialogIpset','label':lang._('Edit IPSet')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditSequence,'id':'dialogSequence','label':lang._('Edit Sequence')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditFallback,'id':'dialogFallback','label':lang._('Edit Fallback')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditServers,'id':'dialogServers','label':lang._('Edit Servers')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditCache,'id':'dialogCache','label':lang._('Edit Cache')])}}

@@ -47,13 +47,23 @@
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                             <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                             <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                            <th data-column-id="exec" data-type="string">{{ lang._('Exec') }}</th>
-                            <th data-column-id="matches" data-type="string">{{ lang._('Matches') }}</th>
+                            <th data-column-id="tag" data-type="string">{{ lang._('Tag') }}</th>
+                            <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+                            <th data-column-id="args" data-type="string">{{ lang._('Args') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                <button data-action="add" type="button" class="btn btn-xs btn-primary">
+                                    <span class="fa fa-plus"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <div class="col-md-5">

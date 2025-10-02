@@ -3,30 +3,36 @@
         <id>servers.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable or disable this servers entry</help>
+        <help>Enable this server configuration</help>
     </field>
     <field>
         <id>servers.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name for this servers entry</help>
+        <help>Name for this server configuration</help>
     </field>
     <field>
         <id>servers.entry</id>
         <label>Entry</label>
         <type>text</type>
-        <help>Entry configuration for the servers</help>
+        <help>Entry point sequence name (e.g., main_sequence)</help>
     </field>
     <field>
         <id>servers.listen</id>
         <label>Listen</label>
         <type>text</type>
-        <help>Listen address and port for the servers</help>
+        <help>Listen address and port (e.g., :53)</help>
     </field>
     <field>
         <id>servers.udp_or_tcp</id>
-        <label>UDP or TCP</label>
+        <label>Protocol</label>
         <type>dropdown</type>
-        <help>Protocol type for the servers</help>
+        <help>Protocol to use (UDP, TCP, or Both)</help>
+    </field>
+    <field>
+        <id>servers.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description for this server configuration</help>
     </field>
 </form>

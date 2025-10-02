@@ -1,746 +1,521 @@
-<!-- MosDNS Plugin Configuration -->
-<div class="content-box" style="padding-bottom: 1.5em;">
-    <div class="col-md-12">
-        <h2><i class="fa fa-cogs"></i> {{ lang._('MosDNS Plugin Configuration') }}</h2>
-        <p>{{ lang._('Configure various MosDNS plugins for advanced DNS management.') }}</p>
-        <hr />
+{#
+ # Copyright (c) 2023 Deciso B.V.
+ # All rights reserved.
+ #
+ # Redistribution and use in source and binary forms, with or without modification,
+ # are permitted provided that the following conditions are met:
+ #
+ # 1. Redistributions of source code must retain the above copyright notice,
+ #    this list of conditions and the following disclaimer.
+ #
+ # 2. Redistributions in binary form must reproduce the above copyright notice,
+ #    this list of conditions and the following disclaimer in the documentation
+ #    and/or other materials provided with the distribution.
+ #
+ # THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ # AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ # AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ # OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ # INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ #}
+
+<script>
+    $( document ).ready(function() {
+        var data_get_map = {'frm_GeneralSettings':"/api/mosdns/general/get"};
+        mapDataToFormUI(data_get_map).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        updateServiceControlUI('mosdns');
+
+        // Forward Grid
+        $("#{{ formGridForward['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchForward',
+            get: '/api/mosdns/plugins/getForward/',
+            set: '/api/mosdns/plugins/setForward/',
+            add: '/api/mosdns/plugins/addForward/',
+            del: '/api/mosdns/plugins/delForward/',
+            toggle: '/api/mosdns/plugins/toggleForward/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        });
+
+        // Redirect Grid
+        $("#{{ formGridRedirect['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchRedirect',
+            get: '/api/mosdns/plugins/getRedirect/',
+            set: '/api/mosdns/plugins/setRedirect/',
+            add: '/api/mosdns/plugins/addRedirect/',
+            del: '/api/mosdns/plugins/delRedirect/',
+            toggle: '/api/mosdns/plugins/toggleRedirect/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        });
+
+        // Rules Grid
+        $("#{{ formGridRules['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchRules',
+            get: '/api/mosdns/plugins/getRules/',
+            set: '/api/mosdns/plugins/setRules/',
+            add: '/api/mosdns/plugins/addRules/',
+            del: '/api/mosdns/plugins/delRules/',
+            toggle: '/api/mosdns/plugins/toggleRules/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        });
+
+        // Hosts Grid
+        $("#{{ formGridHosts['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchHosts',
+            get: '/api/mosdns/plugins/getHosts/',
+            set: '/api/mosdns/plugins/setHosts/',
+            add: '/api/mosdns/plugins/addHosts/',
+            del: '/api/mosdns/plugins/delHosts/',
+            toggle: '/api/mosdns/plugins/toggleHosts/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        });
+
+        // IPSet Grid
+        console.log('Initializing IPSet Grid with ID:', "{{ formGridIPSet['table_id'] }}");
+        console.log('IPSet Grid search endpoint:', '/api/mosdns/plugins/searchIPSet');
+        $("#{{ formGridIPSet['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchIPSet',
+            get: '/api/mosdns/plugins/getIPSet/',
+            set: '/api/mosdns/plugins/setIPSet/',
+            add: '/api/mosdns/plugins/addIPSet/',
+            del: '/api/mosdns/plugins/delIPSet/',
+            toggle: '/api/mosdns/plugins/toggleIPSet/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        }).on('loaded.rs.jquery.bootgrid', function() {
+            console.log('IPSet Grid loaded successfully');
+        }).on('load.rs.jquery.bootgrid', function() {
+            console.log('IPSet Grid loading data...');
+        });
+
+        // Sequence Grid
+        $("#{{ formGridSequence['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchSequence',
+            get: '/api/mosdns/plugins/getSequence/',
+            set: '/api/mosdns/plugins/setSequence/',
+            add: '/api/mosdns/plugins/addSequence/',
+            del: '/api/mosdns/plugins/delSequence/',
+            toggle: '/api/mosdns/plugins/toggleSequence/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        });
+
+        // Custom handler for Sequence add button to create new tab instead of dialog
+        $('#{{ formGridSequence["table_id"] }}').on('click', '[data-action="add"]', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            createSequenceTab('new');
+            return false;
+        });
+
+        // Fallback Grid
+        console.log('Initializing Fallback Grid with ID:', "{{ formGridFallback['table_id'] }}");
+        console.log('Fallback Grid search endpoint:', '/api/mosdns/plugins/searchFallback');
+        $("#{{ formGridFallback['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchFallback',
+            get: '/api/mosdns/plugins/getFallback/',
+            set: '/api/mosdns/plugins/setFallback/',
+            add: '/api/mosdns/plugins/addFallback/',
+            del: '/api/mosdns/plugins/delFallback/',
+            toggle: '/api/mosdns/plugins/toggleFallback/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        }).on('loaded.rs.jquery.bootgrid', function() {
+            console.log('Fallback Grid loaded successfully');
+        }).on('load.rs.jquery.bootgrid', function() {
+            console.log('Fallback Grid loading data...');
+        });
+
+        // Servers Grid
+        $("#{{ formGridServers['table_id'] }}").UIBootgrid({
+            search: '/api/mosdns/plugins/searchServers',
+            get: '/api/mosdns/plugins/getServers/',
+            set: '/api/mosdns/plugins/setServers/',
+            add: '/api/mosdns/plugins/addServers/',
+            del: '/api/mosdns/plugins/delServers/',
+            toggle: '/api/mosdns/plugins/toggleServers/',
+            options: {
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                rowCount: [7, 14, 20, 50, 100, -1]
+            }
+        });
+
+        // Cache Grid - removed as Cache is now a form
+        // $("#{{ formGridCache['table_id'] }}").UIBootgrid({
+        //     search: '/api/mosdns/plugins/searchCache',
+        //     get: '/api/mosdns/plugins/getCache/',
+        //     set: '/api/mosdns/plugins/setCache/',
+        //     add: '/api/mosdns/plugins/addCache/',
+        //     del: '/api/mosdns/plugins/delCache/',
+        //     toggle: '/api/mosdns/plugins/toggleCache/'
+        // });
+
+        // Sequence tab management functions
+        function createSequenceTab(uuid) {
+            var tabId = uuid === 'new' ? 'sequence-tab-' + Date.now() : 'sequence-tab-' + uuid;
+            var tabTitle = uuid === 'new' ? '{{ lang._("New Sequence") }}' : '{{ lang._("Edit Sequence") }}';
+            
+            // Create tab
+            var tabHtml = '<li role="presentation" id="' + tabId + '-tab">' +
+                '<a href="#' + tabId + '" data-toggle="tab">' + tabTitle + 
+                ' <button type="button" class="close" onclick="closeSequenceTab(\'' + tabId + '\')" style="margin-left: 10px;">&times;</button>' +
+                '</a></li>';
+            
+            $('#maintabs').append(tabHtml);
+            
+            // Create tab content
+            var content = createSequenceTabContent(tabId, uuid);
+            $('#mainContent').append(content);
+            
+            // Activate the new tab
+            $('#' + tabId + '-tab a').tab('show');
+            
+            return tabId;
+        }
         
-        <!-- Tab Navigation -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a href="#cache" aria-controls="cache" role="tab" data-toggle="tab">
-                    <i class="fa fa-database"></i> {{ lang._('Cache') }}
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#forward" aria-controls="forward" role="tab" data-toggle="tab">
-                    <i class="fa fa-arrow-right"></i> {{ lang._('Forward') }}
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#redirect" aria-controls="redirect" role="tab" data-toggle="tab">
-                    <i class="fa fa-share"></i> {{ lang._('Redirect') }}
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#hosts" aria-controls="hosts" role="tab" data-toggle="tab">
-                    <i class="fa fa-list"></i> {{ lang._('Hosts') }}
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#ipset" aria-controls="ipset" role="tab" data-toggle="tab">
-                    <i class="fa fa-filter"></i> {{ lang._('IPSet') }}
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#sequence" aria-controls="sequence" role="tab" data-toggle="tab">
-                    <i class="fa fa-sort-numeric-asc"></i> {{ lang._('Sequence') }}
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#fallback" aria-controls="fallback" role="tab" data-toggle="tab">
-                    <i class="fa fa-life-ring"></i> {{ lang._('Fallback') }}
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#servers" aria-controls="servers" role="tab" data-toggle="tab">
-                    <i class="fa fa-server"></i> {{ lang._('Servers') }}
-                </a>
-            </li>
-        </ul>
+        function createSequenceTabContent(tabId, uuid) {
+            var content = $('<div class="tab-pane" id="' + tabId + '">' +
+                '<div class="content-box">' +
+                    '<div class="content-box-main">' +
+                        '<div class="table-responsive">' +
+                            '<div class="col-xs-12">' +
+                                '<div class="pull-right">' +
+                                    '<button class="btn btn-primary" onclick="addRule(\'' + tabId + '\')">{{ lang._("Add Rule") }}</button>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="clearfix"></div>' +
+                            '<div id="' + tabId + '-rules" style="margin-top: 20px;"></div>' +
+                        '</div>' +
+                        '<div class="col-xs-12">' +
+                            '<button type="button" class="btn btn-primary" onclick="saveSequence(\'' + tabId + '\', \'' + uuid + '\')">{{ lang._("Save") }}</button>' +
+                            '<button type="button" class="btn btn-default" onclick="closeSequenceTab(\'' + tabId + '\')">{{ lang._("Cancel") }}</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>');
+            
+            return content;
+        }
         
-        <!-- Tab Content -->
-        <div class="tab-content">
-            <!-- Cache Tab -->
-            <div role="tabpanel" class="tab-pane active" id="cache">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-database"></i> {{ lang._('Cache Configuration') }}</h3>
-                    <p>{{ lang._('Configure DNS cache settings for MosDNS.') }}</p>
-                    
-                    <form id="cacheForm">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="cache_tag">{{ lang._('Tag') }}</label>
-                                    <input type="text" class="form-control" id="cache_tag" name="cache_tag" value="cache" placeholder="cache">
-                                    <small class="form-text text-muted">{{ lang._('Unique identifier for the cache plugin') }}</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="cache_size">{{ lang._('Size') }}</label>
-                                    <input type="number" class="form-control" id="cache_size" name="cache_size" value="10240" min="1024" max="1048576">
-                                    <small class="form-text text-muted">{{ lang._('Cache size in entries (1024-1048576)') }}</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="cache_lazy_ttl">{{ lang._('Lazy Cache TTL') }}</label>
-                                    <input type="number" class="form-control" id="cache_lazy_ttl" name="cache_lazy_ttl" value="86400" min="60" max="604800">
-                                    <small class="form-text text-muted">{{ lang._('Lazy cache TTL in seconds (60-604800)') }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    
-                    <hr />
-                    <button class="btn btn-primary" id="saveCache" type="button"><b>{{ lang._('Save') }}</b></button>
-                </div>
-            </div>
+        function closeSequenceTab(tabId) {
+            $('#' + tabId + '-tab').remove();
+            $('#' + tabId).remove();
             
-            <!-- Forward Tab -->
-            <div role="tabpanel" class="tab-pane" id="forward">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-arrow-right"></i> {{ lang._('Forward Configuration') }}</h3>
-                    <p>{{ lang._('Configure DNS forwarding settings for MosDNS.') }}</p>
-                    
-                    <div class="bootgrid-header container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="actionBar">
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <table id="forwardGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogForward">
-                        <thead>
-                            <tr>
-                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                                <th data-column-id="concurrent" data-type="string">{{ lang._('Concurrent') }}</th>
-                                <th data-column-id="upstreams" data-type="string">{{ lang._('Upstreams') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    
-                    <div class="col-md-12">
-                        <hr />
-                        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-                        <br /><br />
-                    </div>
-                </div>
-            </div>
+            // Activate the first available tab
+            $('#maintabs li:first a').tab('show');
+        }
+        
+        function addRule(tabId) {
+            var ruleHtml = '<div class="rule-item" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">' +
+                '<div class="row">' +
+                    '<div class="col-md-4">' +
+                        '<select class="form-control rule-type">' +
+                            '<option value="exec">{{ lang._("Execute") }}</option>' +
+                            '<option value="if">{{ lang._("If Condition") }}</option>' +
+                            '<option value="goto">{{ lang._("Goto") }}</option>' +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="col-md-6">' +
+                        '<input type="text" class="form-control rule-value" placeholder="{{ lang._("Rule value") }}">' +
+                    '</div>' +
+                    '<div class="col-md-2">' +
+                        '<button type="button" class="btn btn-danger btn-sm" onclick="$(this).closest(\'.rule-item\').remove()">{{ lang._("Remove") }}</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
             
-            <!-- Redirect Tab -->
-            <div role="tabpanel" class="tab-pane" id="redirect">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-share"></i> {{ lang._('Redirect Configuration') }}</h3>
-                    <p>{{ lang._('Configure DNS redirection rules for MosDNS.') }}</p>
-                    
-                    <div class="bootgrid-header container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="actionBar">
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <table id="redirectGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogRedirect">
-                        <thead>
-                            <tr>
-                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                                <th data-column-id="rules" data-type="string">{{ lang._('Rules') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    
-                    <div class="col-md-12">
-                        <hr />
-                        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-                        <br /><br />
-                    </div>
-                </div>
-            </div>
+            $('#' + tabId + '-rules').append(ruleHtml);
+        }
+        
+        function saveSequence(tabId, uuid) {
+            var rules = [];
+            $('#' + tabId + '-rules .rule-item').each(function() {
+                var type = $(this).find('.rule-type').val();
+                var value = $(this).find('.rule-value').val();
+                if (type && value) {
+                    rules.push({type: type, value: value});
+                }
+            });
             
-            <!-- Hosts Tab -->
-            <div role="tabpanel" class="tab-pane" id="hosts">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-list"></i> {{ lang._('Hosts Configuration') }}</h3>
-                    <p>{{ lang._('Configure local hosts file management for MosDNS.') }}</p>
-                    
-                    <div class="bootgrid-header container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="actionBar">
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <table id="hostsGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogHosts">
-                        <thead>
-                            <tr>
-                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                                <th data-column-id="files" data-type="string">{{ lang._('Files') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    
-                    <div class="col-md-12">
-                        <hr />
-                        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-                        <br /><br />
-                    </div>
-                </div>
-            </div>
+            // Here you would normally save the sequence via API
+            console.log('Saving sequence:', {uuid: uuid, rules: rules});
             
-            <!-- IPSet Tab -->
-            <div role="tabpanel" class="tab-pane" id="ipset">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-filter"></i> {{ lang._('IPSet Configuration') }}</h3>
-                    <p>{{ lang._('Configure IP set management for MosDNS.') }}</p>
-                    
-                    <div class="bootgrid-header container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12 actionBar">
-                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <table id="ipsetGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogIpset">
-                        <thead>
-                            <tr>
-                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                                <th data-column-id="files" data-type="string">{{ lang._('Files') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    
-                    <div class="col-md-12">
-                        <hr />
-                        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-                        <br /><br />
-                    </div>
-                </div>
-            </div>
+            // Close the tab after saving
+            closeSequenceTab(tabId);
             
-            <!-- Sequence Tab -->
-            <div role="tabpanel" class="tab-pane" id="sequence">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-sort-numeric-asc"></i> {{ lang._('Sequence Configuration') }}</h3>
-                    <p>{{ lang._('Configure plugin execution sequence for MosDNS.') }}</p>
-                    
-                    <div class="bootgrid-header container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12 actionBar">
-                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <table id="sequenceGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogSequence">
-                        <thead>
-                            <tr>
-                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                                <th data-column-id="exec" data-type="string">{{ lang._('Exec') }}</th>
-                                <th data-column-id="matches" data-type="string">{{ lang._('Matches') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    
-                    <div class="col-md-12">
-                        <hr />
-                        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-                        <br /><br />
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fallback Tab -->
-            <div role="tabpanel" class="tab-pane" id="fallback">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-life-ring"></i> {{ lang._('Fallback Configuration') }}</h3>
-                    <p>{{ lang._('Configure fallback DNS servers for MosDNS.') }}</p>
-                    
-                    <div class="bootgrid-header container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12 actionBar">
-                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <table id="fallbackGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogFallback">
-                        <thead>
-                            <tr>
-                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                                <th data-column-id="primary" data-type="string">{{ lang._('Primary') }}</th>
-                                <th data-column-id="secondary" data-type="string">{{ lang._('Secondary') }}</th>
-                                <th data-column-id="threshold" data-type="string">{{ lang._('Threshold') }}</th>
-                                <th data-column-id="always_standby" data-type="string">{{ lang._('Always Standby') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    
-                    <div class="col-md-12">
-                        <hr />
-                        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-                        <br /><br />
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Servers Tab -->
-            <div role="tabpanel" class="tab-pane" id="servers">
-                <div class="content-box" style="padding-top: 1.5em;">
-                    <h3><i class="fa fa-server"></i> {{ lang._('Servers Configuration') }}</h3>
-                    <p>{{ lang._('Configure upstream DNS servers for MosDNS.') }}</p>
-                    
-                    <div class="bootgrid-header container-fluid">
-                        <div class="row">
-                            <div class="col-sm-12 actionBar">
-                                <button data-action="add" type="button" class="btn btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-default"><span class="fa fa-trash-o"></span></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <table id="serversGrid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialogServers">
-                        <thead>
-                            <tr>
-                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                                <th data-column-id="entry" data-type="string">{{ lang._('Entry') }}</th>
-                                <th data-column-id="listen" data-type="string">{{ lang._('Listen') }}</th>
-                                <th data-column-id="udp_or_tcp" data-type="string">{{ lang._('UDP or TCP') }}</th>
-                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    
-                    <div class="col-md-12">
-                        <hr />
-                        <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-                        <br /><br />
-                    </div>
+            // Reload the sequence grid
+            $("#{{ formGridSequence['table_id'] }}").bootgrid('reload');
+        }
+
+        $("#reconfigureAct").SimpleActionButton();
+    });
+</script>
+
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#forward">{{ lang._('Forward') }}</a></li>
+    <li><a data-toggle="tab" href="#redirect">{{ lang._('Redirect') }}</a></li>
+    <li><a data-toggle="tab" href="#rules">{{ lang._('Rules') }}</a></li>
+    <li><a data-toggle="tab" href="#hosts">{{ lang._('Hosts') }}</a></li>
+    <li><a data-toggle="tab" href="#ipset">{{ lang._('IPSet') }}</a></li>
+    <li><a data-toggle="tab" href="#sequence">{{ lang._('Sequence') }}</a></li>
+    <li><a data-toggle="tab" href="#fallback">{{ lang._('Fallback') }}</a></li>
+    <li><a data-toggle="tab" href="#servers">{{ lang._('Servers') }}</a></li>
+    <li><a data-toggle="tab" href="#cache">{{ lang._('Cache') }}</a></li>
+</ul>
+
+<div class="tab-content content-box col-xs-12 __mb" id="mainContent">
+    <div id="forward" class="tab-pane fade in active">
+        <table id="{{ formGridForward['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridForward['edit_dialog_id'] }}" data-editAlert="{{ formGridForward['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridForward['fields'] %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="redirect" class="tab-pane fade">
+        <table id="{{ formGridRedirect['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridRedirect['edit_dialog_id'] }}" data-editAlert="{{ formGridRedirect['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridRedirect['fields'] %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="rules" class="tab-pane fade">
+        <table id="{{ formGridRules['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridRules['edit_dialog_id'] }}" data-editAlert="{{ formGridRules['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridRules['fields'] %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="hosts" class="tab-pane fade">
+        <table id="{{ formGridHosts['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridHosts['edit_dialog_id'] }}" data-editAlert="{{ formGridHosts['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridHosts['fields'] %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="ipset" class="tab-pane fade">
+        <table id="{{ formGridIPSet['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridIPSet['edit_dialog_id'] }}" data-editAlert="{{ formGridIPSet['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridIPSet['fields'] %}
+                    {% if field['column-id'] == 'sets' %}
+                    <th data-column-id="sets" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ lang._('Sets') }}</th>
+                    {% else %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="sequence" class="tab-pane fade">
+        <table id="{{ formGridSequence['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridSequence['edit_dialog_id'] }}" data-editAlert="{{ formGridSequence['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridSequence['fields'] %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="fallback" class="tab-pane fade">
+        <table id="{{ formGridFallback['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridFallback['edit_dialog_id'] }}" data-editAlert="{{ formGridFallback['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridFallback['fields'] %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="servers" class="tab-pane fade">
+        <table id="{{ formGridServers['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridServers['edit_dialog_id'] }}" data-editAlert="{{ formGridServers['edit_alert_id'] }}">
+            <thead>
+                <tr>
+                    {% for field in formGridServers['fields'] %}
+                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div id="cache" class="tab-pane fade">
+        <div class="content-box">
+            <div class="content-box-main">
+                <h3><i class="fa fa-database"></i> {{ lang._('Cache Configuration') }}</h3>
+                <p>{{ lang._('Configure DNS cache settings for MosDNS.') }}</p>
+                
+                {{ partial("layout_partials/base_form", ['fields': formDialogEditCache, 'id': 'frm_cache_settings']) }}
+                
+                <div class="col-md-12">
+                    <hr/>
+                    <button class="btn btn-primary" id="saveCacheAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveCacheAct_progress"></i></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-$(document).ready(function() {
-    // Track initialized grids to avoid duplicate initialization
-    var gridInited = {};
-    
-    // Grid configurations for lazy loading
-    var gridConfigs = {
-        '#cache': {
-            gridId: '#cacheGrid',
-            editDialog: 'dialogCache',
-            config: {
-                search:'/api/mosdns/cache/searchItem',
-                get:'/api/mosdns/cache/getItem/',
-                set:'/api/mosdns/cache/setItem/',
-                add:'/api/mosdns/cache/addItem/',
-                del:'/api/mosdns/cache/delItem/',
-                toggle:'/api/mosdns/cache/toggleItem/'
-            }
-        },
-        '#forward': {
-            gridId: '#forwardGrid',
-            editDialog: 'dialogForward',
-            config: {
-                search:'/api/mosdns/forward/searchItem',
-                get:'/api/mosdns/forward/getItem/',
-                set:'/api/mosdns/forward/setItem/',
-                add:'/api/mosdns/forward/addItem/',
-                del:'/api/mosdns/forward/delItem/',
-                toggle:'/api/mosdns/forward/toggleItem/'
-            }
-        },
-        '#redirect': {
-            gridId: '#redirectGrid',
-            editDialog: 'dialogRedirect',
-            config: {
-                search:'/api/mosdns/redirect/searchItem',
-                get:'/api/mosdns/redirect/getItem/',
-                set:'/api/mosdns/redirect/setItem/',
-                add:'/api/mosdns/redirect/addItem/',
-                del:'/api/mosdns/redirect/delItem/',
-                toggle:'/api/mosdns/redirect/toggleItem/'
-            }
-        },
-        '#hosts': {
-            gridId: '#hostsGrid',
-            editDialog: 'dialogHosts',
-            config: {
-                search:'/api/mosdns/hosts/searchItem',
-                get:'/api/mosdns/hosts/getItem/',
-                set:'/api/mosdns/hosts/setItem/',
-                add:'/api/mosdns/hosts/addItem/',
-                del:'/api/mosdns/hosts/delItem/',
-                toggle:'/api/mosdns/hosts/toggleItem/'
-            }
-        },
-        '#ipset': {
-            gridId: '#ipsetGrid',
-            editDialog: 'dialogIpset',
-            config: {
-                search:'/api/mosdns/ipset/searchItem',
-                get:'/api/mosdns/ipset/getItem/',
-                set:'/api/mosdns/ipset/setItem/',
-                add:'/api/mosdns/ipset/addItem/',
-                del:'/api/mosdns/ipset/delItem/',
-                toggle:'/api/mosdns/ipset/toggleItem/'
-            }
-        },
-        '#sequence': {
-            gridId: '#sequenceGrid',
-            editDialog: 'dialogSequence',
-            config: {
-                search:'/api/mosdns/sequence/searchItem',
-                get:'/api/mosdns/sequence/getItem/',
-                set:'/api/mosdns/sequence/setItem/',
-                add:'/api/mosdns/sequence/addItem/',
-                del:'/api/mosdns/sequence/delItem/',
-                toggle:'/api/mosdns/sequence/toggleItem/'
-            }
-        },
-        '#fallback': {
-            gridId: '#fallbackGrid',
-            editDialog: 'dialogFallback',
-            config: {
-                search:'/api/mosdns/fallback/searchItem',
-                get:'/api/mosdns/fallback/getItem/',
-                set:'/api/mosdns/fallback/setItem/',
-                add:'/api/mosdns/fallback/addItem/',
-                del:'/api/mosdns/fallback/delItem/',
-                toggle:'/api/mosdns/fallback/toggleItem/'
-            }
-        },
-        '#servers': {
-            gridId: '#serversGrid',
-            editDialog: 'dialogServers',
-            config: {
-                search:'/api/mosdns/servers/searchItem',
-                get:'/api/mosdns/servers/getItem/',
-                set:'/api/mosdns/servers/setItem/',
-                add:'/api/mosdns/servers/addItem/',
-                del:'/api/mosdns/servers/delItem/',
-                toggle:'/api/mosdns/servers/toggleItem/'
-            }
-        }
-    };
-    
-    // Function to clear all grid containers to prevent content overlap
-    function clearAllGrids() {
-        console.log('Clearing all grid containers to prevent overlap');
-        Object.keys(gridConfigs).forEach(function(tabId) {
-            var gridConfig = gridConfigs[tabId];
-            var $gridElement = $(gridConfig.gridId);
-            if ($gridElement.length) {
-                try {
-                    // Clear the grid content
-                    $gridElement.empty();
-                    // Reset bootgrid if it exists
-                    if ($gridElement.data('bootgrid')) {
-                        $gridElement.bootgrid('destroy');
-                    }
-                } catch (error) {
-                    console.warn('Error clearing grid:', gridConfig.gridId, error);
-                }
-            }
-        });
-        // Reset all initialization flags
-        Object.keys(gridInited).forEach(function(key) {
-            gridInited[key] = false;
-        });
-    }
-
-    // Function to initialize grid for a specific tab with enhanced error handling
-    function initGridByTab(tabId) {
-        // Validate input parameters
-        if (!tabId || !gridConfigs[tabId]) {
-            console.log('Skipping initialization for', tabId, '- invalid parameters');
-            return;
-        }
-        
-        // Skip if already initialized and working properly
-        if (gridInited[tabId]) {
-            var gridConfig = gridConfigs[tabId];
-            var $gridElement = $(gridConfig.gridId);
-            if ($gridElement.length && $gridElement.find('tbody tr').length > 0) {
-                console.log('Grid already initialized and has content:', tabId);
-                return;
-            }
-        }
-        
-        var gridConfig = gridConfigs[tabId];
-        var $gridElement = $(gridConfig.gridId);
-        
-        // Ensure the grid element exists and is visible
-        if ($gridElement.length && $(tabId).hasClass('active')) {
-            console.log('Initializing grid for visible tab:', tabId);
-            
-            // Clear any existing grid first
-            try {
-                if ($gridElement.data('bootgrid')) {
-                    $gridElement.bootgrid('destroy');
-                }
-                $gridElement.empty();
-            } catch (error) {
-                console.warn('Error clearing existing grid:', error);
-            }
-            
-            // Add additional delay for API readiness
-            setTimeout(function() {
-                try {
-                    // Initialize the grid with enhanced error handling
-                    console.log('Initializing grid for tab:', tabId);
-                    
-                    // Add enhanced error handling for UIBootgrid initialization
-                    $gridElement.UIBootgrid($.extend(gridConfig.config, {
-                        ajax: true,
-                        requestHandler: function(request) {
-                            console.log('Grid request for', tabId, ':', request);
-                            return request;
-                        },
-                        responseHandler: function(response) {
-                            console.log('Grid response for', tabId, ':', response);
-                            // Handle various error conditions
-                            if (!response || response.error || response.status === 'error') {
-                                console.warn('Error response for', tabId, ', returning empty data');
-                                return { current: 1, rowCount: 0, rows: [], total: 0 };
-                            }
-                            // Ensure response has required structure
-                            if (!response.rows) {
-                                response.rows = [];
-                            }
-                            if (!response.total) {
-                                response.total = 0;
-                            }
-                            return response;
-                        },
-                        failureHandler: function(jqXHR, textStatus, errorThrown) {
-                            console.error('Grid failure for', tabId, ':', textStatus, errorThrown);
-                            // Return false to prevent default error handling
-                            if (jqXHR.status === 404 || jqXHR.status === 500) {
-                                console.warn('API endpoint not available for', tabId, ', showing empty grid');
-                                return false; // Suppress default error handling
-                            }
-                            return true; // Allow default error handling for other errors
-                        },
-                        // Ensure buttons are always rendered
-                        formatters: {
-                            "commands": function(column, row) {
-                                return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
-                                       "<button type=\"button\" class=\"btn btn-xs btn-default command-copy bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button> " +
-                                       "<button type=\"button\" class=\"btn btn-xs btn-default command-delete bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
-                            },
-                            "rowtoggle": function(column, row) {
-                                var checked = row[column.id] == "1" ? "checked" : "";
-                                return "<input type=\"checkbox\" class=\"bootgrid-tooltip\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"" + (checked ? "disable" : "enable") + " this item\" data-row-id=\"" + row.uuid + "\" " + checked + ">";
-                            }
-                        }
-                    }));
-                    
-                    // Bind add button click event after grid initialization
-                    $gridElement.on("loaded.rs.jquery.bootgrid", function (e) {
-                        var editDlg = $(this).attr('data-editDialog');
-                        var gridId = $(this).attr('id');
-                        
-                        // Bind add button click event
-                        $(this).find("*[data-action=add]").off('click').on('click', function(){
-                            var gridParams = gridConfig.config;
-                            if (gridParams['get'] != undefined && gridParams['add'] != undefined) {
-                                var urlMap = {};
-                                urlMap['frm_' + editDlg] = gridParams['get'];
-                                mapDataToFormUI(urlMap).done(function(){
-                                    // update selectors
-                                    formatTokenizersUI();
-                                    $('.selectpicker').selectpicker('refresh');
-                                    // clear validation errors (if any)
-                                    clearFormValidation('frm_' + editDlg);
-                                });
-
-                                // show dialog for edit
-                                $('#'+editDlg).modal({backdrop: 'static', keyboard: false});
-                                
-                                // bind save button
-                                $("#btn_"+editDlg+"_save").off('click').on('click', function(){
-                                    saveFormToEndpoint(gridParams['set'],
-                                        'frm_' + editDlg, function(){
-                                            $("#"+editDlg).modal('hide');
-                                            $("#"+gridId).bootgrid("reload");
-                                        }, true);
-                                });
-                            } else {
-                                console.log("[grid] action add missing for", tabId);
-                            }
-                        });
-                        
-                        // Bind delete selected button click event
-                        $(this).find("*[data-action=deleteSelected]").off('click').on('click', function(){
-                            var gridParams = gridConfig.config;
-                            if (gridParams['del'] != undefined) {
-                                stdDialogConfirm('{{ lang._("Confirm removal") }}',
-                                    '{{ lang._("Do you want to remove the selected item?") }}',
-                                    '{{ lang._("Yes") }}', '{{ lang._("Cancel") }}', function () {
-                                    var rows = $("#"+gridId).bootgrid('getSelectedRows');
-                                    if (rows != undefined){
-                                        var deferreds = [];
-                                        $.each(rows, function(key,uuid){
-                                            deferreds.push(ajaxCall(gridParams['del'] + uuid, {}, null));
-                                        });
-                                        $.when.apply(null, deferreds).done(function(){
-                                            $("#"+gridId).bootgrid("reload");
-                                        });
-                                    }
-                                });
-                            } else {
-                                console.log("[grid] action delete missing for", tabId);
-                            }
-                        });
-                    });
-                    
-                    gridInited[tabId] = true;
-                    console.log('Grid initialized successfully:', tabId);
-                } catch (initError) {
-                    console.error('Error during grid initialization for', tabId, ':', initError);
-                    gridInited[tabId] = false;
-                }
-            }, 300);
-        } else {
-            console.log('Grid element not found for:', tabId);
-        }
-    }
-    
-    // Bind tab events with multiple selectors for compatibility
-    $('a[data-toggle="tab"], a[data-bs-toggle="tab"]').on('shown.bs.tab shown.tab', function (e) {
-        var targetId = $(e.target).attr('href');
-        console.log('Tab shown event triggered for:', targetId);
-        
-        // Clear all grids first to prevent overlap
-        clearAllGrids();
-        
-        // Force the tab pane to be active before initializing
-        var $targetPane = $(targetId);
-        if ($targetPane.length) {
-            // Hide all other tab panes first
-            $('.tab-pane').removeClass('active show');
-            
-            // Ensure the target tab pane has the correct classes
-            $targetPane.addClass('active show');
-            
-            // Add a longer delay to ensure DOM is fully updated and API is ready
-            setTimeout(function() {
-                console.log('Attempting to initialize grid for:', targetId);
-                initGridByTab(targetId);
-            }, 500);
-        }
-        
-        // Update URL hash with error handling
-        try {
-            if (history.pushState) {
-                history.pushState(null, null, targetId);
-            } else {
-                window.location.hash = targetId;
-            }
-        } catch (error) {
-            console.warn('Failed to update URL hash:', error);
-        }
-    });
-    
-    // Also bind to the 'show.bs.tab' event to handle pre-activation
-    $('a[data-toggle="tab"], a[data-bs-toggle="tab"]').on('show.bs.tab show.tab', function (e) {
-        var targetId = $(e.target).attr('href');
-        console.log('Tab show event (before activation) for:', targetId);
-        
-        // Pre-clear grids to ensure clean state
-        clearAllGrids();
-    });
-    
-    // Initialize the first active tab or default tab
-    var initialTab = window.location.hash || '#cache';
-    var $initialTabLink = $('a[href="' + initialTab + '"]');
-    
-    if ($initialTabLink.length) {
-        // Clear all grids first
-        clearAllGrids();
-        
-        // Activate the tab first
-        $initialTabLink.tab('show');
-        
-        // Ensure the tab pane is properly activated
-        var $initialPane = $(initialTab);
-        if ($initialPane.length) {
-            $('.tab-pane').removeClass('active show');
-            $initialPane.addClass('active show');
-        }
-        
-        // Then initialize its grid with a longer delay
-        setTimeout(function() {
-            console.log('Initializing initial tab:', initialTab);
-            initGridByTab(initialTab);
-        }, 1000);
-    } else {
-        // Default to cache tab if no valid hash
-        console.log('No valid tab found, defaulting to cache');
-        clearAllGrids();
-        $('.tab-pane').removeClass('active show');
-        $('#cache').addClass('active show');
-        $('a[href="#cache"]').tab('show');
-        
-        setTimeout(function() {
-            initGridByTab('#cache');
-        }, 1000);
-    }
-});
-</script>
-
 <!-- Dialog definitions for each tab -->
+<!-- Apply button section -->
+<div class="col-md-12">
+    <hr/>
+    <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress"></i></button>
+    <br/><br/>
+</div>
+
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditForward,'id':'dialogForward','label':lang._('Edit Forward')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditRedirect,'id':'dialogRedirect','label':lang._('Edit Redirect')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRules,'id':'dialogRules','label':lang._('Edit Rules')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditHosts,'id':'dialogHosts','label':lang._('Edit Hosts')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditIpset,'id':'dialogIpset','label':lang._('Edit IPSet')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditIPSet,'id':'dialogIPSet','label':lang._('Edit IPSet')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditSequence,'id':'dialogSequence','label':lang._('Edit Sequence')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditFallback,'id':'dialogFallback','label':lang._('Edit Fallback')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditServers,'id':'dialogServers','label':lang._('Edit Servers')])}}

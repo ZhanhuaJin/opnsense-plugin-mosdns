@@ -1,0 +1,43 @@
+<form>
+    <field>
+        <id>ipset.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this ipset entry</help>
+        <grid_view>
+            <sequence>1</sequence>
+            <width>6em</width>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>ipset.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Unique identifier for the ipset plugin</help>
+        <grid_view>
+            <sequence>2</sequence>
+            <width>15em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>ipset.sets</id>
+        <label>Sets</label>
+        <type>text</type>
+        <help>IPSet sets configuration (e.g., IP sets and domain matching rules)</help>
+        <grid_view>
+            <sequence>3</sequence>
+            <width>25em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>ipset.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description for this ipset entry</help>
+        <grid_view>
+            <sequence>4</sequence>
+            <width>20em</width>
+        </grid_view>
+    </field>
+</form>

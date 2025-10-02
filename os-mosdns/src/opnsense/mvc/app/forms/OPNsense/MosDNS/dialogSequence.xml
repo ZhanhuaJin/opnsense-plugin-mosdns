@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <form>
     <field>
-        <id>forward.enabled</id>
+        <id>sequence.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable this forward entry</help>
+        <help>Enable this sequence configuration</help>
         <grid_view>
             <sequence>1</sequence>
             <width>6em</width>
@@ -11,43 +12,49 @@
         </grid_view>
     </field>
     <field>
-        <id>forward.name</id>
+        <id>sequence.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Unique identifier for the forward plugin (formerly Tag)</help>
+        <help>Unique name for this sequence</help>
         <grid_view>
             <sequence>2</sequence>
             <width>15em</width>
         </grid_view>
     </field>
     <field>
-        <id>forward.upstream</id>
-        <label>Upstream</label>
+        <id>sequence.tag</id>
+        <label>Tag</label>
         <type>text</type>
-        <help>Upstream DNS servers, one per line (e.g., udp://223.5.5.5)</help>
+        <help>Tag identifier for this sequence</help>
         <grid_view>
             <sequence>3</sequence>
-            <width>20em</width>
+            <width>10em</width>
         </grid_view>
     </field>
     <field>
-        <id>forward.concurrent</id>
-        <label>Concurrent</label>
-        <type>text</type>
-        <help>Number of concurrent queries (1-10)</help>
+        <id>sequence.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Type of sequence (sequence, parallel, fallback)</help>
         <grid_view>
             <sequence>4</sequence>
             <width>10em</width>
         </grid_view>
     </field>
     <field>
-        <id>forward.description</id>
-        <label>Description</label>
+        <id>sequence.args</id>
+        <label>Arguments</label>
         <type>text</type>
-        <help>Optional description for this forward entry</help>
+        <help>Additional arguments for this sequence</help>
         <grid_view>
             <sequence>5</sequence>
             <width>20em</width>
         </grid_view>
+    </field>
+    <field>
+        <id>sequence.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description of this sequence</help>
     </field>
 </form>

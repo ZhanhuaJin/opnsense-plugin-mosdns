@@ -9,18 +9,33 @@
         <id>sequence.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name for this Sequence configuration</help>
+        <help>Name for this Sequence configuration (e.g., main_sequence)</help>
     </field>
     <field>
-        <id>sequence.exec</id>
-        <label>Exec</label>
+        <id>sequence.tag</id>
+        <label>Tag</label>
         <type>text</type>
-        <help>Execution configuration for this sequence</help>
+        <help>Tag identifier for this sequence (e.g., main_sequence)</help>
     </field>
     <field>
-        <id>sequence.matches</id>
-        <label>Matches</label>
+        <id>sequence.type</id>
+        <label>Type</label>
         <type>text</type>
-        <help>Match conditions for this sequence</help>
+        <help>Sequence type (should be 'sequence')</help>
+    </field>
+    <field>
+        <id>sequence.args</id>
+        <label>Sequence Configuration</label>
+        <type>textbox</type>
+        <help><![CDATA[Enter the sequence configuration in YAML format. Each step should have 'exec' and optionally 'matches' fields.<br/>
+Example:<br/>
+- exec: $hosts<br/>
+- matches: has_resp<br/>
+&nbsp;&nbsp;exec: accept<br/>
+- matches: qtype 65<br/>
+&nbsp;&nbsp;exec: reject 3<br/>
+- exec: $cache<br/>
+- matches: has_resp<br/>
+&nbsp;&nbsp;exec: accept]]></help>
     </field>
 </form>

@@ -1,28 +1,28 @@
 <form>
     <field>
-        <id>hosts.enabled</id>
+        <id>rules.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable this hosts entry</help>
+        <help>Enable this rules entry</help>
         <grid_view>
             <width>6em</width>
             <formatter>rowtoggle</formatter>
         </grid_view>
     </field>
     <field>
-        <id>hosts.name</id>
+        <id>rules.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Unique identifier for the hosts plugin</help>
+        <help>Unique identifier for the rules plugin</help>
         <grid_view>
             <width>15em</width>
         </grid_view>
     </field>
     <field>
-        <id>hosts.files</id>
-        <label>Files</label>
+        <id>rules.rules</id>
+        <label>Rules</label>
         <type>text</type>
-        <help>Host files configuration (e.g., file paths or host entries)</help>
+        <help>Rules configuration (e.g., domain matching rules and actions)</help>
         <grid_view>
             <width>25em</width>
         </grid_view>

@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>plugins.servers.enabled</id>
+        <label>Enable Servers</label>
+        <type>checkbox</type>
+        <help>Enable DNS server configuration</help>
+    </field>
+    <field>
+        <id>plugins.servers.listen_addr</id>
+        <label>Listen Address</label>
+        <type>text</type>
+        <help>Address and port to listen on</help>
+    </field>
+    <field>
+        <id>plugins.servers.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>Protocol to use for DNS server</help>
+    </field>
+</form>

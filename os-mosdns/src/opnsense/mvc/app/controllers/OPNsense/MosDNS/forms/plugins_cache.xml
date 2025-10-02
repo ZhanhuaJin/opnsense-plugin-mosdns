@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>plugins.cache.enabled</id>
+        <label>Enable Cache</label>
+        <type>checkbox</type>
+        <help>Enable DNS response caching</help>
+    </field>
+    <field>
+        <id>plugins.cache.size</id>
+        <label>Cache Size</label>
+        <type>text</type>
+        <help>Maximum number of cached entries</help>
+    </field>
+    <field>
+        <id>plugins.cache.lazy_cache_ttl</id>
+        <label>Lazy Cache TTL</label>
+        <type>text</type>
+        <help>TTL for lazy cache entries in seconds</help>
+    </field>
+</form>

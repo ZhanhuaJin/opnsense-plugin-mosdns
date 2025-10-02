@@ -1,8 +1,8 @@
 <form>
     <field>
-        <id>mosdns.general.enabled</id>
+        <id>general.enabled</id>
         <label>Enable MosDNS</label>
         <type>checkbox</type>
-        <help>Enable or disable MosDNS service</help>
+        <help>Enable or disable MosDNS DNS server</help>
     </field>
 </form>

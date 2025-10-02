@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<form>
+    <field>
+        <id>sequence.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this sequence configuration</help>
+        <grid_view>
+            <sequence>1</sequence>
+            <width>6em</width>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>sequence.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Unique name for this sequence</help>
+        <grid_view>
+            <sequence>2</sequence>
+            <width>15em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>sequence.tag</id>
+        <label>Tag</label>
+        <type>text</type>
+        <help>Tag identifier for this sequence</help>
+        <grid_view>
+            <sequence>3</sequence>
+            <width>10em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>sequence.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Type of sequence (sequence, parallel, fallback)</help>
+        <grid_view>
+            <sequence>4</sequence>
+            <width>10em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>sequence.args</id>
+        <label>Arguments</label>
+        <type>text</type>
+        <help>Additional arguments for this sequence</help>
+        <grid_view>
+            <sequence>5</sequence>
+            <width>20em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>sequence.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description of this sequence</help>
+        <grid_view>
+            <sequence>6</sequence>
+            <width>25em</width>
+        </grid_view>
+    </field>
+</form>

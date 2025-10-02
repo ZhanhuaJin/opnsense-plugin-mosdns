@@ -4,6 +4,11 @@
         <label>Enabled</label>
         <type>checkbox</type>
         <help>Enable this data source</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
     </field>
     <field>
         <id>datasource.name</id>
@@ -22,6 +27,9 @@
         <label>Backup URL</label>
         <type>text</type>
         <help>Backup URL to use if primary URL fails</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>datasource.description</id>
@@ -34,5 +42,8 @@
         <label>Update Interval (seconds)</label>
         <type>text</type>
         <help>How often to update this data source (60-86400 seconds)</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
 </form>

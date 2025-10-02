@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
-        $("#grid-datasources").UIBootgrid(
+        $("#{{formGridDataSource['table_id']}}").UIBootgrid(
             {   search:'/api/mosdns/data/searchDataSource',
                 get:'/api/mosdns/data/getDataSource/',
                 set:'/api/mosdns/data/setDataSource/',
@@ -56,30 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
             
             <!-- Data Sources Table -->
-            <table id="grid-datasources" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogDataSource" data-editAlert="mosdnsChangeMessage">
-                <thead>
-                <tr>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                    <th data-column-id="url" data-type="string">{{ lang._('URL') }}</th>
-                    <th data-column-id="backup_url" data-type="string">{{ lang._('Backup URL') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
+            {{ partial("layout_partials/base_bootgrid_table", formGridDataSource) }}
         </div>
     </div>
 </div>

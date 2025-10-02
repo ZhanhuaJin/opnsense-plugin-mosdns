@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>plugins.fallback.enabled</id>
+        <label>Enable Fallback</label>
+        <type>checkbox</type>
+        <help>Enable fallback DNS servers</help>
+    </field>
+    <field>
+        <id>plugins.fallback.primary</id>
+        <label>Primary Server</label>
+        <type>text</type>
+        <help>Primary fallback DNS server</help>
+    </field>
+    <field>
+        <id>plugins.fallback.secondary</id>
+        <label>Secondary Server</label>
+        <type>text</type>
+        <help>Secondary fallback DNS server</help>
+    </field>
+</form>

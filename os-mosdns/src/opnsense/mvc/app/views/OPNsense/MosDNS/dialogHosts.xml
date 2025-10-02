@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>hosts.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this hosts configuration</help>
+    </field>
+    <field>
+        <id>hosts.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name for this hosts configuration</help>
+    </field>
+    <field>
+        <id>hosts.hosts_file</id>
+        <label>Hosts File</label>
+        <type>text</type>
+        <help>Path to hosts file (e.g., /etc/hosts)</help>
+    </field>
+    <field>
+        <id>hosts.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description for this hosts configuration</help>
+    </field>
+</form>

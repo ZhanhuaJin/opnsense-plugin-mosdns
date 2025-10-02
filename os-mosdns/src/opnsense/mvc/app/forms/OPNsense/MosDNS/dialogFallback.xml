@@ -1,0 +1,43 @@
+<form>
+    <field>
+        <id>fallback.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this fallback entry</help>
+        <grid_view>
+            <sequence>1</sequence>
+            <width>6em</width>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>fallback.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Unique identifier for the fallback plugin</help>
+        <grid_view>
+            <sequence>2</sequence>
+            <width>15em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>fallback.primary</id>
+        <label>Primary</label>
+        <type>text</type>
+        <help>Primary upstream server configuration</help>
+        <grid_view>
+            <sequence>3</sequence>
+            <width>15em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>fallback.secondary</id>
+        <label>Secondary</label>
+        <type>text</type>
+        <help>Secondary fallback server configuration</help>
+        <grid_view>
+            <sequence>4</sequence>
+            <width>15em</width>
+        </grid_view>
+    </field>
+</form>

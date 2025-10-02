@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>plugins.hosts.enabled</id>
+        <label>Enable Hosts</label>
+        <type>checkbox</type>
+        <help>Enable hosts file lookup</help>
+    </field>
+    <field>
+        <id>plugins.hosts.hosts_file</id>
+        <label>Hosts File</label>
+        <type>text</type>
+        <help>Path to hosts file</help>
+    </field>
+</form>

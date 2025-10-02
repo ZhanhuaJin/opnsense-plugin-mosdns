@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>externaldata.enabled</id>
+        <label>Enable External Data</label>
+        <type>checkbox</type>
+        <help>Enable external data sources for MosDNS</help>
+    </field>
+    <field>
+        <id>externaldata.update_interval</id>
+        <label>Update Interval (hours)</label>
+        <type>text</type>
+        <help>How often to update external data sources (1-24 hours)</help>
+    </field>
+    <field>
+        <id>externaldata.timeout</id>
+        <label>Timeout (seconds)</label>
+        <type>text</type>
+        <help>Timeout for downloading external data (10-300 seconds)</help>
+    </field>
+    <field>
+        <id>externaldata.retry_count</id>
+        <label>Retry Count</label>
+        <type>text</type>
+        <help>Number of retries for failed downloads (0-10)</help>
+    </field>
+    <field>
+        <id>externaldata.user_agent</id>
+        <label>User Agent</label>
+        <type>text</type>
+        <help>Custom User-Agent string for HTTP requests</help>
+    </field>
+</form>

@@ -48,4 +48,11 @@
             <pattern>api/mosdns/sequence/*</pattern>
         </patterns>
     </page-user-MosDNS-Sequence>
+    <page-user-MosDNS-Plugins>
+        <name>WebCfg - Services: MosDNS: Plugins</name>
+        <description>Allow access to MosDNS Plugins configuration</description>
+        <patterns>
+            <pattern>api/mosdns/plugins/*</pattern>
+        </patterns>
+    </page-user-MosDNS-Plugins>
 </acl>

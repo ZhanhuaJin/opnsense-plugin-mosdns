@@ -47,7 +47,19 @@ class DataController extends ApiMutableModelControllerBase
      */
     public function searchDataSourceAction()
     {
-        return $this->searchBase('datasources.datasource', array('enabled', 'name', 'url', 'backup_url', 'description'));
+        try {
+            $model = $this->getModel();
+            $element = $model->plugins->datasources->datasource;
+            
+            // Check if the ArrayField exists and is properly initialized
+            if ($element === null) {
+                return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
+            }
+            
+            return $this->searchBase('plugins.datasources.datasource', array('enabled', 'name', 'url', 'backup_url', 'description'));
+        } catch (\Exception $e) {
+            return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
+        }
     }
 
     /**
@@ -57,7 +69,8 @@ class DataController extends ApiMutableModelControllerBase
      */
     public function getDataSourceAction($uuid = null)
     {
-        return $this->getBase('datasource', 'datasources.datasource', $uuid);
+        $this->sessionClose();
+        return $this->getBase('datasource', 'plugins.datasources.datasource', $uuid);
     }
 
     /**
@@ -66,7 +79,8 @@ class DataController extends ApiMutableModelControllerBase
      */
     public function addDataSourceAction()
     {
-        return $this->addBase('datasource', 'datasources.datasource');
+        $this->sessionClose();
+        return $this->addBase('datasource', 'plugins.datasources.datasource');
     }
 
     /**
@@ -76,7 +90,8 @@ class DataController extends ApiMutableModelControllerBase
      */
     public function setDataSourceAction($uuid)
     {
-        return $this->setBase('datasource', 'datasources.datasource', $uuid);
+        $this->sessionClose();
+        return $this->setBase('datasource', 'plugins.datasources.datasource', $uuid);
     }
 
     /**
@@ -86,7 +101,7 @@ class DataController extends ApiMutableModelControllerBase
      */
     public function delDataSourceAction($uuid)
     {
-        return $this->delBase('datasources.datasource', $uuid);
+        return $this->delBase('plugins.datasources.datasource', $uuid);
     }
 
     /**
@@ -96,6 +111,6 @@ class DataController extends ApiMutableModelControllerBase
      */
     public function toggleDataSourceAction($uuid)
     {
-        return $this->toggleBase('datasources.datasource', $uuid);
+        return $this->toggleBase('plugins.datasources.datasource', $uuid);
     }
 }

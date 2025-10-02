@@ -42,5 +42,6 @@ class DataController extends IndexController
     {
         $this->view->pick('OPNsense/MosDNS/data');
         $this->view->formDialogDataSource = $this->getForm('dialogDataSource');
+        $this->view->formGridDataSource = $this->getFormGrid('dialogDataSource');
     }
 }

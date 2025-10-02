@@ -3,18 +3,30 @@
         <id>ipset.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable or disable this IPSet entry</help>
+        <help>Enable this ipset configuration</help>
     </field>
     <field>
         <id>ipset.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Name for this IPSet configuration</help>
+        <help>Name for this ipset configuration</help>
     </field>
     <field>
-        <id>ipset.files</id>
-        <label>Files</label>
+        <id>ipset.set_name</id>
+        <label>Set Name</label>
         <type>text</type>
-        <help>IPSet files configuration</help>
+        <help>IPSet name (e.g., mosdns)</help>
+    </field>
+    <field>
+        <id>ipset.sets</id>
+        <label>Sets</label>
+        <type>textbox</type>
+        <help>IP sets configuration (one per line)</help>
+    </field>
+    <field>
+        <id>ipset.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description for this ipset configuration</help>
     </field>
 </form>

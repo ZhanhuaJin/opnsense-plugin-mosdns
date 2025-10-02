@@ -40,6 +40,29 @@ class PluginsController extends ControllerBase
     {
         // Set page title for the plugins overview page
         $this->view->title = "MosDNS Plugins";
+        
+        // Load form definitions for dialog boxes
+        $this->view->formDialogEditForward = $this->getForm("pluginsForward");
+        $this->view->formDialogEditRedirect = $this->getForm("plugins_redirect");
+        $this->view->formDialogEditRules = $this->getForm("dialogRules");
+        $this->view->formDialogEditHosts = $this->getForm("plugins_hosts");
+        $this->view->formDialogEditIPSet = $this->getForm("pluginsIPSet");
+        $this->view->formDialogEditSequence = $this->getForm("plugins_sequence");
+        $this->view->formDialogEditFallback = $this->getForm("plugins_fallback");
+        $this->view->formDialogEditServers = $this->getForm("plugins_servers");
+        $this->view->formDialogEditCache = $this->getForm("plugins_cache");
+        
+        // Generate grid configurations for tables
+        $this->view->formGridForward = $this->getFormGrid('pluginsForward');
+        $this->view->formGridRedirect = $this->getFormGrid('plugins_redirect');
+        $this->view->formGridRules = $this->getFormGrid('dialogRules');
+        $this->view->formGridHosts = $this->getFormGrid('plugins_hosts');
+        $this->view->formGridIPSet = $this->getFormGrid('pluginsIPSet');
+        $this->view->formGridSequence = $this->getFormGrid('plugins_sequence');
+        $this->view->formGridFallback = $this->getFormGrid('plugins_fallback');
+        $this->view->formGridServers = $this->getFormGrid('plugins_servers');
+        $this->view->formGridCache = $this->getFormGrid('plugins_cache');
+        
         $this->view->pick('OPNsense/MosDNS/plugins');
     }
 
@@ -65,6 +88,8 @@ class PluginsController extends ControllerBase
 
     public function ipsetAction()
     {
+        // Load form dialog for IPSet configuration
+        $this->view->formDialogEditIPSet = $this->getForm("dialogIPSet");
         $this->view->pick('OPNsense/MosDNS/ipset');
     }
 

@@ -30,20 +30,23 @@ echo "Creating package structure..."
 # Copy plugin files to package directory with proper structure
 echo "Copying plugin files..."
 
+# Copy files from the os-mosdns/src directory (where our modifications are)
+SRC_DIR="${BUILD_DIR}/os-mosdns/src"
+
 # Copy files that should go to /usr/local/ (opnsense, etc directories)
-if [ -d "${PLUGIN_DIR}/src/opnsense" ]; then
+if [ -d "${SRC_DIR}/opnsense" ]; then
     mkdir -p "${PACKAGE_DIR}/usr/local"
-    cp -r "${PLUGIN_DIR}/src/opnsense" "${PACKAGE_DIR}/usr/local/"
+    cp -r "${SRC_DIR}/opnsense" "${PACKAGE_DIR}/usr/local/"
 fi
 
-if [ -d "${PLUGIN_DIR}/src/etc" ]; then
+if [ -d "${SRC_DIR}/etc" ]; then
     mkdir -p "${PACKAGE_DIR}/usr/local"
-    cp -r "${PLUGIN_DIR}/src/etc" "${PACKAGE_DIR}/usr/local/"
+    cp -r "${SRC_DIR}/etc" "${PACKAGE_DIR}/usr/local/"
 fi
 
 # Copy files that already have usr/local structure
-if [ -d "${PLUGIN_DIR}/src/usr" ]; then
-    cp -r "${PLUGIN_DIR}/src/usr" "${PACKAGE_DIR}/"
+if [ -d "${SRC_DIR}/usr" ]; then
+    cp -r "${SRC_DIR}/usr" "${PACKAGE_DIR}/"
 fi
 
 # Create plist file (file list) using pkg-plist

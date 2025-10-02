@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<form>
+    <field>
+        <id>cache.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this cache plugin</help>
+        <grid_view>
+            <width>6em</width>
+            <type>string</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>cache.tag</id>
+        <label>Tag</label>
+        <type>text</type>
+        <help>Tag for this cache plugin</help>
+        <grid_view>
+            <type>string</type>
+        </grid_view>
+    </field>
+    <field>
+        <id>cache.size</id>
+        <label>Size</label>
+        <type>text</type>
+        <help>Cache size</help>
+        <grid_view>
+            <type>string</type>
+        </grid_view>
+    </field>
+    <field>
+        <id>cache.lazy_cache_ttl</id>
+        <label>Lazy Cache TTL</label>
+        <type>text</type>
+        <help>TTL for lazy cache entries</help>
+        <grid_view>
+            <type>string</type>
+        </grid_view>
+    </field>
+</form>

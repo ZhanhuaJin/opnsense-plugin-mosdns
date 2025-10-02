@@ -1,9 +1,9 @@
 <form>
     <field>
-        <id>forward.enabled</id>
+        <id>servers.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable this forward entry</help>
+        <help>Enable this servers entry</help>
         <grid_view>
             <sequence>1</sequence>
             <width>6em</width>
@@ -11,43 +11,33 @@
         </grid_view>
     </field>
     <field>
-        <id>forward.name</id>
+        <id>servers.name</id>
         <label>Name</label>
         <type>text</type>
-        <help>Unique identifier for the forward plugin (formerly Tag)</help>
+        <help>Unique identifier for the servers plugin</help>
         <grid_view>
             <sequence>2</sequence>
             <width>15em</width>
         </grid_view>
     </field>
     <field>
-        <id>forward.upstream</id>
-        <label>Upstream</label>
+        <id>servers.addr</id>
+        <label>Address</label>
         <type>text</type>
-        <help>Upstream DNS servers, one per line (e.g., udp://223.5.5.5)</help>
+        <help>Server address configuration (e.g., IP:port or domain:port)</help>
         <grid_view>
             <sequence>3</sequence>
             <width>20em</width>
         </grid_view>
     </field>
     <field>
-        <id>forward.concurrent</id>
-        <label>Concurrent</label>
+        <id>servers.protocol</id>
+        <label>Protocol</label>
         <type>text</type>
-        <help>Number of concurrent queries (1-10)</help>
+        <help>Protocol configuration (e.g., udp, tcp, tls, https)</help>
         <grid_view>
             <sequence>4</sequence>
             <width>10em</width>
-        </grid_view>
-    </field>
-    <field>
-        <id>forward.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help>Optional description for this forward entry</help>
-        <grid_view>
-            <sequence>5</sequence>
-            <width>20em</width>
         </grid_view>
     </field>
 </form>

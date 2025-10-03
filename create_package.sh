@@ -8,7 +8,7 @@ set -e
 PLUGIN_NAME="os-mosdns"
 PLUGIN_VERSION="5.3.3"
 BUILD_DIR="$(pwd)"
-PLUGIN_DIR="${BUILD_DIR}/${PLUGIN_NAME}"
+PLUGIN_DIR="${BUILD_DIR}/plugins/wall/mosdns"
 PACKAGE_DIR="${BUILD_DIR}/package_build"
 PACKAGE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.txz"
 
@@ -30,8 +30,8 @@ echo "Creating package structure..."
 # Copy plugin files to package directory with proper structure
 echo "Copying plugin files..."
 
-# Copy files from the os-mosdns/src directory (where our modifications are)
-SRC_DIR="${BUILD_DIR}/os-mosdns/src"
+# Copy files from the plugins/wall/mosdns/src directory (where our modifications are)
+SRC_DIR="${BUILD_DIR}/plugins/wall/mosdns/src"
 
 # Copy files that should go to /usr/local/ (opnsense, etc directories)
 if [ -d "${SRC_DIR}/opnsense" ]; then

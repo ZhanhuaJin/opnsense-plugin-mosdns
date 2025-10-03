@@ -16,9 +16,9 @@ class IndexController extends BaseIndexController
         $this->view->generalForm = $this->getForm('general');
         $this->view->pluginsCacheForm = $this->getForm('plugins_cache');
         $this->view->pluginsFallbackForm = $this->getForm('plugins_fallback');
-        $this->view->pluginsForwardForm = $this->getForm('plugins_forward');
+        $this->view->pluginsForwardForm = $this->getForm('pluginsForward');
         $this->view->pluginsHostsForm = $this->getForm('plugins_hosts');
-        $this->view->pluginsIpsetForm = $this->getForm('plugins_ipset');
+        $this->view->pluginsIpsetForm = $this->getForm('pluginsIPSet');
         $this->view->pluginsRedirectForm = $this->getForm('plugins_redirect');
         $this->view->pluginsSequenceForm = $this->getForm('plugins_sequence');
         $this->view->pluginsServersForm = $this->getForm('plugins_servers');

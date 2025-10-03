@@ -24,7 +24,6 @@ opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogRedirect.xml
 opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogSequence.xml
 opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogSequenceRule.xml
 opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogServers.xml
-opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/Forward.xml
 opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/general.xml
 opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/MosDNS.xml
 opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/plugins.xml

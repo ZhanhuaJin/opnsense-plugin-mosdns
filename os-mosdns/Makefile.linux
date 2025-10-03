@@ -1,0 +1,226 @@
+# Linux Makefile for OPNsense MosDNS Plugin
+# This Makefile provides the same functionality as create_package.sh
+
+PLUGIN_NAME = os-mosdns
+PLUGIN_VERSION = 5.3.3
+BUILD_DIR = $(shell pwd)/..
+PLUGIN_DIR = $(BUILD_DIR)/$(PLUGIN_NAME)
+PACKAGE_DIR = $(BUILD_DIR)/package_build
+PACKAGE_NAME = $(PLUGIN_NAME)-$(PLUGIN_VERSION).txz
+SRC_DIR = $(BUILD_DIR)/os-mosdns/src
+
+.PHONY: all package clean install help
+
+all: package
+
+help:
+	@echo "OPNsense MosDNS Plugin Linux Build System"
+	@echo "=========================================="
+	@echo "Available targets:"
+	@echo "  package  - Create FreeBSD package (same as create_package.sh)"
+	@echo "  clean    - Clean build directory"
+	@echo "  help     - Show this help message"
+
+package: clean
+	@echo "Creating OPNsense MosDNS Plugin Package v$(PLUGIN_VERSION)"
+	@echo "========================================================"
+	
+	# Check if plugin directory exists
+	@if [ ! -d "$(PLUGIN_DIR)" ]; then \
+		echo "Error: Plugin directory $(PLUGIN_DIR) not found!"; \
+		exit 1; \
+	fi
+	
+	# Create package build directory
+	@mkdir -p "$(PACKAGE_DIR)"
+	
+	# Create package structure
+	@echo "Creating package structure..."
+	@echo "Copying plugin files..."
+	
+	# Copy files from the os-mosdns/src directory
+	@if [ -d "$(SRC_DIR)/opnsense" ]; then \
+		mkdir -p "$(PACKAGE_DIR)/usr/local"; \
+		echo "Copying opnsense directory to usr/local/"; \
+		cp -r "$(SRC_DIR)/opnsense" "$(PACKAGE_DIR)/usr/local/"; \
+		echo "Copied opnsense directory"; \
+	fi
+	
+	# Copy form XML files to the correct controllers/forms directory BEFORE removing forms directory
+	@if [ -d "$(SRC_DIR)/opnsense/mvc/app/forms/OPNsense/MosDNS" ]; then \
+		mkdir -p "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms"; \
+		cp "$(SRC_DIR)/opnsense/mvc/app/forms/OPNsense/MosDNS"/*.xml "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/"; \
+		echo "Copied XML files to controllers/forms directory"; \
+		ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/" | grep dialogForward; \
+		echo "Verifying dialogForward.xml exists in controllers/forms:"; \
+		test -f "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogForward.xml" && echo "SUCCESS: dialogForward.xml found" || echo "ERROR: dialogForward.xml NOT found"; \
+	fi
+	
+	# Remove the original forms directory completely after copying to controllers/forms
+	@if [ -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" ]; then \
+		echo "Before cleanup - checking forms directory structure:"; \
+		find "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" -name "*.xml" | head -5; \
+		echo "Completely removing original forms directory..."; \
+		rm -rf "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms"; \
+		echo "After cleanup - verifying forms directory is gone:"; \
+		test ! -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" && echo "SUCCESS: original forms directory removed" || echo "ERROR: forms directory still exists"; \
+		echo "After cleanup - verifying controllers/forms still exists:"; \
+		test -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms" && echo "SUCCESS: controllers/forms directory exists" || echo "ERROR: controllers/forms directory missing"; \
+		test -f "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogForward.xml" && echo "SUCCESS: dialogForward.xml still exists" || echo "ERROR: dialogForward.xml was deleted"; \
+		echo "Removed original forms directory completely (keeping controllers/forms)"; \
+	fi
+	
+	# Copy other directories FIRST, then handle forms directory cleanup
+	@if [ -d "$(SRC_DIR)/etc" ]; then \
+		mkdir -p "$(PACKAGE_DIR)/usr/local"; \
+		cp -r "$(SRC_DIR)/etc" "$(PACKAGE_DIR)/usr/local/"; \
+	fi
+	
+	@if [ -d "$(SRC_DIR)/usr" ]; then \
+		cp -r "$(SRC_DIR)/usr" "$(PACKAGE_DIR)/"; \
+	fi
+	
+	# FINAL CLEANUP: Remove the original forms directory completely AFTER all copying is done
+	@if [ -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" ]; then \
+		echo "Final cleanup: Removing original forms directory after all copying..."; \
+		rm -rf "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms"; \
+		echo "Final cleanup: Original forms directory removed"; \
+		echo "Verifying final state:"; \
+		test -f "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogForward.xml" && echo "SUCCESS: dialogForward.xml exists in controllers/forms" || echo "ERROR: dialogForward.xml missing from controllers/forms"; \
+		test ! -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" && echo "SUCCESS: original forms directory removed" || echo "ERROR: original forms directory still exists"; \
+	fi
+	
+	# Create file list AFTER all file operations are complete
+	@echo "Creating package file list..."
+	@cd "$(PACKAGE_DIR)" && find . -type f ! -name '+*' | sed 's|^\./||' | sort > "+CONTENTS"
+	
+	# Create manifest file AFTER all file operations are complete
+	@echo "Creating manifest file..."
+	@cd "$(PACKAGE_DIR)" && { \
+		echo 'name: "$(PLUGIN_NAME)"'; \
+		echo 'version: "$(PLUGIN_VERSION)"'; \
+		echo 'origin: "dns/os-mosdns"'; \
+		echo 'comment: "MosDNS DNS forwarder plugin for OPNsense"'; \
+		echo 'desc: "MosDNS is a DNS forwarder with flexible configuration.\\nThis plugin provides a web interface for managing MosDNS configuration."'; \
+		echo 'www: "https://github.com/IrineSistiana/mosdns"'; \
+		echo 'maintainer: "opnsense@deciso.com"'; \
+		echo 'prefix: "/"'; \
+		echo 'arch: "FreeBSD:14:amd64"'; \
+		echo 'categories: ["dns"]'; \
+		echo 'licenses: ["GPLv3"]'; \
+		echo "flatsize: $$(du -sb . | cut -f1)"; \
+		echo 'files: {'; \
+		find . -type f ! -name '+*' | while read file; do \
+			filepath="$${file#./}"; \
+			checksum=$$(sha256sum "$$file" | cut -d' ' -f1); \
+			echo "    \"$$filepath\": \"1\$$$$checksum\","; \
+		done; \
+		echo '}'; \
+	} > "+MANIFEST"
+	
+	# Create post-install script
+	@echo "Creating post-install script..."
+	@cd "$(PACKAGE_DIR)" && printf '%s\n' \
+		'#!/bin/sh' \
+		'' \
+		'echo "Setting up MosDNS plugin..."' \
+		'' \
+		'# Make scripts executable (these will be executed on target OPNsense system)' \
+		'if [ -f "/usr/local/bin/mosdns" ]; then' \
+		'    chmod +x /usr/local/bin/mosdns' \
+		'fi' \
+		'if [ -f "/usr/local/etc/rc.d/mosdns" ]; then' \
+		'    chmod +x /usr/local/etc/rc.d/mosdns' \
+		'fi' \
+		'if [ -f "/usr/local/opnsense/scripts/OPNsense/MosDNS/generate_config.sh" ]; then' \
+		'    chmod +x /usr/local/opnsense/scripts/OPNsense/MosDNS/generate_config.sh' \
+		'fi' \
+		'if [ -f "/usr/local/opnsense/scripts/OPNsense/MosDNS/setup.sh" ]; then' \
+		'    chmod +x /usr/local/opnsense/scripts/OPNsense/MosDNS/setup.sh' \
+		'fi' \
+		'' \
+		'# Create necessary directories' \
+		'mkdir -p /usr/local/etc/mosdns' \
+		'mkdir -p /var/log' \
+		'' \
+		'# Set proper permissions for config file if it exists' \
+		'if [ -f "/usr/local/etc/mosdns/config.yaml" ]; then' \
+		'    chown root:wheel /usr/local/etc/mosdns/config.yaml' \
+		'    chmod 644 /usr/local/etc/mosdns/config.yaml' \
+		'fi' \
+		'' \
+		'# Create log file' \
+		'touch /var/log/mosdns.log' \
+		'chown root:wheel /var/log/mosdns.log' \
+		'chmod 644 /var/log/mosdns.log' \
+		'' \
+		'echo "MosDNS plugin setup completed."' \
+		'echo "Please restart the web interface: configctl webgui restart"' \
+		> "+POST_INSTALL"
+	
+	@chmod +x "$(PACKAGE_DIR)/+POST_INSTALL"
+	
+	# Create pre-deinstall script
+	@cd "$(PACKAGE_DIR)" && printf '%s\n' \
+		'#!/bin/sh' \
+		'' \
+		'echo "Stopping MosDNS service..."' \
+		'' \
+		'# Stop service if running' \
+		'if [ -f "/var/run/mosdns.pid" ]; then' \
+		'    /usr/local/etc/rc.d/mosdns stop || true' \
+		'fi' \
+		> "+PRE_DEINSTALL"
+	
+	@chmod +x "$(PACKAGE_DIR)/+PRE_DEINSTALL"
+	
+	# Create the package using tar with ustar format
+	@echo "Creating package archive..."
+	@echo "Debug: Checking what will be packaged:"
+	@cd "$(PACKAGE_DIR)" && find . -name "dialogForward.xml" -type f
+	@echo "Debug: Checking controllers/forms directory structure:"
+	@cd "$(PACKAGE_DIR)" && find usr/local/opnsense/mvc/app/controllers -name "*.xml" | head -5
+	
+	# Debug: Check if dialogForward.xml exists in controllers/forms before packaging
+	@echo "=== DEBUG: Files in controllers/forms before packaging ==="
+	@ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/" | grep dialogForward || echo "dialogForward.xml not found in controllers/forms"
+	@echo "=== END DEBUG ==="
+	
+	# Debug: Check if original forms directory still exists
+	@echo "=== DEBUG: Checking if original forms directory exists ==="
+	@ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms/OPNsense/MosDNS/" 2>/dev/null | grep dialogForward || echo "Original forms directory does not exist or dialogForward.xml not found"
+	@echo "=== END DEBUG ==="
+	
+	# Debug: Show complete directory structure
+	@echo "=== DEBUG: Complete directory structure ==="
+	@cd "$(PACKAGE_DIR)" && find usr/local/opnsense/mvc/app -name "dialogForward.xml" -type f
+	@echo "=== END DEBUG ==="
+	
+	@cd "$(PACKAGE_DIR)" && tar --format=ustar --mtime='2024-01-01 00:00:00' -czf "$(BUILD_DIR)/$(PACKAGE_NAME)" +MANIFEST +POST_INSTALL +PRE_DEINSTALL usr/
+	
+	@echo ""
+	@echo "Package created successfully: $(PACKAGE_NAME)"
+	@echo "Package size: $$(du -h "$(BUILD_DIR)/$(PACKAGE_NAME)" | cut -f1)"
+	@echo ""
+	@echo "To install on OPNsense:"
+	@echo "1. Copy $(PACKAGE_NAME) to your OPNsense system"
+	@echo "2. Install: pkg add $(PACKAGE_NAME)"
+	@echo "3. Restart web interface: configctl webgui restart"
+	@echo "4. Access via Wall → MosDNS"
+	@echo ""
+	@echo "To uninstall:"
+	@echo "pkg delete $(PLUGIN_NAME)"
+	
+	# Clean up build directory
+	@echo "Build completed successfully!"
+
+clean:
+	@echo "Cleaning build directory..."
+	@rm -rf "$(PACKAGE_DIR)"
+	@rm -f "$(PACKAGE_NAME)"
+	@echo "Cleaned build artifacts"
+	@rm -f "$(BUILD_DIR)/$(PACKAGE_NAME)"
+	@echo "Clean completed."
+
+install: package
+	@echo "Package created. Use 'pkg add $(BUILD_DIR)/$(PACKAGE_NAME)' to install on OPNsense."

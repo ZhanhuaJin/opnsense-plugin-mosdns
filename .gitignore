@@ -1,5 +1,7 @@
 .vscode
 core
+os-mosdns/package_build
+os-mosdns/work
 plugins
 temp_extract
 os-mosdns-5.3.3.txz

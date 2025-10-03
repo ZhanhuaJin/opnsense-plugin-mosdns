@@ -44,9 +44,23 @@ if [ -d "${SRC_DIR}/etc" ]; then
     cp -r "${SRC_DIR}/etc" "${PACKAGE_DIR}/usr/local/"
 fi
 
+# Copy form XML files to the correct controllers/forms directory BEFORE removing forms directory
+if [ -d "${SRC_DIR}/opnsense/mvc/app/forms/OPNsense/MosDNS" ]; then
+    mkdir -p "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms"
+    cp "${SRC_DIR}/opnsense/mvc/app/forms/OPNsense/MosDNS"/*.xml "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/"
+    echo "Copied XML files to controllers/forms directory"
+fi
+
 # Copy files that already have usr/local structure
 if [ -d "${SRC_DIR}/usr" ]; then
     cp -r "${SRC_DIR}/usr" "${PACKAGE_DIR}/"
+fi
+
+# Remove the original forms directory completely after copying to controllers/forms
+if [ -d "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/forms" ]; then
+    echo "Removing original forms directory after copying to controllers/forms..."
+    rm -rf "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/forms"
+    echo "Original forms directory removed"
 fi
 
 # Create plist file (file list) using pkg-plist
@@ -67,7 +81,7 @@ comment: "OPNsense MosDNS Plugin"
 desc: "MosDNS is a DNS forwarder with flexible configuration.\nThis plugin provides a web interface for managing MosDNS configuration."
 www: "https://github.com/IrineSistiana/mosdns"
 maintainer: "opnsense@deciso.com"
-prefix: "/usr/local"
+prefix: "/"
 arch: "FreeBSD:14:amd64"
 categories: ["dns"]
 licenses: ["GPLv3"]
@@ -137,7 +151,7 @@ echo "Creating package archive..."
 cd "${PACKAGE_DIR}"
 # Create tar archive with proper FreeBSD pkg format using ustar
 # FreeBSD pkg expects ustar format for compatibility
-tar --format=ustar -czf "${BUILD_DIR}/${PACKAGE_NAME}" +MANIFEST +POST_INSTALL +PRE_DEINSTALL $(find . -type f ! -name '+*' | sed 's|^\./||')
+tar --format=ustar --mtime='2024-01-01 00:00:00' -czf "${BUILD_DIR}/${PACKAGE_NAME}" +MANIFEST +POST_INSTALL +PRE_DEINSTALL $(find . -type f ! -name '+*' | sed 's|^\./||')
 
 echo ""
 echo "Package created successfully: ${PACKAGE_NAME}"

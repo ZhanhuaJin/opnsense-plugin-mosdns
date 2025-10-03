@@ -66,14 +66,14 @@
             }
         });
 
-        // Rules Grid
+        // Rules Grid (now part of sequences)
         $("#{{ formGridRules['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchRules',
-            get: '/api/mosdns/plugins/getRules/',
-            set: '/api/mosdns/plugins/setRules/',
-            add: '/api/mosdns/plugins/addRules/',
-            del: '/api/mosdns/plugins/delRules/',
-            toggle: '/api/mosdns/plugins/toggleRules/',
+            search: '/api/mosdns/plugins/searchSequence',
+            get: '/api/mosdns/plugins/getSequence/',
+            set: '/api/mosdns/plugins/setSequence/',
+            add: '/api/mosdns/plugins/addSequence/',
+            del: '/api/mosdns/plugins/delSequence/',
+            toggle: '/api/mosdns/plugins/toggleSequence/',
             options: {
                 selection: true,
                 multiSelect: true,
@@ -142,6 +142,63 @@
             e.stopPropagation();
             createSequenceTab('new');
             return false;
+        });
+
+        // Initialize standard dialogs for all grids except Sequence
+        $().ready(function() {
+            // Initialize dialogs
+            $("#dialogForward").modal({show: false});
+            $("#dialogRedirect").modal({show: false});
+            $("#dialogRules").modal({show: false});
+            $("#dialogHosts").modal({show: false});
+            $("#dialogIPSet").modal({show: false});
+            $("#dialogFallback").modal({show: false});
+            $("#dialogServers").modal({show: false});
+            
+            // Bind grid events after initialization
+            setTimeout(function() {
+                // Forward Grid events
+                $('#{{ formGridForward["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
+                    e.preventDefault();
+                    $("#dialogForward").modal('show');
+                });
+                
+                // Redirect Grid events
+                $('#{{ formGridRedirect["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
+                    e.preventDefault();
+                    $("#dialogRedirect").modal('show');
+                });
+                
+                // Rules Grid events
+                $('#{{ formGridRules["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
+                    e.preventDefault();
+                    $("#dialogRules").modal('show');
+                });
+                
+                // Hosts Grid events
+                $('#{{ formGridHosts["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
+                    e.preventDefault();
+                    $("#dialogHosts").modal('show');
+                });
+                
+                // IPSet Grid events
+                $('#{{ formGridIPSet["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
+                    e.preventDefault();
+                    $("#dialogIPSet").modal('show');
+                });
+                
+                // Fallback Grid events
+                $('#{{ formGridFallback["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
+                    e.preventDefault();
+                    $("#dialogFallback").modal('show');
+                });
+                
+                // Servers Grid events
+                $('#{{ formGridServers["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
+                    e.preventDefault();
+                    $("#dialogServers").modal('show');
+                });
+            }, 1000);
         });
 
         // Fallback Grid
@@ -507,7 +564,13 @@
 <!-- Apply button section -->
 <div class="col-md-12">
     <hr/>
-    <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress"></i></button>
+    <button class="btn btn-primary" id="reconfigureAct"
+            data-endpoint='/api/mosdns/service/reconfigure'
+            data-label="{{ lang._('Apply') }}"
+            data-service-widget="mosdns"
+            data-error-title="{{ lang._('Error reconfiguring MosDNS') }}"
+            type="button">
+    </button>
     <br/><br/>
 </div>
 

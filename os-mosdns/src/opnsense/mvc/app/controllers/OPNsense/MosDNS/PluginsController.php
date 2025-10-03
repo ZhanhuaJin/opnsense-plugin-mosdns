@@ -42,26 +42,26 @@ class PluginsController extends ControllerBase
         $this->view->title = "MosDNS Plugins";
         
         // Load form definitions for dialog boxes
-        $this->view->formDialogEditForward = $this->getForm("pluginsForward");
-        $this->view->formDialogEditRedirect = $this->getForm("plugins_redirect");
-        $this->view->formDialogEditRules = $this->getForm("dialogRules");
-        $this->view->formDialogEditHosts = $this->getForm("plugins_hosts");
-        $this->view->formDialogEditIPSet = $this->getForm("pluginsIPSet");
-        $this->view->formDialogEditSequence = $this->getForm("plugins_sequence");
-        $this->view->formDialogEditFallback = $this->getForm("plugins_fallback");
-        $this->view->formDialogEditServers = $this->getForm("plugins_servers");
-        $this->view->formDialogEditCache = $this->getForm("plugins_cache");
+        $this->view->formDialogEditForward = $this->getForm("dialogForward");
+        $this->view->formDialogEditRedirect = $this->getForm("dialogRedirect");
+        $this->view->formDialogEditRules = $this->getForm("dialogSequence");
+        $this->view->formDialogEditHosts = $this->getForm("dialogHosts");
+        $this->view->formDialogEditIPSet = $this->getForm("dialogIPSet");
+        $this->view->formDialogEditSequence = $this->getForm("dialogSequence");
+        $this->view->formDialogEditFallback = $this->getForm("dialogFallback");
+        $this->view->formDialogEditServers = $this->getForm("dialogServers");
+        $this->view->formDialogEditCache = $this->getForm("cache");
         
         // Generate grid configurations for tables
-        $this->view->formGridForward = $this->getFormGrid('pluginsForward');
-        $this->view->formGridRedirect = $this->getFormGrid('plugins_redirect');
-        $this->view->formGridRules = $this->getFormGrid('dialogRules');
-        $this->view->formGridHosts = $this->getFormGrid('plugins_hosts');
-        $this->view->formGridIPSet = $this->getFormGrid('pluginsIPSet');
-        $this->view->formGridSequence = $this->getFormGrid('plugins_sequence');
-        $this->view->formGridFallback = $this->getFormGrid('plugins_fallback');
-        $this->view->formGridServers = $this->getFormGrid('plugins_servers');
-        $this->view->formGridCache = $this->getFormGrid('plugins_cache');
+        $this->view->formGridForward = $this->getFormGrid('dialogForward');
+        $this->view->formGridRedirect = $this->getFormGrid('dialogRedirect');
+        $this->view->formGridRules = $this->getFormGrid('dialogSequence');
+        $this->view->formGridHosts = $this->getFormGrid('dialogHosts');
+        $this->view->formGridIPSet = $this->getFormGrid('dialogIPSet');
+        $this->view->formGridSequence = $this->getFormGrid('dialogSequence');
+        $this->view->formGridFallback = $this->getFormGrid('dialogFallback');
+        $this->view->formGridServers = $this->getFormGrid('dialogServers');
+        $this->view->formGridCache = $this->getFormGrid('cache');
         
         $this->view->pick('OPNsense/MosDNS/plugins');
     }

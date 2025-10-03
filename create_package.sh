@@ -44,23 +44,9 @@ if [ -d "${SRC_DIR}/etc" ]; then
     cp -r "${SRC_DIR}/etc" "${PACKAGE_DIR}/usr/local/"
 fi
 
-# Copy form XML files to the correct controllers/forms directory BEFORE removing forms directory
-if [ -d "${SRC_DIR}/opnsense/mvc/app/forms/OPNsense/MosDNS" ]; then
-    mkdir -p "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms"
-    cp "${SRC_DIR}/opnsense/mvc/app/forms/OPNsense/MosDNS"/*.xml "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/"
-    echo "Copied XML files to controllers/forms directory"
-fi
-
 # Copy files that already have usr/local structure
 if [ -d "${SRC_DIR}/usr" ]; then
     cp -r "${SRC_DIR}/usr" "${PACKAGE_DIR}/"
-fi
-
-# Remove the original forms directory completely after copying to controllers/forms
-if [ -d "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/forms" ]; then
-    echo "Removing original forms directory after copying to controllers/forms..."
-    rm -rf "${PACKAGE_DIR}/usr/local/opnsense/mvc/app/forms"
-    echo "Original forms directory removed"
 fi
 
 # Create plist file (file list) using pkg-plist

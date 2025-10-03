@@ -5,7 +5,6 @@
         <type>checkbox</type>
         <help>Enable this hosts entry</help>
         <grid_view>
-            <sequence>1</sequence>
             <width>6em</width>
             <formatter>rowtoggle</formatter>
         </grid_view>
@@ -16,7 +15,6 @@
         <type>text</type>
         <help>Unique identifier for the hosts plugin</help>
         <grid_view>
-            <sequence>2</sequence>
             <width>15em</width>
         </grid_view>
     </field>
@@ -26,7 +24,6 @@
         <type>text</type>
         <help>Host files configuration (e.g., file paths or host entries)</help>
         <grid_view>
-            <sequence>3</sequence>
             <width>25em</width>
         </grid_view>
     </field>

@@ -46,30 +46,6 @@ package: clean
 		echo "Copied opnsense directory"; \
 	fi
 	
-	# Copy form XML files to the correct controllers/forms directory BEFORE removing forms directory
-	@if [ -d "$(SRC_DIR)/opnsense/mvc/app/forms/OPNsense/MosDNS" ]; then \
-		mkdir -p "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms"; \
-		cp "$(SRC_DIR)/opnsense/mvc/app/forms/OPNsense/MosDNS"/*.xml "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/"; \
-		echo "Copied XML files to controllers/forms directory"; \
-		ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/" | grep dialogForward; \
-		echo "Verifying dialogForward.xml exists in controllers/forms:"; \
-		test -f "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogForward.xml" && echo "SUCCESS: dialogForward.xml found" || echo "ERROR: dialogForward.xml NOT found"; \
-	fi
-	
-	# Remove the original forms directory completely after copying to controllers/forms
-	@if [ -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" ]; then \
-		echo "Before cleanup - checking forms directory structure:"; \
-		find "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" -name "*.xml" | head -5; \
-		echo "Completely removing original forms directory..."; \
-		rm -rf "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms"; \
-		echo "After cleanup - verifying forms directory is gone:"; \
-		test ! -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms" && echo "SUCCESS: original forms directory removed" || echo "ERROR: forms directory still exists"; \
-		echo "After cleanup - verifying controllers/forms still exists:"; \
-		test -d "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms" && echo "SUCCESS: controllers/forms directory exists" || echo "ERROR: controllers/forms directory missing"; \
-		test -f "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/dialogForward.xml" && echo "SUCCESS: dialogForward.xml still exists" || echo "ERROR: dialogForward.xml was deleted"; \
-		echo "Removed original forms directory completely (keeping controllers/forms)"; \
-	fi
-	
 	# Copy other directories FIRST, then handle forms directory cleanup
 	@if [ -d "$(SRC_DIR)/etc" ]; then \
 		mkdir -p "$(PACKAGE_DIR)/usr/local"; \
@@ -104,7 +80,7 @@ package: clean
 		echo 'desc: "MosDNS is a DNS forwarder with flexible configuration.\\nThis plugin provides a web interface for managing MosDNS configuration."'; \
 		echo 'www: "https://github.com/IrineSistiana/mosdns"'; \
 		echo 'maintainer: "opnsense@deciso.com"'; \
-		echo 'prefix: "/"'; \
+		echo 'prefix: "/usr/local"'; \
 		echo 'arch: "FreeBSD:14:amd64"'; \
 		echo 'categories: ["dns"]'; \
 		echo 'licenses: ["GPLv3"]'; \

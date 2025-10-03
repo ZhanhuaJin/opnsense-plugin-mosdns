@@ -56,9 +56,5 @@
         <label>Description</label>
         <type>text</type>
         <help>Description of this sequence</help>
-        <grid_view>
-            <sequence>6</sequence>
-            <width>25em</width>
-        </grid_view>
     </field>
 </form>

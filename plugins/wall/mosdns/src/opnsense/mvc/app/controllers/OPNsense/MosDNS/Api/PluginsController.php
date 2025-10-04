@@ -50,7 +50,7 @@ class PluginsController extends ApiMutableModelControllerBase
             if ($node === null) {
                 return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
             }
-            return $this->searchBase('plugins.forward.forward', array('enabled', 'name', 'upstream', 'concurrent', 'description'), 'name');
+            return $this->searchBase('plugins.forward.forward', array('enabled', 'name', 'upstream', 'concurrent', 'command'), 'name');
         } catch (\Exception $e) {
             return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
         }

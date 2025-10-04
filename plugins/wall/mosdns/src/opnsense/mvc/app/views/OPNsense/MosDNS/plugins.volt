@@ -34,59 +34,106 @@
 
         updateServiceControlUI('mosdns');
 
-        // Forward Grid
-        var forwardGridId = "{{ formGridForward['table_id'] }}";
-        console.log('Forward Grid ID:', forwardGridId);
-        
-        if (forwardGridId && $("#" + forwardGridId).length > 0) {
-            console.log('Forward Grid element found, initializing...');
+        // Function to bind Forward Grid events
+        function bindForwardGridEvents() {
+            var forwardGridId = "{{ formGridForward['table_id'] }}";
+            console.log('Binding Forward Grid events for:', forwardGridId);
             
-            $("#" + forwardGridId).UIBootgrid({
-                search: '/api/mosdns/plugins/searchForward',
-                get: '/api/mosdns/plugins/getForward/',
-                set: '/api/mosdns/plugins/setForward/',
-                add: '/api/mosdns/plugins/addForward/',
-                del: '/api/mosdns/plugins/delForward/',
-                toggle: '/api/mosdns/plugins/toggleForward/',
-                options: {
-                    selection: true,
-                    multiSelect: true,
-                    rowSelect: true,
-                    rowCount: [7, 14, 20, 50, 100, -1],
-                    formatters: {
-                        "uuid": function(column, row) {
-                            return "";  // Hide ID column
+            if ($("#" + forwardGridId).length > 0) {
+                // Remove existing event handlers to prevent duplicates
+                $("#" + forwardGridId).find("button[data-action='add']").off('click.forward');
+                
+                // Wait for buttons to be rendered, then bind events
+                setTimeout(function() {
+                    var addButton = $("#" + forwardGridId).find("button[data-action='add']");
+                    console.log('Found add buttons:', addButton.length);
+                    
+                    if (addButton.length > 0) {
+                        // Bind new event handler with namespace
+                        addButton.on('click.forward', function(e) {
+                            console.log('Forward Add button clicked');
+                            e.preventDefault();
+                            e.stopPropagation();
+                            showForwardForm();
+                            return false;
+                        });
+                        console.log('Forward Grid events bound successfully');
+                    } else {
+                        console.warn('Add button not found for Forward Grid');
+                    }
+                }, 200);
+            }
+        }
+
+        // Function to initialize Forward Grid
+        function initializeForwardGrid() {
+            var forwardGridId = "{{ formGridForward['table_id'] }}";
+            console.log('Initializing Forward Grid:', forwardGridId);
+            
+            if (forwardGridId && $("#" + forwardGridId).length > 0) {
+                // Check if already initialized
+                if ($("#" + forwardGridId).data('bootgrid')) {
+                    console.log('Forward Grid already initialized, rebinding events');
+                    bindForwardGridEvents();
+                    return;
+                }
+                
+                console.log('Forward Grid element found, initializing...');
+                
+                $("#" + forwardGridId).UIBootgrid({
+                    search: '/api/mosdns/plugins/searchForward',
+                    get: '/api/mosdns/plugins/getForward/',
+                    set: '/api/mosdns/plugins/setForward/',
+                    add: '/api/mosdns/plugins/addForward/',
+                    del: '/api/mosdns/plugins/delForward/',
+                    toggle: '/api/mosdns/plugins/toggleForward/',
+                    options: {
+                        selection: true,
+                        multiSelect: true,
+                        rowSelect: true,
+                        rowCount: [7, 14, 20, 50, 100, -1],
+                        formatters: {
+                            "uuid": function(column, row) {
+                                return "";  // Hide ID column
+                            }
                         }
                     }
-                }
-            }).on("loaded.rs.jquery.bootgrid", function() {
-                console.log('Forward Grid loaded successfully');
-                
-                // Handle add button click for Forward Grid
-                var addButton = $("#" + forwardGridId).find("button[data-action='add']");
-                console.log('Found add buttons:', addButton.length);
-                
-                addButton.off('click').on('click', function(e) {
-                    console.log('Add button clicked');
-                    e.preventDefault();
-                    showForwardForm();
+                }).on("loaded.rs.jquery.bootgrid", function() {
+                    console.log('Forward Grid loaded successfully');
+                    bindForwardGridEvents();
+                }).on("appended.rs.jquery.bootgrid", function() {
+                    console.log('Forward Grid appended event');
+                    bindForwardGridEvents();
                 });
-            }).on("appended.rs.jquery.bootgrid", function() {
-                console.log('Forward Grid appended event');
-                
-                // Re-bind add button after grid updates
-                var addButton = $("#" + forwardGridId).find("button[data-action='add']");
-                console.log('Re-binding add buttons:', addButton.length);
-                
-                addButton.off('click').on('click', function(e) {
-                    console.log('Add button clicked (re-bound)');
-                    e.preventDefault();
-                    showForwardForm();
-                });
-            });
-        } else {
-            console.error('Forward Grid element not found:', forwardGridId);
+            } else {
+                console.error('Forward Grid element not found:', forwardGridId);
+            }
         }
+
+        // Bind tab switch events to initialize Forward Grid when tab is activated
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href");
+            console.log('Tab switched to:', target);
+            
+            if (target === '#forward') {
+                console.log('Forward tab activated, initializing grid');
+                setTimeout(function() {
+                    initializeForwardGrid();
+                }, 100);
+            }
+        });
+
+        // Initialize Forward Grid when document is ready and if the tab is already active
+        $(document).ready(function() {
+            setTimeout(function() {
+                if ($('#forward').hasClass('active')) {
+                    console.log('Forward tab is initially active, initializing grid');
+                    initializeForwardGrid();
+                } else {
+                    console.log('Forward tab is not initially active');
+                }
+            }, 100);
+        });
 
         // Redirect Grid
         var redirectGridId = "{{ formGridRedirect['table_id'] }}";
@@ -461,7 +508,7 @@
         console.log('showForwardForm called with uuid:', uuid);
         
         // Hide the grid and show the form
-        $('#{{ formGridForward["table_id"] }}').hide();
+        $('#forwardGridContainer').hide();
         $('#forwardFormContainer').show();
         
         // Load form content
@@ -481,7 +528,7 @@
         
         // Hide the form and show the grid
         $('#forwardFormContainer').hide();
-        $('#{{ formGridForward["table_id"] }}').show();
+        $('#forwardGridContainer').show();
     }
     
     function saveForwardForm() {
@@ -615,15 +662,42 @@
             </div>
         </div>
         
-        <!-- Forward Grid -->
-        <table id="{{ formGridForward['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridForward['edit_dialog_id'] }}" data-editAlert="{{ formGridForward['edit_alert_id'] }}">
+        <!-- Forward Grid Container -->
+        <div id="forwardGridContainer">
+            <table id="{{ formGridForward['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridForward['edit_dialog_id'] }}" data-editAlert="{{ formGridForward['edit_alert_id'] }}">
+                <thead>
+                    <tr>
+                        <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                        <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                        <th data-column-id="name" data-type="string">{{ lang._('Tag') }}</th>
+                        <th data-column-id="concurrent" data-width="10em" data-type="string">{{ lang._('Concurrent') }}</th>
+                        <th data-column-id="upstream" data-width="20em" data-type="string">{{ lang._('Upstream') }}</th>
+                        <th data-column-id="command" data-type="string">{{ lang._('Command') }}</th>
+                        <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                            <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div id="redirect" class="tab-pane fade">
+        <table id="{{ formGridRedirect['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridRedirect['edit_dialog_id'] }}" data-editAlert="{{ formGridRedirect['edit_alert_id'] }}">
             <thead>
                 <tr>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string">{{ lang._('Tag') }}</th>
-                    <th data-column-id="concurrent" data-width="10em" data-type="string">{{ lang._('Concurrent') }}</th>
-                    <th data-column-id="upstream" data-width="20em" data-type="string">{{ lang._('Upstream') }}</th>
+                    <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="rules" data-width="30em" data-type="string">{{ lang._('Rules') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -640,76 +714,26 @@
             </tfoot>
         </table>
     </div>
-    <div id="redirect" class="tab-pane fade">
-        <table id="{{ formGridRedirect['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridRedirect['edit_dialog_id'] }}" data-editAlert="{{ formGridRedirect['edit_alert_id'] }}">
-            <thead>
-                <tr>
-                    {% for field in formGridRedirect['fields'] %}
-                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    {% set visible_field_count = 0 %}
-                    {% for field in formGridRedirect['fields'] %}
-                        {% if field['visible'] %}
-                            {% set visible_field_count = visible_field_count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% set current_visible_index = 0 %}
-                    {% for field in formGridRedirect['fields'] %}
-                        {% if field['visible'] %}
-                            {% set current_visible_index = current_visible_index + 1 %}
-                            {% if current_visible_index == visible_field_count %}
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-            </tfoot>
-        </table>
-    </div>
     <div id="rules" class="tab-pane fade">
         <table id="{{ formGridRules['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridRules['edit_dialog_id'] }}" data-editAlert="{{ formGridRules['edit_alert_id'] }}">
             <thead>
                 <tr>
-                    {% for field in formGridRules['fields'] %}
-                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endfor %}
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="rules" data-width="25em" data-type="string">{{ lang._('Rules') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    {% set visible_field_count = 0 %}
-                    {% for field in formGridRules['fields'] %}
-                        {% if field['visible'] %}
-                            {% set visible_field_count = visible_field_count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% set current_visible_index = 0 %}
-                    {% for field in formGridRules['fields'] %}
-                        {% if field['visible'] %}
-                            {% set current_visible_index = current_visible_index + 1 %}
-                            {% if current_visible_index == visible_field_count %}
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -718,35 +742,22 @@
         <table id="{{ formGridHosts['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridHosts['edit_dialog_id'] }}" data-editAlert="{{ formGridHosts['edit_alert_id'] }}">
             <thead>
                 <tr>
-                    {% for field in formGridHosts['fields'] %}
-                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endfor %}
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="files" data-width="25em" data-type="string">{{ lang._('Files') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    {% set visible_field_count = 0 %}
-                    {% for field in formGridHosts['fields'] %}
-                        {% if field['visible'] %}
-                            {% set visible_field_count = visible_field_count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% set current_visible_index = 0 %}
-                    {% for field in formGridHosts['fields'] %}
-                        {% if field['visible'] %}
-                            {% set current_visible_index = current_visible_index + 1 %}
-                            {% if current_visible_index == visible_field_count %}
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -755,41 +766,23 @@
         <table id="{{ formGridIPSet['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridIPSet['edit_dialog_id'] }}" data-editAlert="{{ formGridIPSet['edit_alert_id'] }}">
             <thead>
                 <tr>
-                    {% for field in formGridIPSet['fields'] %}
-                        {% if field['visible'] %}
-                            {% if field['column-id'] == 'sets' %}
-                            <th data-column-id="sets" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ lang._('Sets') }}</th>
-                            {% else %}
-                            <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="sets" data-width="25em" data-type="string">{{ lang._('Sets') }}</th>
+                    <th data-column-id="description" data-width="20em" data-type="string">{{ lang._('Description') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    {% set visible_field_count = 0 %}
-                    {% for field in formGridIPSet['fields'] %}
-                        {% if field['visible'] %}
-                            {% set visible_field_count = visible_field_count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% set current_visible_index = 0 %}
-                    {% for field in formGridIPSet['fields'] %}
-                        {% if field['visible'] %}
-                            {% set current_visible_index = current_visible_index + 1 %}
-                            {% if current_visible_index == visible_field_count %}
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -798,35 +791,24 @@
         <table id="{{ formGridSequence['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridSequence['edit_dialog_id'] }}" data-editAlert="{{ formGridSequence['edit_alert_id'] }}">
             <thead>
                 <tr>
-                    {% for field in formGridSequence['fields'] %}
-                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endfor %}
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="tag" data-width="10em" data-type="string">{{ lang._('Tag') }}</th>
+                    <th data-column-id="type" data-width="10em" data-type="string">{{ lang._('Type') }}</th>
+                    <th data-column-id="args" data-width="20em" data-type="string">{{ lang._('Arguments') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    {% set visible_field_count = 0 %}
-                    {% for field in formGridSequence['fields'] %}
-                        {% if field['visible'] %}
-                            {% set visible_field_count = visible_field_count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% set current_visible_index = 0 %}
-                    {% for field in formGridSequence['fields'] %}
-                        {% if field['visible'] %}
-                            {% set current_visible_index = current_visible_index + 1 %}
-                            {% if current_visible_index == visible_field_count %}
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -835,35 +817,23 @@
         <table id="{{ formGridFallback['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridFallback['edit_dialog_id'] }}" data-editAlert="{{ formGridFallback['edit_alert_id'] }}">
             <thead>
                 <tr>
-                    {% for field in formGridFallback['fields'] %}
-                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endfor %}
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="primary" data-width="15em" data-type="string">{{ lang._('Primary') }}</th>
+                    <th data-column-id="secondary" data-width="15em" data-type="string">{{ lang._('Secondary') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    {% set visible_field_count = 0 %}
-                    {% for field in formGridFallback['fields'] %}
-                        {% if field['visible'] %}
-                            {% set visible_field_count = visible_field_count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% set current_visible_index = 0 %}
-                    {% for field in formGridFallback['fields'] %}
-                        {% if field['visible'] %}
-                            {% set current_visible_index = current_visible_index + 1 %}
-                            {% if current_visible_index == visible_field_count %}
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -872,35 +842,23 @@
         <table id="{{ formGridServers['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridServers['edit_dialog_id'] }}" data-editAlert="{{ formGridServers['edit_alert_id'] }}">
             <thead>
                 <tr>
-                    {% for field in formGridServers['fields'] %}
-                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endfor %}
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="addr" data-width="20em" data-type="string">{{ lang._('Address') }}</th>
+                    <th data-column-id="protocol" data-width="10em" data-type="string">{{ lang._('Protocol') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    {% set visible_field_count = 0 %}
-                    {% for field in formGridServers['fields'] %}
-                        {% if field['visible'] %}
-                            {% set visible_field_count = visible_field_count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    {% set current_visible_index = 0 %}
-                    {% for field in formGridServers['fields'] %}
-                        {% if field['visible'] %}
-                            {% set current_visible_index = current_visible_index + 1 %}
-                            {% if current_visible_index == visible_field_count %}
-                                <td>
-                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                    </td>
                 </tr>
             </tfoot>
         </table>

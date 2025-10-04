@@ -80,20 +80,20 @@
                         <mask>/^[a-zA-Z0-9_-]+$/u</mask>
                         <ValidationMessage>Name should only contain alphanumeric characters, underscores and dashes</ValidationMessage>
                     </name>
-                    <upstream type="TextField">
-                        <default>8.8.8.8:53</default>
-                        <Required>Y</Required>
-                    </upstream>
                     <concurrent type="IntegerField">
                         <default>1</default>
                         <MinimumValue>1</MinimumValue>
                         <MaximumValue>10</MaximumValue>
                         <Required>N</Required>
                     </concurrent>
-                    <description type="TextField">
+                    <upstream type="TextField">
+                        <default>8.8.8.8:53</default>
+                        <Required>Y</Required>
+                    </upstream>
+                    <command type="TextField">
                         <default></default>
                         <Required>N</Required>
-                    </description>
+                    </command>
                 </forward>
             </forward>
             <hosts type="ArrayField">

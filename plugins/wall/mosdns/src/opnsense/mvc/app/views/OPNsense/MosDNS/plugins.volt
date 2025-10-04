@@ -35,106 +35,198 @@
         updateServiceControlUI('mosdns');
 
         // Forward Grid
-        $("#{{ formGridForward['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchForward',
-            get: '/api/mosdns/plugins/getForward/',
-            set: '/api/mosdns/plugins/setForward/',
-            add: '/api/mosdns/plugins/addForward/',
-            del: '/api/mosdns/plugins/delForward/',
-            toggle: '/api/mosdns/plugins/toggleForward/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        });
+        var forwardGridId = "{{ formGridForward['table_id'] }}";
+        console.log('Forward Grid ID:', forwardGridId);
+        
+        if (forwardGridId && $("#" + forwardGridId).length > 0) {
+            console.log('Forward Grid element found, initializing...');
+            
+            $("#" + forwardGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchForward',
+                get: '/api/mosdns/plugins/getForward/',
+                set: '/api/mosdns/plugins/setForward/',
+                add: '/api/mosdns/plugins/addForward/',
+                del: '/api/mosdns/plugins/delForward/',
+                toggle: '/api/mosdns/plugins/toggleForward/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function() {
+                console.log('Forward Grid loaded successfully');
+                
+                // Handle add button click for Forward Grid
+                var addButton = $("#" + forwardGridId).find("button[data-action='add']");
+                console.log('Found add buttons:', addButton.length);
+                
+                addButton.off('click').on('click', function(e) {
+                    console.log('Add button clicked');
+                    e.preventDefault();
+                    showForwardForm();
+                });
+            }).on("appended.rs.jquery.bootgrid", function() {
+                console.log('Forward Grid appended event');
+                
+                // Re-bind add button after grid updates
+                var addButton = $("#" + forwardGridId).find("button[data-action='add']");
+                console.log('Re-binding add buttons:', addButton.length);
+                
+                addButton.off('click').on('click', function(e) {
+                    console.log('Add button clicked (re-bound)');
+                    e.preventDefault();
+                    showForwardForm();
+                });
+            });
+        } else {
+            console.error('Forward Grid element not found:', forwardGridId);
+        }
 
         // Redirect Grid
-        $("#{{ formGridRedirect['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchRedirect',
-            get: '/api/mosdns/plugins/getRedirect/',
-            set: '/api/mosdns/plugins/setRedirect/',
-            add: '/api/mosdns/plugins/addRedirect/',
-            del: '/api/mosdns/plugins/delRedirect/',
-            toggle: '/api/mosdns/plugins/toggleRedirect/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        });
+        var redirectGridId = "{{ formGridRedirect['table_id'] }}";
+        if (redirectGridId && $("#" + redirectGridId).length > 0) {
+            $("#" + redirectGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchRedirect',
+                get: '/api/mosdns/plugins/getRedirect/',
+                set: '/api/mosdns/plugins/setRedirect/',
+                add: '/api/mosdns/plugins/addRedirect/',
+                del: '/api/mosdns/plugins/delRedirect/',
+                toggle: '/api/mosdns/plugins/toggleRedirect/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function() {
+                // Grid loaded successfully
+            });
+        } else {
+            console.error('Redirect Grid element not found:', redirectGridId);
+        }
 
         // Rules Grid (now part of sequences)
-        $("#{{ formGridRules['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchSequence',
-            get: '/api/mosdns/plugins/getSequence/',
-            set: '/api/mosdns/plugins/setSequence/',
-            add: '/api/mosdns/plugins/addSequence/',
-            del: '/api/mosdns/plugins/delSequence/',
-            toggle: '/api/mosdns/plugins/toggleSequence/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        });
+        var rulesGridId = "{{ formGridRules['table_id'] }}";
+        if (rulesGridId && $("#" + rulesGridId).length > 0) {
+            $("#" + rulesGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchSequence',
+                get: '/api/mosdns/plugins/getSequence/',
+                set: '/api/mosdns/plugins/setSequence/',
+                add: '/api/mosdns/plugins/addSequence/',
+                del: '/api/mosdns/plugins/delSequence/',
+                toggle: '/api/mosdns/plugins/toggleSequence/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function() {
+                // Grid loaded successfully
+            });
+        } else {
+            console.error('Rules Grid element not found:', rulesGridId);
+        }
 
         // Hosts Grid
-        $("#{{ formGridHosts['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchHosts',
-            get: '/api/mosdns/plugins/getHosts/',
-            set: '/api/mosdns/plugins/setHosts/',
-            add: '/api/mosdns/plugins/addHosts/',
-            del: '/api/mosdns/plugins/delHosts/',
-            toggle: '/api/mosdns/plugins/toggleHosts/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        });
+        var hostsGridId = "{{ formGridHosts['table_id'] }}";
+        if (hostsGridId && $("#" + hostsGridId).length > 0) {
+            $("#" + hostsGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchHosts',
+                get: '/api/mosdns/plugins/getHosts/',
+                set: '/api/mosdns/plugins/setHosts/',
+                add: '/api/mosdns/plugins/addHosts/',
+                del: '/api/mosdns/plugins/delHosts/',
+                toggle: '/api/mosdns/plugins/toggleHosts/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function() {
+                // Grid loaded successfully
+            });
+        } else {
+            console.error('Hosts Grid element not found:', hostsGridId);
+        }
 
         // IPSet Grid
-        console.log('Initializing IPSet Grid with ID:', "{{ formGridIPSet['table_id'] }}");
-        console.log('IPSet Grid search endpoint:', '/api/mosdns/plugins/searchIPSet');
-        $("#{{ formGridIPSet['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchIPSet',
-            get: '/api/mosdns/plugins/getIPSet/',
-            set: '/api/mosdns/plugins/setIPSet/',
-            add: '/api/mosdns/plugins/addIPSet/',
-            del: '/api/mosdns/plugins/delIPSet/',
-            toggle: '/api/mosdns/plugins/toggleIPSet/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        }).on('loaded.rs.jquery.bootgrid', function() {
-            console.log('IPSet Grid loaded successfully');
-        }).on('load.rs.jquery.bootgrid', function() {
-            console.log('IPSet Grid loading data...');
-        });
+        var ipsetGridId = "{{ formGridIPSet['table_id'] }}";
+        if (ipsetGridId && $("#" + ipsetGridId).length > 0) {
+            $("#" + ipsetGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchIPSet',
+                get: '/api/mosdns/plugins/getIPSet/',
+                set: '/api/mosdns/plugins/setIPSet/',
+                add: '/api/mosdns/plugins/addIPSet/',
+                del: '/api/mosdns/plugins/delIPSet/',
+                toggle: '/api/mosdns/plugins/toggleIPSet/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on('loaded.rs.jquery.bootgrid', function() {
+                // Grid loaded successfully
+            });
+        } else {
+            console.error('IPSet Grid element not found:', ipsetGridId);
+        }
 
         // Sequence Grid
-        $("#{{ formGridSequence['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchSequence',
-            get: '/api/mosdns/plugins/getSequence/',
-            set: '/api/mosdns/plugins/setSequence/',
-            add: '/api/mosdns/plugins/addSequence/',
-            del: '/api/mosdns/plugins/delSequence/',
-            toggle: '/api/mosdns/plugins/toggleSequence/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        });
+        var sequenceGridId = "{{ formGridSequence['table_id'] }}";
+        if (sequenceGridId && $("#" + sequenceGridId).length > 0) {
+            $("#" + sequenceGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchSequence',
+                get: '/api/mosdns/plugins/getSequence/',
+                set: '/api/mosdns/plugins/setSequence/',
+                add: '/api/mosdns/plugins/addSequence/',
+                del: '/api/mosdns/plugins/delSequence/',
+                toggle: '/api/mosdns/plugins/toggleSequence/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function() {
+                // Grid loaded successfully
+            });
+        } else {
+            console.error('Sequence Grid element not found:', sequenceGridId);
+        }
 
         // Custom handler for Sequence add button to create new tab instead of dialog
         $('#{{ formGridSequence["table_id"] }}').on('click', '[data-action="add"]', function(e) {
@@ -157,11 +249,8 @@
             
             // Bind grid events after initialization
             setTimeout(function() {
-                // Forward Grid events
-                $('#{{ formGridForward["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
-                    e.preventDefault();
-                    $("#dialogForward").modal('show');
-                });
+                // Forward Grid events - Override default behavior
+                $('#{{ formGridForward["table_id"] }}').find('[data-action="add"]').off('click');
                 
                 // Redirect Grid events
                 $('#{{ formGridRedirect["table_id"] }}').find('[data-action="add"]').off('click').on('click', function(e) {
@@ -202,42 +291,60 @@
         });
 
         // Fallback Grid
-        console.log('Initializing Fallback Grid with ID:', "{{ formGridFallback['table_id'] }}");
-        console.log('Fallback Grid search endpoint:', '/api/mosdns/plugins/searchFallback');
-        $("#{{ formGridFallback['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchFallback',
-            get: '/api/mosdns/plugins/getFallback/',
-            set: '/api/mosdns/plugins/setFallback/',
-            add: '/api/mosdns/plugins/addFallback/',
-            del: '/api/mosdns/plugins/delFallback/',
-            toggle: '/api/mosdns/plugins/toggleFallback/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        }).on('loaded.rs.jquery.bootgrid', function() {
-            console.log('Fallback Grid loaded successfully');
-        }).on('load.rs.jquery.bootgrid', function() {
-            console.log('Fallback Grid loading data...');
-        });
+        var fallbackGridId = "{{ formGridFallback['table_id'] }}";
+        if (fallbackGridId && $("#" + fallbackGridId).length > 0) {
+            $("#" + fallbackGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchFallback',
+                get: '/api/mosdns/plugins/getFallback/',
+                set: '/api/mosdns/plugins/setFallback/',
+                add: '/api/mosdns/plugins/addFallback/',
+                del: '/api/mosdns/plugins/delFallback/',
+                toggle: '/api/mosdns/plugins/toggleFallback/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on('loaded.rs.jquery.bootgrid', function() {
+                // Grid loaded successfully
+            });
+        } else {
+            console.error('Fallback Grid element not found:', fallbackGridId);
+        }
 
         // Servers Grid
-        $("#{{ formGridServers['table_id'] }}").UIBootgrid({
-            search: '/api/mosdns/plugins/searchServers',
-            get: '/api/mosdns/plugins/getServers/',
-            set: '/api/mosdns/plugins/setServers/',
-            add: '/api/mosdns/plugins/addServers/',
-            del: '/api/mosdns/plugins/delServers/',
-            toggle: '/api/mosdns/plugins/toggleServers/',
-            options: {
-                selection: true,
-                multiSelect: true,
-                rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1]
-            }
-        });
+        var serversGridId = "{{ formGridServers['table_id'] }}";
+        if (serversGridId && $("#" + serversGridId).length > 0) {
+            $("#" + serversGridId).UIBootgrid({
+                search: '/api/mosdns/plugins/searchServers',
+                get: '/api/mosdns/plugins/getServers/',
+                set: '/api/mosdns/plugins/setServers/',
+                add: '/api/mosdns/plugins/addServers/',
+                del: '/api/mosdns/plugins/delServers/',
+                toggle: '/api/mosdns/plugins/toggleServers/',
+                options: {
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    rowCount: [7, 14, 20, 50, 100, -1],
+                    formatters: {
+                        "uuid": function(column, row) {
+                            return "";  // Hide ID column
+                        }
+                    }
+                }
+            }).on("loaded.rs.jquery.bootgrid", function() {
+                // Grid loaded successfully
+            });
+        } else {
+            console.error('Servers Grid element not found:', serversGridId);
+        }
 
         // Cache Grid - removed as Cache is now a form
         // $("#{{ formGridCache['table_id'] }}").UIBootgrid({
@@ -348,6 +455,126 @@
 
         $("#reconfigureAct").SimpleActionButton();
     });
+
+    // Global functions for form operations
+    function showForwardForm(uuid) {
+        console.log('showForwardForm called with uuid:', uuid);
+        
+        // Hide the grid and show the form
+        $('#{{ formGridForward["table_id"] }}').hide();
+        $('#forwardFormContainer').show();
+        
+        // Load form content
+        if (uuid) {
+            // Edit mode - load existing data
+            console.log('Loading existing data for uuid:', uuid);
+            loadForwardFormData(uuid);
+        } else {
+            // Add mode - clear form
+            console.log('Clearing form for new entry');
+            clearForwardForm();
+        }
+    }
+    
+    function hideForwardForm() {
+        console.log('hideForwardForm called');
+        
+        // Hide the form and show the grid
+        $('#forwardFormContainer').hide();
+        $('#{{ formGridForward["table_id"] }}').show();
+    }
+    
+    function saveForwardForm() {
+        console.log('saveForwardForm called');
+        
+        // Collect form data
+        var formData = {};
+        $('#forwardFormContent input, #forwardFormContent select').each(function() {
+            var name = $(this).attr('name');
+            var value = $(this).val();
+            if (name) {
+                formData[name] = value;
+            }
+        });
+        
+        // Save via API
+        $.ajax({
+            url: '/api/mosdns/plugins/setForward/',
+            type: 'POST',
+            data: formData,
+            success: function(data) {
+                if (data && data.result === 'saved') {
+                    hideForwardForm();
+                    $("#{{ formGridForward['table_id'] }}").bootgrid('reload');
+                } else {
+                    alert('{{ lang._("Failed to save forward configuration") }}');
+                }
+            },
+            error: function() {
+                alert('{{ lang._("Failed to save forward configuration") }}');
+            }
+        });
+    }
+    
+    function loadForwardFormData(uuid) {
+        // Load form fields dynamically
+        $.ajax({
+            url: '/api/mosdns/plugins/getForward/' + uuid,
+            type: 'GET',
+            success: function(data) {
+                if (data && data.forward) {
+                    var formHtml = generateForwardFormHtml(data.forward);
+                    $('#forwardFormContent').html(formHtml);
+                }
+            },
+            error: function() {
+                console.error('Failed to load forward data');
+            }
+        });
+    }
+    
+    function clearForwardForm() {
+        var formHtml = generateForwardFormHtml({});
+        $('#forwardFormContent').html(formHtml);
+    }
+    
+    function generateForwardFormHtml(data) {
+        data = data || {};
+        
+        var html = '<div class="row">' +
+            '<div class="col-md-6">' +
+                '<div class="form-group">' +
+                    '<label for="forward_enabled">{{ lang._("Enabled") }}</label>' +
+                    '<select id="forward_enabled" name="enabled" class="form-control">' +
+                        '<option value="1"' + (data.enabled === '1' ? ' selected' : '') + '>{{ lang._("Yes") }}</option>' +
+                        '<option value="0"' + (data.enabled === '0' ? ' selected' : '') + '>{{ lang._("No") }}</option>' +
+                    '</select>' +
+                '</div>' +
+            '</div>' +
+            '<div class="col-md-6">' +
+                '<div class="form-group">' +
+                    '<label for="forward_tag">{{ lang._("Tag") }}</label>' +
+                    '<input type="text" id="forward_tag" name="tag" class="form-control" value="' + (data.tag || '') + '">' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+        '<div class="row">' +
+            '<div class="col-md-6">' +
+                '<div class="form-group">' +
+                    '<label for="forward_concurrent">{{ lang._("Concurrent") }}</label>' +
+                    '<input type="number" id="forward_concurrent" name="concurrent" class="form-control" value="' + (data.concurrent || '1') + '">' +
+                '</div>' +
+            '</div>' +
+            '<div class="col-md-6">' +
+                '<div class="form-group">' +
+                    '<label for="forward_upstream">{{ lang._("Upstream") }}</label>' +
+                    '<input type="text" id="forward_upstream" name="upstream" class="form-control" value="' + (data.upstream || '') + '">' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+        
+        return html;
+    }
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -364,12 +591,40 @@
 
 <div class="tab-content content-box col-xs-12 __mb" id="mainContent">
     <div id="forward" class="tab-pane fade in active">
+        <!-- Forward Form - Initially Hidden -->
+        <div id="forwardFormContainer" style="display: none;" class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    {{ lang._('Forward Configuration') }}
+                    <button type="button" class="btn btn-xs btn-default pull-right" onclick="hideForwardForm()">
+                        <span class="fa fa-times"></span> {{ lang._('Cancel') }}
+                    </button>
+                </h4>
+            </div>
+            <div class="panel-body">
+                <!-- Form content will be loaded here -->
+                <div id="forwardFormContent"></div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="saveForwardForm()">
+                        <span class="fa fa-save"></span> {{ lang._('Save') }}
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="hideForwardForm()">
+                        {{ lang._('Cancel') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Forward Grid -->
         <table id="{{ formGridForward['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridForward['edit_dialog_id'] }}" data-editAlert="{{ formGridForward['edit_alert_id'] }}">
             <thead>
                 <tr>
-                    {% for field in formGridForward['fields'] %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endfor %}
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string">{{ lang._('Tag') }}</th>
+                    <th data-column-id="concurrent" data-width="10em" data-type="string">{{ lang._('Concurrent') }}</th>
+                    <th data-column-id="upstream" data-width="20em" data-type="string">{{ lang._('Upstream') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -390,7 +645,7 @@
             <thead>
                 <tr>
                     {% for field in formGridRedirect['fields'] %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -398,11 +653,26 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
+                    {% set visible_field_count = 0 %}
+                    {% for field in formGridRedirect['fields'] %}
+                        {% if field['visible'] %}
+                            {% set visible_field_count = visible_field_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set current_visible_index = 0 %}
+                    {% for field in formGridRedirect['fields'] %}
+                        {% if field['visible'] %}
+                            {% set current_visible_index = current_visible_index + 1 %}
+                            {% if current_visible_index == visible_field_count %}
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </tfoot>
         </table>
@@ -412,7 +682,7 @@
             <thead>
                 <tr>
                     {% for field in formGridRules['fields'] %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -420,11 +690,26 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
+                    {% set visible_field_count = 0 %}
+                    {% for field in formGridRules['fields'] %}
+                        {% if field['visible'] %}
+                            {% set visible_field_count = visible_field_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set current_visible_index = 0 %}
+                    {% for field in formGridRules['fields'] %}
+                        {% if field['visible'] %}
+                            {% set current_visible_index = current_visible_index + 1 %}
+                            {% if current_visible_index == visible_field_count %}
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </tfoot>
         </table>
@@ -434,7 +719,7 @@
             <thead>
                 <tr>
                     {% for field in formGridHosts['fields'] %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -442,11 +727,26 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
+                    {% set visible_field_count = 0 %}
+                    {% for field in formGridHosts['fields'] %}
+                        {% if field['visible'] %}
+                            {% set visible_field_count = visible_field_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set current_visible_index = 0 %}
+                    {% for field in formGridHosts['fields'] %}
+                        {% if field['visible'] %}
+                            {% set current_visible_index = current_visible_index + 1 %}
+                            {% if current_visible_index == visible_field_count %}
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </tfoot>
         </table>
@@ -456,11 +756,13 @@
             <thead>
                 <tr>
                     {% for field in formGridIPSet['fields'] %}
-                    {% if field['column-id'] == 'sets' %}
-                    <th data-column-id="sets" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ lang._('Sets') }}</th>
-                    {% else %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
-                    {% endif %}
+                        {% if field['visible'] %}
+                            {% if field['column-id'] == 'sets' %}
+                            <th data-column-id="sets" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ lang._('Sets') }}</th>
+                            {% else %}
+                            <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                            {% endif %}
+                        {% endif %}
                     {% endfor %}
                 </tr>
             </thead>
@@ -468,11 +770,26 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
+                    {% set visible_field_count = 0 %}
+                    {% for field in formGridIPSet['fields'] %}
+                        {% if field['visible'] %}
+                            {% set visible_field_count = visible_field_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set current_visible_index = 0 %}
+                    {% for field in formGridIPSet['fields'] %}
+                        {% if field['visible'] %}
+                            {% set current_visible_index = current_visible_index + 1 %}
+                            {% if current_visible_index == visible_field_count %}
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </tfoot>
         </table>
@@ -482,7 +799,7 @@
             <thead>
                 <tr>
                     {% for field in formGridSequence['fields'] %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -490,11 +807,26 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
+                    {% set visible_field_count = 0 %}
+                    {% for field in formGridSequence['fields'] %}
+                        {% if field['visible'] %}
+                            {% set visible_field_count = visible_field_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set current_visible_index = 0 %}
+                    {% for field in formGridSequence['fields'] %}
+                        {% if field['visible'] %}
+                            {% set current_visible_index = current_visible_index + 1 %}
+                            {% if current_visible_index == visible_field_count %}
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </tfoot>
         </table>
@@ -504,7 +836,7 @@
             <thead>
                 <tr>
                     {% for field in formGridFallback['fields'] %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -512,11 +844,26 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
+                    {% set visible_field_count = 0 %}
+                    {% for field in formGridFallback['fields'] %}
+                        {% if field['visible'] %}
+                            {% set visible_field_count = visible_field_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set current_visible_index = 0 %}
+                    {% for field in formGridFallback['fields'] %}
+                        {% if field['visible'] %}
+                            {% set current_visible_index = current_visible_index + 1 %}
+                            {% if current_visible_index == visible_field_count %}
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </tfoot>
         </table>
@@ -526,7 +873,7 @@
             <thead>
                 <tr>
                     {% for field in formGridServers['fields'] %}
-                    <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true"{% endif %} {% if not field['visible'] %}data-visible="false"{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
+                        <th data-column-id="{{ field['column-id'] }}" data-type="string" {% if field['identifier'] %}data-identifier="true" data-visible="false"{% else %}{% if not field['visible'] %}data-visible="false"{% endif %}{% endif %} {% if not field['sortable'] %}data-sortable="false"{% endif %}>{{ field['label'] }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -534,11 +881,26 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
-                    </td>
+                    {% set visible_field_count = 0 %}
+                    {% for field in formGridServers['fields'] %}
+                        {% if field['visible'] %}
+                            {% set visible_field_count = visible_field_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set current_visible_index = 0 %}
+                    {% for field in formGridServers['fields'] %}
+                        {% if field['visible'] %}
+                            {% set current_visible_index = current_visible_index + 1 %}
+                            {% if current_visible_index == visible_field_count %}
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-fw fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </tfoot>
         </table>

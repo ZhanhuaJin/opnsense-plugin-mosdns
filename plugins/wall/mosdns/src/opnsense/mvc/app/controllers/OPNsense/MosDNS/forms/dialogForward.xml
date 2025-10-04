@@ -12,22 +12,12 @@
     </field>
     <field>
         <id>forward.name</id>
-        <label>Name</label>
+        <label>Tag</label>
         <type>text</type>
-        <help>Unique identifier for the forward plugin (formerly Tag)</help>
+        <help>Unique tag identifier for the forward plugin</help>
         <grid_view>
             <sequence>2</sequence>
             <width>15em</width>
-        </grid_view>
-    </field>
-    <field>
-        <id>forward.upstream</id>
-        <label>Upstream</label>
-        <type>text</type>
-        <help>Upstream DNS servers, one per line (e.g., udp://223.5.5.5)</help>
-        <grid_view>
-            <sequence>3</sequence>
-            <width>20em</width>
         </grid_view>
     </field>
     <field>
@@ -36,18 +26,24 @@
         <type>text</type>
         <help>Number of concurrent queries (1-10)</help>
         <grid_view>
-            <sequence>4</sequence>
+            <sequence>3</sequence>
             <width>10em</width>
         </grid_view>
     </field>
     <field>
-        <id>forward.description</id>
-        <label>Description</label>
+        <id>forward.upstream</id>
+        <label>Upstream</label>
         <type>text</type>
-        <help>Optional description for this forward entry</help>
+        <help>Upstream DNS servers, one per line (e.g., udp://223.5.5.5)</help>
         <grid_view>
-            <sequence>5</sequence>
+            <sequence>4</sequence>
             <width>20em</width>
         </grid_view>
+    </field>
+    <field>
+        <id>forward.command</id>
+        <label>Command</label>
+        <type>text</type>
+        <help>Additional command parameters for the forward plugin</help>
     </field>
 </form>

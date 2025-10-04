@@ -44,7 +44,7 @@ class PluginsController extends ControllerBase
         // Load form definitions for dialog boxes
         $this->view->formDialogEditForward = $this->getForm("dialogForward");
         $this->view->formDialogEditRedirect = $this->getForm("dialogRedirect");
-        $this->view->formDialogEditRules = $this->getForm("dialogSequence");
+        $this->view->formDialogEditRules = $this->getForm("dialogRules");
         $this->view->formDialogEditHosts = $this->getForm("dialogHosts");
         $this->view->formDialogEditIPSet = $this->getForm("dialogIPSet");
         $this->view->formDialogEditSequence = $this->getForm("dialogSequence");
@@ -55,7 +55,7 @@ class PluginsController extends ControllerBase
         // Generate grid configurations for tables
         $this->view->formGridForward = $this->getFormGrid('dialogForward');
         $this->view->formGridRedirect = $this->getFormGrid('dialogRedirect');
-        $this->view->formGridRules = $this->getFormGrid('dialogSequence');
+        $this->view->formGridRules = $this->getFormGrid('dialogRules');
         $this->view->formGridHosts = $this->getFormGrid('dialogHosts');
         $this->view->formGridIPSet = $this->getFormGrid('dialogIPSet');
         $this->view->formGridSequence = $this->getFormGrid('dialogSequence');

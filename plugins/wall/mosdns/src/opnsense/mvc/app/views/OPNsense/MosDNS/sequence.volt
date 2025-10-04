@@ -30,41 +30,32 @@
         
         <div class="row">
             <div class="col-md-7">
-                <div class="bootgrid-header container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="actionBar">
-                                <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table id="grid-sequence" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEditSequence">
+                        <thead>
+                            <tr>
+                                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                                <th data-column-id="tag" data-type="string">{{ lang._('Tag') }}</th>
+                                <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+                                <th data-column-id="args" data-type="string">{{ lang._('Args') }}</th>
+                                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
+                                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-                
-                <table id="grid-sequence" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEditSequence">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                            <th data-column-id="tag" data-type="string">{{ lang._('Tag') }}</th>
-                            <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
-                            <th data-column-id="args" data-type="string">{{ lang._('Args') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="7">
-                                <button data-action="add" type="button" class="btn btn-xs btn-primary">
-                                    <span class="fa fa-plus"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
             </div>
             <div class="col-md-5">
                 <div class="hidden">

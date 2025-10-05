@@ -28,13 +28,32 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function() {
+        // 设置CSRF令牌头
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                // 从cookie中获取CSRF令牌
+                var csrfToken = '';
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.indexOf('X-CSRFToken=') === 0) {
+                        csrfToken = cookie.substring('X-CSRFToken='.length);
+                        break;
+                    }
+                }
+                if (csrfToken) {
+                    xhr.setRequestHeader('X-CSRFToken', csrfToken);
+                }
+            }
+        });
+
         $("#grid-forward").UIBootgrid({
-            search:'/api/mosdns/forward/searchForward',
-            get:'/api/mosdns/forward/getForward/',
-            set:'/api/mosdns/forward/setForward/',
-            add:'/api/mosdns/forward/addForward/',
-            del:'/api/mosdns/forward/delForward/',
-            toggle:'/api/mosdns/forward/toggleForward/'
+            search:'/api/mosdns/plugins/searchForward',
+            get:'/api/mosdns/plugins/getForward/',
+            set:'/api/mosdns/plugins/setForward/',
+            add:'/api/mosdns/plugins/addForward/',
+            del:'/api/mosdns/plugins/delForward/',
+            toggle:'/api/mosdns/plugins/toggleForward/'
         });
 
         // 动态标签页控制逻辑 - 参考IPSec connections实现
@@ -52,11 +71,11 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         // 根据Forward名称动态更新标签页文本
-        $("#forward\\.name").change(function(){
+        $("#forward\\\\.name").change(function(){
             if ($(this).val() !== '') {
                 $("#ForwardDialog").text($(this).val());
             } else {
-                $("#ForwardDialog").text('{{ lang._('Edit Forward') }}');
+                $("#ForwardDialog").text('{{ lang._("Edit Forward") }}');
             }
         });
 

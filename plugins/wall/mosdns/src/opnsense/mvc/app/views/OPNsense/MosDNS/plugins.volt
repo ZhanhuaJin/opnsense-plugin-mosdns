@@ -26,6 +26,7 @@
 
 <script>
     $( document ).ready(function() {
+
         var data_get_map = {'frm_GeneralSettings':"/api/mosdns/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
@@ -43,10 +44,13 @@
                 // Remove existing event handlers to prevent duplicates
                 $("#" + forwardGridId).find("button[data-action='add']").off('click.forward');
                 
-                // Wait for buttons to be rendered, then bind events
-                setTimeout(function() {
+                // Use a more reliable approach to wait for buttons
+                var attempts = 0;
+                var maxAttempts = 20; // Maximum 2 seconds (20 * 100ms)
+                
+                function tryBindEvents() {
                     var addButton = $("#" + forwardGridId).find("button[data-action='add']");
-                    console.log('Found add buttons:', addButton.length);
+                    console.log('Attempt', attempts + 1, '- Found add buttons:', addButton.length);
                     
                     if (addButton.length > 0) {
                         // Bind new event handler with namespace
@@ -58,10 +62,15 @@
                             return false;
                         });
                         console.log('Forward Grid events bound successfully');
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        setTimeout(tryBindEvents, 100);
                     } else {
-                        console.warn('Add button not found for Forward Grid');
+                        console.warn('Add button not found for Forward Grid after', maxAttempts, 'attempts');
                     }
-                }, 200);
+                }
+                
+                tryBindEvents();
             }
         }
 
@@ -117,22 +126,26 @@
             
             if (target === '#forward') {
                 console.log('Forward tab activated, initializing grid');
-                setTimeout(function() {
-                    initializeForwardGrid();
-                }, 100);
+                // No delay needed since tab is already shown
+                initializeForwardGrid();
             }
         });
 
         // Initialize Forward Grid when document is ready and if the tab is already active
         $(document).ready(function() {
-            setTimeout(function() {
-                if ($('#forward').hasClass('active')) {
+            // Use a more reliable approach to check if Forward tab is active
+            function checkAndInitializeForward() {
+                if ($('#forward').hasClass('active') || $('#forward').hasClass('show')) {
                     console.log('Forward tab is initially active, initializing grid');
                     initializeForwardGrid();
                 } else {
                     console.log('Forward tab is not initially active');
                 }
-            }, 100);
+            }
+            
+            // Try immediately, then with a small delay if needed
+            checkAndInitializeForward();
+            setTimeout(checkAndInitializeForward, 50);
         });
 
         // Redirect Grid

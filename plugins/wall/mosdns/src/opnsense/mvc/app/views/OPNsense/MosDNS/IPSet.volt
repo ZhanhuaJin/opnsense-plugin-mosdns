@@ -1,4 +1,50 @@
 <script>
+    // CSRF Token Setup for iframe
+    function setupAjaxWithCSRF(csrfToken) {
+        if (csrfToken) {
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                    }
+                }
+            });
+            console.log("CSRF token set for IPSet page:", csrfToken);
+        }
+    }
+
+    // Listen for CSRF token from parent window
+    window.addEventListener("message", function(event) {
+        if (event.data && (event.data.type === "csrf-token" || event.data.type === "csrf_token")) {
+            var csrfToken = event.data.token || event.data.csrf;
+            if (csrfToken) {
+                setupAjaxWithCSRF(csrfToken);
+            }
+        }
+    }, false);
+
+    // Try to get CSRF token from parent window if available
+    if (window.parent && window.parent !== window) {
+        try {
+            var parentMeta = window.parent.document.querySelector('meta[name="csrf-token"]');
+            if (parentMeta) {
+                setupAjaxWithCSRF(parentMeta.getAttribute('content'));
+            } else {
+                var parentInput = window.parent.document.querySelector('input[name="csrf"]');
+                if (parentInput) {
+                    setupAjaxWithCSRF(parentInput.value);
+                } else if (window.parent.csrfToken) {
+                    setupAjaxWithCSRF(window.parent.csrfToken);
+                }
+            }
+        } catch(e) {
+            console.log("Could not access parent window for CSRF token");
+        }
+        
+        // Request CSRF token from parent
+        window.parent.postMessage({type: 'request_csrf_token'}, '*');
+    }
+
     $( document ).ready(function() {
         var data_get_map = {'frm_DialogEditIPSet':'/api/mosdns/ipset/getItem/'};
         mapDataToFormUI(data_get_map).done(function(data){

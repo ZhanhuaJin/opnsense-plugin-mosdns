@@ -81,4 +81,4 @@ POSSIBILITY OF SUCH DAMAGE.
 </section>
 
 {# include dialogs #}
-{{ partial("layout_partials/base_dialog",['fields':formDialogDataSource,'id':'DialogDataSource','label':lang._('Edit Data Source')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogDataSource,'id':'dialog_data_source','label':lang._('Edit Data Source')])}}

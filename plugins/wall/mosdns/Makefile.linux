@@ -153,23 +153,23 @@ package: clean
 	# Create the package using tar with ustar format
 	@echo "Creating package archive..."
 	@echo "Debug: Checking what will be packaged:"
-	@cd "$(PACKAGE_DIR)" && find . -name "dialogForward.xml" -type f
+	@cd "$(PACKAGE_DIR)" && find . -name "dialog_forward.xml" -type f
 	@echo "Debug: Checking controllers/forms directory structure:"
 	@cd "$(PACKAGE_DIR)" && find usr/local/opnsense/mvc/app/controllers -name "*.xml" | head -5
 	
-	# Debug: Check if dialogForward.xml exists in controllers/forms before packaging
+	# Debug: Check if dialog_forward.xml exists in controllers/forms before packaging
 	@echo "=== DEBUG: Files in controllers/forms before packaging ==="
-	@ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/" | grep dialogForward || echo "dialogForward.xml not found in controllers/forms"
+	@ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/controllers/OPNsense/MosDNS/forms/" | grep dialog_forward || echo "dialog_forward.xml not found in controllers/forms"
 	@echo "=== END DEBUG ==="
 	
 	# Debug: Check if original forms directory still exists
 	@echo "=== DEBUG: Checking if original forms directory exists ==="
-	@ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms/OPNsense/MosDNS/" 2>/dev/null | grep dialogForward || echo "Original forms directory does not exist or dialogForward.xml not found"
+	@ls -la "$(PACKAGE_DIR)/usr/local/opnsense/mvc/app/forms/OPNsense/MosDNS/" 2>/dev/null | grep dialog_forward || echo "Original forms directory does not exist or dialog_forward.xml not found"
 	@echo "=== END DEBUG ==="
 	
 	# Debug: Show complete directory structure
 	@echo "=== DEBUG: Complete directory structure ==="
-	@cd "$(PACKAGE_DIR)" && find usr/local/opnsense/mvc/app -name "dialogForward.xml" -type f
+	@cd "$(PACKAGE_DIR)" && find usr/local/opnsense/mvc/app -name "dialog_forward.xml" -type f
 	@echo "=== END DEBUG ==="
 	
 	@cd "$(PACKAGE_DIR)" && tar --format=ustar --mtime='2024-01-01 00:00:00' -czf "$(BUILD_DIR)/$(PACKAGE_NAME)" +MANIFEST +POST_INSTALL +PRE_DEINSTALL usr/

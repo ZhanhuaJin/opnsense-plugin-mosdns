@@ -14,14 +14,14 @@ class IndexController extends BaseIndexController
         
         // 加载所有需要的表单
         $this->view->generalForm = $this->getForm('general');
-        $this->view->pluginsCacheForm = $this->getForm('pluginsCache');
-        $this->view->pluginsFallbackForm = $this->getForm('pluginsFallback');
-        $this->view->pluginsForwardForm = $this->getForm('pluginsForward');
-        $this->view->pluginsHostsForm = $this->getForm('pluginsHosts');
-        $this->view->pluginsIpsetForm = $this->getForm('pluginsIPSet');
-        $this->view->pluginsRedirectForm = $this->getForm('pluginsRedirect');
-        $this->view->pluginsSequenceForm = $this->getForm('pluginsSequence');
-        $this->view->pluginsServersForm = $this->getForm('pluginsServers');
+        $this->view->pluginsCacheForm = $this->getForm('plugins_cache');
+        $this->view->pluginsFallbackForm = $this->getForm('plugins_fallback');
+        $this->view->pluginsForwardForm = $this->getForm('plugins_forward');
+        $this->view->pluginsHostsForm = $this->getForm('plugins_hosts');
+        $this->view->pluginsIpsetForm = $this->getForm('plugins_ipset');
+        $this->view->pluginsRedirectForm = $this->getForm('plugins_redirect');
+        $this->view->pluginsSequenceForm = $this->getForm('plugins_sequence');
+        $this->view->pluginsServersForm = $this->getForm('plugins_servers');
         $this->view->externalDataForm = $this->getForm('externaldata');
     }
 }

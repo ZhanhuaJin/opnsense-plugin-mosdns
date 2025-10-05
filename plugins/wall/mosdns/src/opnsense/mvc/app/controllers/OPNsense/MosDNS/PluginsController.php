@@ -42,71 +42,31 @@ class PluginsController extends ControllerBase
         $this->view->title = "MosDNS Plugins";
         
         // Load form definitions for dialog boxes
-        $this->view->formDialogEditForward = $this->getForm("dialogForward");
-        $this->view->formDialogEditRedirect = $this->getForm("dialogRedirect");
-        $this->view->formDialogEditRules = $this->getForm("dialogRules");
-        $this->view->formDialogEditHosts = $this->getForm("dialogHosts");
-        $this->view->formDialogEditIPSet = $this->getForm("dialogIPSet");
-        $this->view->formDialogEditSequence = $this->getForm("dialogSequence");
-        $this->view->formDialogEditFallback = $this->getForm("dialogFallback");
-        $this->view->formDialogEditServers = $this->getForm("dialogServers");
-        $this->view->formDialogEditCache = $this->getForm("cache");
+        $this->view->formDialogEditForward = $this->getForm("dialog_forward");
+        $this->view->formDialogEditRedirect = $this->getForm("dialog_redirect");
+        $this->view->formDialogEditRules = $this->getForm("dialog_rules");
+        $this->view->formDialogEditHosts = $this->getForm("dialog_hosts");
+        $this->view->formDialogEditIPSet = $this->getForm("dialog_ipset");
+        $this->view->formDialogEditSequence = $this->getForm("dialog_sequence");
+        $this->view->formDialogEditFallback = $this->getForm("dialog_fallback");
+        $this->view->formDialogEditServers = $this->getForm("dialog_servers");
+        $this->view->formDialogEditCache = $this->getForm("dialog_cache");
         
         // Generate grid configurations for tables
-        $this->view->formGridForward = $this->getFormGrid('dialogForward');
-        $this->view->formGridRedirect = $this->getFormGrid('dialogRedirect');
-        $this->view->formGridRules = $this->getFormGrid('dialogRules');
-        $this->view->formGridHosts = $this->getFormGrid('dialogHosts');
-        $this->view->formGridIPSet = $this->getFormGrid('dialogIPSet');
-        $this->view->formGridSequence = $this->getFormGrid('dialogSequence');
-        $this->view->formGridFallback = $this->getFormGrid('dialogFallback');
-        $this->view->formGridServers = $this->getFormGrid('dialogServers');
-        $this->view->formGridCache = $this->getFormGrid('cache');
+        $this->view->formGridForward = $this->getFormGrid('dialog_forward');
+        $this->view->formGridRedirect = $this->getFormGrid('dialog_redirect');
+        $this->view->formGridRules = $this->getFormGrid('dialog_rules');
+        $this->view->formGridHosts = $this->getFormGrid('dialog_hosts');
+        $this->view->formGridIPSet = $this->getFormGrid('dialog_ipset');
+        $this->view->formGridSequence = $this->getFormGrid('dialog_sequence');
+        $this->view->formGridFallback = $this->getFormGrid('dialog_fallback');
+        $this->view->formGridServers = $this->getFormGrid('dialog_servers');
+        $this->view->formGridCache = $this->getFormGrid('dialog_cache');
         
         $this->view->pick('OPNsense/MosDNS/plugins');
     }
 
-    public function cacheAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/cache');
-    }
 
-    public function forwardAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/forward');
-    }
-
-    public function redirectAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/redirect');
-    }
-
-    public function hostsAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/hosts');
-    }
-
-    public function ipsetAction()
-    {
-        // Load form dialog for IPSet configuration
-        $this->view->formDialogEditIPSet = $this->getForm("dialogIPSet");
-        $this->view->pick('OPNsense/MosDNS/ipset');
-    }
-
-    public function sequenceAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/sequence');
-    }
-
-    public function fallbackAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/fallback');
-    }
-
-    public function serversAction()
-    {
-        $this->view->pick('OPNsense/MosDNS/servers');
-    }
 
     /**
      * Main plugins page with iframe-based design
@@ -123,11 +83,56 @@ class PluginsController extends ControllerBase
     // Bare versions for iframe embedding (without layout)
     public function forwardBareAction()
     {
-        $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
-        $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_MAIN_LAYOUT);
-        $this->view->formDialogForward = $this->getForm("dialogForward");
-        $this->view->formGridForward = $this->getFormGrid('dialogForward');
-        $this->view->pick('OPNsense/MosDNS/forward_bare');
+        // Completely disable all view rendering to prevent any OPNsense framework
+        $this->view->disable();
+        
+        // Disable response auto-rendering
+        $this->response->setHeader('Content-Type', 'text/html; charset=UTF-8');
+        
+        // Get form data
+        $formDialogForward = $this->getForm("dialogForward");
+        $formGridForward = $this->getFormGrid('dialogForward');
+        
+        // Get template path
+        $templatePath = $this->view->getViewsDir() . 'forward_bare.volt';
+        
+        // Initialize Volt engine
+        $volt = new \Phalcon\Mvc\View\Engine\Volt($this->view, $this->di);
+        $volt->setOptions([
+            'compiledPath' => sys_get_temp_dir() . '/',
+            'compiledSeparator' => '_'
+        ]);
+        
+        // Create a simple lang function for translations
+        $langFunction = function($key) {
+            // Simple translation - in a real implementation you'd use proper translation service
+            $translations = [
+                'Forward Settings' => 'Forward Settings',
+                'ID' => 'ID',
+                'Enabled' => 'Enabled',
+                'Name' => 'Name',
+                'Concurrent' => 'Concurrent',
+                'Upstreams' => 'Upstreams',
+                'Commands' => 'Commands',
+                'Edit Forward Entry' => 'Edit Forward Entry'
+            ];
+            return isset($translations[$key]) ? $translations[$key] : $key;
+        };
+        
+        // Set template variables
+        $templateVars = [
+            'formDialogForward' => $formDialogForward,
+            'formGridForward' => $formGridForward,
+            'lang' => (object)['_' => $langFunction]
+        ];
+        
+        // Render template
+        $content = $volt->render($templatePath, $templateVars);
+        
+        // Output content directly and stop execution
+        $this->response->setContent($content);
+        $this->response->send();
+        exit();
     }
 
     public function cacheBareAction()

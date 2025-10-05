@@ -182,33 +182,15 @@
 </ul>
 
 <div class="tab-content content-box col-xs-12 __mb" id="mainContent">
-    <div id="forward" class="tab-pane fade in active">
-        {{ partial("OPNsense/MosDNS/plugins_forward") }}
-    </div>
-    <div id="redirect" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_redirect") }}
-    </div>
-    <div id="rules" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_rules") }}
-    </div>
-    <div id="hosts" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_hosts") }}
-    </div>
-    <div id="ipset" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_ipset") }}
-    </div>
-    <div id="sequence" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_sequence") }}
-    </div>
-    <div id="fallback" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_fallback") }}
-    </div>
-    <div id="servers" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_servers") }}
-    </div>
-    <div id="cache" class="tab-pane fade">
-        {{ partial("OPNsense/MosDNS/plugins_cache") }}
-    </div>
+    {{ partial("OPNsense/MosDNS/plugins_forward") }}
+    {{ partial("OPNsense/MosDNS/plugins_redirect") }}
+    {{ partial("OPNsense/MosDNS/plugins_rules") }}
+    {{ partial("OPNsense/MosDNS/plugins_hosts") }}
+    {{ partial("OPNsense/MosDNS/plugins_ipset") }}
+    {{ partial("OPNsense/MosDNS/plugins_sequence") }}
+    {{ partial("OPNsense/MosDNS/plugins_fallback") }}
+    {{ partial("OPNsense/MosDNS/plugins_servers") }}
+    {{ partial("OPNsense/MosDNS/plugins_cache") }}
 </div>
 
 <!-- Dialog definitions for each tab -->

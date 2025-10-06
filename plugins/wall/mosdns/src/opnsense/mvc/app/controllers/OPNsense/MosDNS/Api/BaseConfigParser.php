@@ -61,8 +61,10 @@ class BaseConfigParser
                     if (isset($plugin->tag) && !empty($plugin->tag)) {
                         $tagName = (string)$plugin->tag;
                         if (!in_array($tagName, $existingTags)) {
+                            // Use forward- prefix for forward plugin type, otherwise use xml- prefix
+                            $uuidPrefix = (strtolower($pluginType) === 'forward') ? 'forward-' : 'xml-';
                             $row = array(
-                                'uuid' => 'xml-' . md5($tagName),
+                                'uuid' => $uuidPrefix . md5($tagName),
                                 'enabled' => isset($plugin->enabled) ? (string)$plugin->enabled : '1',
                                 'name' => $tagName,
                                 'command' => isset($plugin->command) ? (string)$plugin->command : ''
@@ -116,8 +118,10 @@ class BaseConfigParser
                 if (self::isMatchingPluginType($plugin, $pluginType)) {
                     $tagName = $plugin['tag'];
                     if (!in_array($tagName, $existingTags)) {
+                        // Use forward- prefix for forward plugin type, otherwise use yaml- prefix
+                        $uuidPrefix = (strtolower($pluginType) === 'forward') ? 'forward-' : 'yaml-';
                         $row = array(
-                            'uuid' => 'yaml-' . md5($tagName),
+                            'uuid' => $uuidPrefix . md5($tagName),
                             'enabled' => '1',
                             'name' => $tagName,
                             'command' => ''

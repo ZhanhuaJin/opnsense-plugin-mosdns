@@ -86,7 +86,7 @@
                         <MaximumValue>10</MaximumValue>
                         <Required>N</Required>
                     </concurrent>
-                    <upstream type="TextField">
+                    <upstream type="CSVListField">
                         <default>8.8.8.8:53</default>
                         <Required>Y</Required>
                     </upstream>

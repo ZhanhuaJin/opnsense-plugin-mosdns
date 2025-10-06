@@ -52,6 +52,7 @@ class PluginsForwardController extends ApiMutableModelControllerBase
             error_log("MosDNS Forward Search: Starting search operation");
             
             // First, get data from system config.xml using BaseConfigParser
+            // This will now use forward- prefix for forward plugins
             error_log("MosDNS Forward Search: Parsing system config XML");
             $xmlRows = BaseConfigParser::parseSystemConfigXml('Forward', $existingTags);
             error_log("MosDNS Forward Search: Found " . count($xmlRows) . " entries from XML config");
@@ -66,6 +67,7 @@ class PluginsForwardController extends ApiMutableModelControllerBase
                 if (isset($modelResult['rows'])) {
                     error_log("MosDNS Forward Search: Found " . count($modelResult['rows']) . " entries from model config");
                     foreach ($modelResult['rows'] as $row) {
+                        // Check if this name already exists in any form (from XML or YAML)
                         if (!in_array($row['name'], $existingTags)) {
                             $rows[] = $row;
                             $existingTags[] = $row['name'];
@@ -79,6 +81,7 @@ class PluginsForwardController extends ApiMutableModelControllerBase
             }
             
             // Third, parse config.yaml using BaseConfigParser
+            // This will now use forward- prefix for forward plugins
             $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
             error_log("MosDNS Forward Search: Checking YAML config at " . $yamlConfigPath);
             if (file_exists($yamlConfigPath)) {
@@ -113,12 +116,60 @@ class PluginsForwardController extends ApiMutableModelControllerBase
         $this->sessionClose();
         
         if ($uuid === null) {
-            return array();
+            // Return default structure for new entries
+            return array(
+                'forward' => array(
+                    'enabled' => '1',
+                    'name' => '',
+                    'concurrent' => '1',
+                    'upstream' => '',
+                    'command' => ''
+                )
+            );
         }
         
-        // Check if this is a YAML-based UUID
+        // Check if this is a forward- prefixed UUID (from XML or YAML)
+        if (strpos($uuid, 'forward-') === 0) {
+            // Handle forward-prefixed entries from XML or YAML
+            try {
+                $rows = array();
+                $existingTags = array();
+                
+                // First check XML config
+                $xmlRows = BaseConfigParser::parseSystemConfigXml('Forward', $existingTags);
+                foreach ($xmlRows as $row) {
+                    if ($row['uuid'] === $uuid) {
+                        return array('forward' => $row);
+                    }
+                }
+                
+                // Then check YAML config
+                $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
+                if (file_exists($yamlConfigPath)) {
+                    $yamlContent = file_get_contents($yamlConfigPath);
+                    if ($yamlContent !== false) {
+                        $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'forward', $existingTags);
+                        
+                        // Find the specific entry by UUID
+                        foreach ($yamlRows as $row) {
+                            if ($row['uuid'] === $uuid) {
+                                return array('forward' => $row);
+                            }
+                        }
+                    }
+                }
+                
+                // If not found in XML or YAML, return empty
+                return array();
+                
+            } catch (\Exception $e) {
+                return array();
+            }
+        }
+        
+        // Check if this is a legacy YAML-based UUID (backward compatibility)
         if (strpos($uuid, 'yaml-') === 0) {
-            // Handle YAML-based entries
+            // Handle legacy YAML-based entries
             try {
                 $rows = array();
                 $existingTags = array();
@@ -158,7 +209,7 @@ class PluginsForwardController extends ApiMutableModelControllerBase
 
     public function addForwardAction()
     {
-        return $this->addBase('forward', 'plugins.forward.forward');
+        return $this->addBase('plugins.forward.forward', 'plugins.forward.forward');
     }
 
     public function delForwardAction($uuid = null)

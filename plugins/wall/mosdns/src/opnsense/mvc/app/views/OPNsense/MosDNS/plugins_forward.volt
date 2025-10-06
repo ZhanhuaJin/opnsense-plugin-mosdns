@@ -6,6 +6,7 @@
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Tag') }}</th>
+                <th data-column-id="concurrent" data-type="string">{{ lang._('Concurrent') }}</th>
                 <th data-column-id="upstream" data-type="string">{{ lang._('Upstream') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>

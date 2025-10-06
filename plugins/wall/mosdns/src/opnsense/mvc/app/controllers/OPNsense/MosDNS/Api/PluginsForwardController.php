@@ -111,6 +111,43 @@ class PluginsForwardController extends ApiMutableModelControllerBase
     public function getForwardAction($uuid = null)
     {
         $this->sessionClose();
+        
+        if ($uuid === null) {
+            return array();
+        }
+        
+        // Check if this is a YAML-based UUID
+        if (strpos($uuid, 'yaml-') === 0) {
+            // Handle YAML-based entries
+            try {
+                $rows = array();
+                $existingTags = array();
+                
+                // Parse config.yaml using BaseConfigParser
+                $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
+                if (file_exists($yamlConfigPath)) {
+                    $yamlContent = file_get_contents($yamlConfigPath);
+                    if ($yamlContent !== false) {
+                        $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'forward', $existingTags);
+                        
+                        // Find the specific entry by UUID
+                        foreach ($yamlRows as $row) {
+                            if ($row['uuid'] === $uuid) {
+                                return array('forward' => $row);
+                            }
+                        }
+                    }
+                }
+                
+                // If not found in YAML, return empty
+                return array();
+                
+            } catch (\Exception $e) {
+                return array();
+            }
+        }
+        
+        // Handle model-based entries using the standard getBase method
         return $this->getBase('forward', 'plugins.forward.forward', $uuid);
     }
 

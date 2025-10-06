@@ -164,8 +164,33 @@ class PluginsController extends ApiMutableModelControllerBase
     // IPSet plugin methods (implemented directly)
     public function searchIPSetAction()
     {
-        // Use the correct model path for IPSet
-        return $this->searchBase('plugins.ipset.ipset', array('enabled', 'name', 'sets', 'description'), 'name');
+        try {
+            // Check if the model node exists before calling searchBase
+            $mdl = $this->getModel();
+            $node = $mdl->getNodeByReference('plugins.ipset.ipset');
+            
+            if ($node === null) {
+                // Return empty result if node doesn't exist
+                return array(
+                    'rows' => array(),
+                    'rowCount' => 0,
+                    'total' => 0,
+                    'current' => 1
+                );
+            }
+            
+            // Use the correct model path for IPSet
+            return $this->searchBase('plugins.ipset.ipset', array('enabled', 'name', 'sets', 'description'), 'name');
+        } catch (Exception $e) {
+            // Log the error and return empty result
+            error_log("MosDNS IPSet Search Error: " . $e->getMessage());
+            return array(
+                'rows' => array(),
+                'rowCount' => 0,
+                'total' => 0,
+                'current' => 1
+            );
+        }
     }
 
     public function getIPSetAction($uuid = null)

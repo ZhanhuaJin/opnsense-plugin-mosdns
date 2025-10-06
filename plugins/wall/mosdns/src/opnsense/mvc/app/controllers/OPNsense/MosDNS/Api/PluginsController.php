@@ -161,41 +161,36 @@ class PluginsController extends ApiMutableModelControllerBase
         return $hostsController->toggleHostsAction($uuid);
     }
 
-    // IPSet plugin methods (delegated to PluginsIPSetController)
+    // IPSet plugin methods (implemented directly)
     public function searchIPSetAction()
     {
-        $ipsetController = new \OPNsense\MosDNS\Api\PluginsIPSetController();
-        return $ipsetController->searchIPSetAction();
+        // Use the correct model path for IPSet
+        return $this->searchBase('plugins.ipset.ipset', array('enabled', 'name', 'sets', 'description'), 'name');
     }
 
     public function getIPSetAction($uuid = null)
     {
-        $ipsetController = new \OPNsense\MosDNS\Api\PluginsIPSetController();
-        return $ipsetController->getIPSetAction($uuid);
+        return $this->getBase('plugins.ipset.ipset', 'plugins.ipset.ipset', $uuid);
     }
 
     public function setIPSetAction($uuid = null)
     {
-        $ipsetController = new \OPNsense\MosDNS\Api\PluginsIPSetController();
-        return $ipsetController->setIPSetAction($uuid);
+        return $this->setBase('plugins.ipset.ipset', 'plugins.ipset.ipset', $uuid);
     }
 
     public function addIPSetAction()
     {
-        $ipsetController = new \OPNsense\MosDNS\Api\PluginsIPSetController();
-        return $ipsetController->addIPSetAction();
+        return $this->addBase('plugins.ipset.ipset', 'plugins.ipset.ipset');
     }
 
     public function delIPSetAction($uuid = null)
     {
-        $ipsetController = new \OPNsense\MosDNS\Api\PluginsIPSetController();
-        return $ipsetController->delIPSetAction($uuid);
+        return $this->delBase('plugins.ipset.ipset', $uuid);
     }
 
     public function toggleIPSetAction($uuid = null)
     {
-        $ipsetController = new \OPNsense\MosDNS\Api\PluginsIPSetController();
-        return $ipsetController->toggleIPSetAction($uuid);
+        return $this->toggleBase('plugins.ipset.ipset', $uuid);
     }
 
     // Cache plugin methods (delegated to PluginsCacheController)

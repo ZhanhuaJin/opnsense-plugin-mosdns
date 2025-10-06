@@ -48,25 +48,70 @@ class DataController extends ApiMutableModelControllerBase
     public function searchDataSourceAction()
     {
         try {
-            $model = $this->getModel();
-            $element = $model->plugins->datasources->datasource;
+            $rows = array();
+            $existingTags = array();
             
-            // Check if the ArrayField exists and is properly initialized
-            if ($element === null) {
-                return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
+            // Debug: Log start of search
+            error_log("MosDNS DataSource Search: Starting search operation");
+            
+            // First, get data from system config.xml using BaseConfigParser
+            error_log("MosDNS DataSource Search: Parsing system config XML");
+            $xmlRows = BaseConfigParser::parseSystemConfigXml('DataSource', $existingTags);
+            error_log("MosDNS DataSource Search: Found " . count($xmlRows) . " entries from XML config");
+            $rows = array_merge($rows, $xmlRows);
+            
+            // Second, get data from config.xml (OPNsense model)
+            error_log("MosDNS DataSource Search: Parsing OPNsense model config");
+            $mdl = $this->getModel();
+            $node = $mdl->getNodeByReference('data.datasource');
+            if ($node !== null) {
+                $modelResult = $this->searchBase('data.datasource', array('enabled', 'name', 'file', 'tag'), 'name');
+                if (isset($modelResult['rows'])) {
+                    error_log("MosDNS DataSource Search: Found " . count($modelResult['rows']) . " entries from model config");
+                    foreach ($modelResult['rows'] as $row) {
+                        if (!in_array($row['name'], $existingTags)) {
+                            $rows[] = $row;
+                            $existingTags[] = $row['name'];
+                        }
+                    }
+                } else {
+                    error_log("MosDNS DataSource Search: No rows found in model config");
+                }
+            } else {
+                error_log("MosDNS DataSource Search: No datasource node found in model");
             }
             
-            return $this->searchBase('plugins.datasources.datasource', array('enabled', 'name', 'url', 'backup_url', 'description'));
+            // Third, parse config.yaml using BaseConfigParser
+            $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
+            error_log("MosDNS DataSource Search: Checking YAML config at " . $yamlConfigPath);
+            if (file_exists($yamlConfigPath)) {
+                error_log("MosDNS DataSource Search: YAML config file exists, parsing...");
+                $yamlContent = file_get_contents($yamlConfigPath);
+                if ($yamlContent !== false) {
+                    $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'data_providers', $existingTags);
+                    error_log("MosDNS DataSource Search: Found " . count($yamlRows) . " entries from YAML config");
+                    $rows = array_merge($rows, $yamlRows);
+                } else {
+                    error_log("MosDNS DataSource Search: Failed to read YAML config file");
+                }
+            } else {
+                error_log("MosDNS DataSource Search: YAML config file does not exist");
+            }
+            
+            error_log("MosDNS DataSource Search: Total entries found: " . count($rows));
+            
+            return array(
+                'rows' => $rows,
+                'rowCount' => count($rows),
+                'total' => count($rows),
+                'current' => 1
+            );
         } catch (\Exception $e) {
+            error_log("MosDNS DataSource Search: Exception occurred: " . $e->getMessage());
             return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
         }
     }
 
-    /**
-     * Get data source details
-     * @param string $uuid item unique id
-     * @return array
-     */
     public function getDataSourceAction($uuid = null)
     {
         $this->sessionClose();

@@ -44,8 +44,69 @@ class PluginsCacheController extends ApiMutableModelControllerBase
     // Cache plugin methods
     public function searchCacheAction()
     {
-        $this->sessionClose();
-        return $this->searchBase('plugins.cache.cache', array('enabled', 'name', 'size', 'lazy_cache_ttl', 'lazy_cache_reply_ttl', 'cache_everything', 'dump_file', 'dump_interval'), 'name');
+        try {
+            $rows = array();
+            $existingTags = array();
+            
+            // Debug: Log start of search
+            error_log("MosDNS Cache Search: Starting search operation");
+            
+            // First, get data from system config.xml using BaseConfigParser
+            error_log("MosDNS Cache Search: Parsing system config XML");
+            $xmlRows = BaseConfigParser::parseSystemConfigXml('Cache', $existingTags);
+            error_log("MosDNS Cache Search: Found " . count($xmlRows) . " entries from XML config");
+            $rows = array_merge($rows, $xmlRows);
+            
+            // Second, get data from config.xml (OPNsense model)
+            error_log("MosDNS Cache Search: Parsing OPNsense model config");
+            $mdl = $this->getModel();
+            $node = $mdl->getNodeByReference('plugins.cache.cache');
+            if ($node !== null) {
+                $modelResult = $this->searchBase('plugins.cache.cache', array('enabled', 'name', 'size', 'lazy_cache_ttl'), 'name');
+                if (isset($modelResult['rows'])) {
+                    error_log("MosDNS Cache Search: Found " . count($modelResult['rows']) . " entries from model config");
+                    foreach ($modelResult['rows'] as $row) {
+                        if (!in_array($row['name'], $existingTags)) {
+                            $rows[] = $row;
+                            $existingTags[] = $row['name'];
+                        }
+                    }
+                } else {
+                    error_log("MosDNS Cache Search: No rows found in model config");
+                }
+            } else {
+                error_log("MosDNS Cache Search: No cache node found in model");
+            }
+            
+            // Third, parse config.yaml using BaseConfigParser
+            $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
+            error_log("MosDNS Cache Search: Checking YAML config at " . $yamlConfigPath);
+            if (file_exists($yamlConfigPath)) {
+                error_log("MosDNS Cache Search: YAML config file exists, parsing...");
+                $yamlContent = file_get_contents($yamlConfigPath);
+                if ($yamlContent !== false) {
+                    $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'cache', $existingTags);
+                    error_log("MosDNS Cache Search: Found " . count($yamlRows) . " entries from YAML config");
+                    $rows = array_merge($rows, $yamlRows);
+                } else {
+                    error_log("MosDNS Cache Search: Failed to read YAML config file");
+                }
+            } else {
+                error_log("MosDNS Cache Search: YAML config file does not exist");
+            }
+            
+            error_log("MosDNS Cache Search: Total entries found: " . count($rows));
+            
+            return array(
+                'rows' => $rows,
+                'rowCount' => count($rows),
+                'total' => count($rows),
+                'current' => 1
+            );
+        } catch (\Exception $e) {
+            error_log("MosDNS Cache Search: Exception occurred: " . $e->getMessage());
+            return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
+        }
     }
 
     public function getCacheAction($uuid = null)

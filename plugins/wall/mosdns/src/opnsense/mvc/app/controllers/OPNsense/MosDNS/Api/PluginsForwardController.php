@@ -48,34 +48,54 @@ class PluginsForwardController extends ApiMutableModelControllerBase
             $rows = array();
             $existingTags = array();
             
-            // First, get data from system config.xml (OPNsense system configuration)
-            $xmlRows = $this->parseSystemConfigXml($existingTags);
+            // Debug: Log start of search
+            error_log("MosDNS Forward Search: Starting search operation");
+            
+            // First, get data from system config.xml using BaseConfigParser
+            error_log("MosDNS Forward Search: Parsing system config XML");
+            $xmlRows = BaseConfigParser::parseSystemConfigXml('Forward', $existingTags);
+            error_log("MosDNS Forward Search: Found " . count($xmlRows) . " entries from XML config");
             $rows = array_merge($rows, $xmlRows);
             
             // Second, get data from config.xml (OPNsense model)
+            error_log("MosDNS Forward Search: Parsing OPNsense model config");
             $mdl = $this->getModel();
             $node = $mdl->getNodeByReference('plugins.forward.forward');
             if ($node !== null) {
-                $modelResult = $this->searchBase('plugins.forward.forward', array('enabled', 'name', 'upstream', 'concurrent', 'command'), 'name');
+                $modelResult = $this->searchBase('plugins.forward.forward', array('enabled', 'name', 'upstream', 'concurrent'), 'name');
                 if (isset($modelResult['rows'])) {
+                    error_log("MosDNS Forward Search: Found " . count($modelResult['rows']) . " entries from model config");
                     foreach ($modelResult['rows'] as $row) {
                         if (!in_array($row['name'], $existingTags)) {
                             $rows[] = $row;
                             $existingTags[] = $row['name'];
                         }
                     }
+                } else {
+                    error_log("MosDNS Forward Search: No rows found in model config");
                 }
+            } else {
+                error_log("MosDNS Forward Search: No forward node found in model");
             }
             
-            // Third, parse config.yaml for additional forward configurations
+            // Third, parse config.yaml using BaseConfigParser
             $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
+            error_log("MosDNS Forward Search: Checking YAML config at " . $yamlConfigPath);
             if (file_exists($yamlConfigPath)) {
+                error_log("MosDNS Forward Search: YAML config file exists, parsing...");
                 $yamlContent = file_get_contents($yamlConfigPath);
                 if ($yamlContent !== false) {
-                    $yamlRows = $this->parseYamlForwardConfig($yamlContent, $existingTags);
+                    $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'forward', $existingTags);
+                    error_log("MosDNS Forward Search: Found " . count($yamlRows) . " entries from YAML config");
                     $rows = array_merge($rows, $yamlRows);
+                } else {
+                    error_log("MosDNS Forward Search: Failed to read YAML config file");
                 }
+            } else {
+                error_log("MosDNS Forward Search: YAML config file does not exist");
             }
+            
+            error_log("MosDNS Forward Search: Total entries found: " . count($rows));
             
             return array(
                 'rows' => $rows,
@@ -86,147 +106,6 @@ class PluginsForwardController extends ApiMutableModelControllerBase
         } catch (\Exception $e) {
             return array('rows' => array(), 'rowCount' => 0, 'total' => 0, 'current' => 1);
         }
-    }
-    
-    /**
-     * Parse system config.xml for MosDNS forward configurations
-     * @param array $existingTags
-     * @return array
-     */
-    private function parseSystemConfigXml(&$existingTags)
-    {
-        $rows = array();
-        
-        try {
-            global $config;
-            
-            // Check if MosDNS configuration exists in system config
-            if (isset($config['OPNsense']['MosDNS']['Plugins']['Forward'])) {
-                $forwardConfigs = $config['OPNsense']['MosDNS']['Plugins']['Forward'];
-                
-                // Handle both single and multiple forward configurations
-                if (!isset($forwardConfigs[0])) {
-                    $forwardConfigs = array($forwardConfigs);
-                }
-                
-                foreach ($forwardConfigs as $forward) {
-                    if (isset($forward['tag']) && !empty($forward['tag'])) {
-                        $tagName = $forward['tag'];
-                        if (!in_array($tagName, $existingTags)) {
-                            $rows[] = array(
-                                'uuid' => 'xml-' . md5($tagName),
-                                'enabled' => isset($forward['enabled']) ? $forward['enabled'] : '1',
-                                'name' => $tagName,
-                                'upstream' => isset($forward['upstream']) ? $forward['upstream'] : '',
-                                'concurrent' => isset($forward['concurrent']) ? (string)$forward['concurrent'] : '1',
-                                'command' => isset($forward['command']) ? $forward['command'] : ''
-                            );
-                            $existingTags[] = $tagName;
-                        }
-                    }
-                }
-            }
-            
-        } catch (\Exception $e) {
-            // If XML parsing fails, just return empty array
-        }
-        
-        return $rows;
-    }
-    
-    /**
-     * Parse YAML config file for forward plugin configurations
-     * @param string $yamlContent
-     * @param array $existingTags
-     * @return array
-     */
-    private function parseYamlForwardConfig($yamlContent, $existingTags = array())
-    {
-        $rows = array();
-        
-        try {
-            // Simple YAML parsing for forward plugins
-            $lines = explode("\n", $yamlContent);
-            $inPlugins = false;
-            $currentPlugin = null;
-            $pluginData = array();
-            
-            foreach ($lines as $line) {
-                $line = trim($line);
-                
-                if ($line === 'plugins:') {
-                    $inPlugins = true;
-                    continue;
-                }
-                
-                if (!$inPlugins) {
-                    continue;
-                }
-                
-                // Check for new plugin definition
-                if (preg_match('/^- tag:\s*(.+)$/', $line, $matches)) {
-                    // Save previous plugin if it was a forward type
-                    if ($currentPlugin && isset($pluginData['type']) && $pluginData['type'] === 'forward') {
-                        $tagName = $pluginData['tag'];
-                        if (!in_array($tagName, $existingTags)) {
-                            $rows[] = array(
-                                'uuid' => 'yaml-' . md5($tagName),
-                                'enabled' => '1',
-                                'name' => $tagName,
-                                'upstream' => isset($pluginData['upstream']) ? implode("\n", $pluginData['upstream']) : '',
-                                'concurrent' => isset($pluginData['concurrent']) ? (string)$pluginData['concurrent'] : '1',
-                                'command' => ''
-                            );
-                        }
-                    }
-                    
-                    // Start new plugin
-                    $currentPlugin = trim($matches[1]);
-                    $pluginData = array('tag' => $currentPlugin);
-                    continue;
-                }
-                
-                // Parse plugin properties
-                if ($currentPlugin) {
-                    if (preg_match('/^type:\s*(.+)$/', $line, $matches)) {
-                        $pluginData['type'] = trim($matches[1]);
-                    } elseif (preg_match('/^concurrent:\s*(\d+)$/', $line, $matches)) {
-                        $pluginData['concurrent'] = intval($matches[1]);
-                    } elseif (preg_match('/^- (.+)$/', $line, $matches) && isset($pluginData['type']) && $pluginData['type'] === 'forward') {
-                        // This is likely an upstream server
-                        if (!isset($pluginData['upstream'])) {
-                            $pluginData['upstream'] = array();
-                        }
-                        $pluginData['upstream'][] = trim($matches[1]);
-                    }
-                }
-                
-                // Reset if we hit a new section
-                if (preg_match('/^[a-zA-Z_]+:$/', $line) && $line !== 'plugins:' && $line !== 'args:') {
-                    $inPlugins = false;
-                }
-            }
-            
-            // Don't forget the last plugin
-            if ($currentPlugin && isset($pluginData['type']) && $pluginData['type'] === 'forward') {
-                $tagName = $pluginData['tag'];
-                if (!in_array($tagName, $existingTags)) {
-                    $rows[] = array(
-                        'uuid' => 'yaml-' . md5($tagName),
-                        'enabled' => '1',
-                        'name' => $tagName,
-                        'upstream' => isset($pluginData['upstream']) ? implode("\n", $pluginData['upstream']) : '',
-                        'concurrent' => isset($pluginData['concurrent']) ? (string)$pluginData['concurrent'] : '1',
-                        'command' => ''
-                    );
-                }
-            }
-            
-        } catch (\Exception $e) {
-            // If YAML parsing fails, just return empty array
-        }
-        
-        return $rows;
     }
 
     public function getForwardAction($uuid = null)

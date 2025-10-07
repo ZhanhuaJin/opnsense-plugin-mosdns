@@ -6,6 +6,14 @@
             <pattern>ui/mosdns/*</pattern>
         </patterns>
     </page-user-MosDNS>
+    <page-user-MosDNS-Forward-Edit>
+        <name>WebCfg - Services: MosDNS: Forward Edit</name>
+        <description>Allow access to MosDNS Forward edit pages</description>
+        <patterns>
+            <pattern>ui/mosdns/forward/*</pattern>
+            <pattern>api/mosdns/plugins_forward_edit/*</pattern>
+        </patterns>
+    </page-user-MosDNS-Forward-Edit>
     <page-user-MosDNS-Data>
         <name>WebCfg - Services: MosDNS: Data</name>
         <description>Allow access to MosDNS Data configuration</description>

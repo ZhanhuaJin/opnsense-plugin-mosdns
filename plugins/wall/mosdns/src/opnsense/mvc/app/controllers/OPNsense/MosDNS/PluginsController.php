@@ -497,4 +497,34 @@ class PluginsController extends ControllerBase
         $this->view->formGridServers = $this->getFormGrid('dialogServers');
         $this->view->pick('OPNsense/MosDNS/servers');
     }
+
+    /**
+     * Forward edit action - handles the forward edit page
+     */
+    public function forwardAction()
+    {
+        $this->view->title = "MosDNS Forward Configuration";
+        $this->view->pick('OPNsense/MosDNS/plugins_forward');
+    }
+
+    /**
+     * Forward edit action - handles the forward edit page
+     */
+    public function editAction($uuid = null)
+    {
+        $this->view->title = "Edit MosDNS Forward Configuration";
+        
+        // Load the forward settings form
+        $this->view->formForwardSettings = $this->getForm("plugins_forward");
+        
+        // Load the upstream dialog form
+        $this->view->formDialogUpstream = $this->getForm("dialog_forwardupstream");
+        
+        // Pass the UUID to the view if provided
+        if ($uuid !== null) {
+            $this->view->uuid = $uuid;
+        }
+        
+        $this->view->pick('OPNsense/MosDNS/plugins_forwardedit');
+    }
 }

@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>upstream.addr</id>
+        <label>Address</label>
+        <type>TextField</type>
+        <help>Upstream DNS server address. Supports UDP, TCP, DoH, DoT protocols. Examples: udp://8.8.8.8, https://dns.alidns.com/dns-query</help>
+    </field>
+    <field>
+        <id>upstream.trusted</id>
+        <label>Trusted</label>
+        <type>BooleanField</type>
+        <help>Whether to trust the results returned by this upstream (for IP optimization scenarios)</help>
+    </field>
+    <field>
+        <id>upstream.detour</id>
+        <label>Detour</label>
+        <type>TextField</type>
+        <help>Specify traffic detour label (such as through proxy)</help>
+    </field>
+    <field>
+        <id>upstream.bootstrap</id>
+        <label>Bootstrap</label>
+        <type>CSVListField</type>
+        <help>DNS address list for resolving DoH/DoT domain names</help>
+    </field>
+    <field>
+        <id>upstream.domain</id>
+        <label>Domain</label>
+        <type>TextField</type>
+        <help>Limit this upstream to only handle requests for a specific domain</help>
+    </field>
+    <field>
+        <id>upstream.enable_http3</id>
+        <label>Enable HTTP/3</label>
+        <type>BooleanField</type>
+        <help>Whether to enable HTTP/3 (only valid for DoH)</help>
+    </field>
+</form>

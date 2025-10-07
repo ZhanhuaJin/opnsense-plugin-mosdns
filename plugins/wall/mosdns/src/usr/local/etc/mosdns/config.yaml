@@ -1,18 +1,151 @@
 log:
-    level: info
+  level: info
+
 plugins:
-    - args:
-        upstreams:
-            - addr: https://8.8.8.8/dns-query
-      tag: forward_google
-      type: forward
-    - args:
-        entry: forward_google
-        listen: 127.0.0.1:53
-      tag: udp_server
-      type: udp_server
-    - args:
-        entry: forward_google
-        listen: 127.0.0.1:53
-      tag: tcp_server
-      type: tcp_server
+  # 缓存
+  - tag: cache
+    type: cache
+    args:
+      size: 10240
+      lazy_cache_ttl: 86400
+
+  # 重定向域名
+  - tag: redirect
+    type: redirect
+    args:
+      rules:
+        - www.cnbeta.com www.cnbeta.com.cdn.cloudflare.net
+
+  # 转发至国内DNS，并发查询
+  # Forward to domestic DNS with concurrent queries
+  - tag: forward_local
+    type: forward
+    args:
+      concurrent: 2
+      upstreams:
+        # upstream参数说明 / Upstream Parameters:
+        # addr: 必填项，上游DNS地址，支持UDP、TCP、DoH、DoT等协议
+        #       Required field, upstream DNS address, supports UDP, TCP, DoH, DoT protocols
+        #       例如/Examples: udp://8.8.8.8, https://dns.alidns.com/dns-query
+        # trusted: 是否信任该上游返回的结果（用于IP优选等场景）
+        #          Whether to trust the results returned by this upstream (for IP optimization scenarios)
+        # detour: 指定流量绕行标签（如通过代理）
+        #         Specify traffic detour tag (such as through proxy)
+        # bootstrap: 用于解析DoH/DoT域名的DNS地址列表
+        #            DNS address list for resolving DoH/DoT domain names
+        # domain: 限定该上游只处理某个域名的请求
+        #         Limit this upstream to handle requests for a specific domain only
+        # enable_http3: 是否启用HTTP/3（仅对DoH有效）
+        #               Whether to enable HTTP/3 (only valid for DoH)
+        - addr: udp://223.5.5.5
+        - addr: udp://119.29.29.29
+
+  # 转发至国外DNS，并发查询
+  # Forward to foreign DNS with concurrent queries
+  - tag: forward_remote
+    type: forward
+    args:
+      concurrent: 2
+      upstreams:
+        - addr: udp://127.0.0.1:5353
+
+  # 自定义hosts
+  - tag: hosts
+    type: hosts
+    args:
+      files:
+        - "/usr/local/etc/mosdns/hosts"
+
+  # china ip和自己的vps ip
+  - tag: local_ip
+    type: ip_set
+    args:
+      files:
+        - /usr/local/etc/mosdns/china_ip_list.txt
+        - /usr/local/etc/mosdns/myvpsip.txt
+
+  # fallback的primary服务器,返回非国内ip则drop_resp
+  - tag: local_sequence
+    type: sequence
+    args:
+      - exec: $forward_local
+      - matches: "!resp_ip $local_ip"
+        exec: accept
+      - exec: drop_resp
+
+  # fallback的secondary服务器,返回非国内ip则添加至ipset,返回国内ip只接受不会添加ipset
+  - tag: remote_sequence
+    type: sequence
+    args:
+      - exec: $forward_remote
+      - matches: "!resp_ip $local_ip"
+        exec: ipset gfwlist,inet,24
+      - exec: accept
+
+  # fallback sequence
+  - tag: fallback
+    type: fallback
+    args:
+      primary: local_sequence
+      secondary: remote_sequence
+      threshold: 500
+      always_standby: true
+
+  # gfwlist解析出的ip添加至ipset，添加前先判断是否为国内ip或内网ip
+  - tag: gfw-list
+    type: sequence
+    args:
+      - exec: ttl 300-3600
+      - matches: "!resp_ip $local_ip"
+        exec: ipset gfwlist,inet,24
+      - exec: accept
+
+  # 主运行序列
+  - tag: main_sequence
+    type: sequence
+    args:
+      - exec: $hosts
+      - matches: has_resp
+        exec: accept
+
+      - matches: qtype 65
+        exec: reject 3
+
+      - matches: qname &/usr/local/etc/mosdns/reject-list.txt &/usr/local/etc/mosdns/my-reject-list.txt
+        exec: reject
+
+      - exec: prefer_ipv4
+
+      - exec: $redirect
+
+      # 动态域名跳过缓存
+      - matches: "!qname 00006801.com"
+        exec: $cache
+      - matches: has_resp
+        exec: accept
+
+      - matches: qname &/usr/local/etc/mosdns/direct-list.txt
+        exec: $forward_local
+      - matches: has_resp
+        exec: accept
+
+      - matches: qname &/usr/local/etc/mosdns/proxy-list.txt
+        exec: $forward_remote
+      - matches: has_resp
+        exec: goto gfw-list
+
+      - exec: $fallback
+
+
+  # 启动监听服务
+  - tag: udp_server
+    type: udp_server
+    args:
+      entry: main_sequence
+      listen: :15353
+
+  - tag: tcp_server
+    type: tcp_server
+    args:
+      entry: main_sequence
+      listen: :15353r

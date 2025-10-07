@@ -86,10 +86,35 @@
                         <MaximumValue>10</MaximumValue>
                         <Required>N</Required>
                     </concurrent>
-                    <upstream type="CSVListField">
-                        <default>8.8.8.8:53</default>
-                        <Required>Y</Required>
-                    </upstream>
+                    <upstreams type="ArrayField">
+                        <upstream type="ArrayField">
+                            <addr type="TextField">
+                                <default></default>
+                                <Required>Y</Required>
+                                <ValidationMessage>Address is required</ValidationMessage>
+                            </addr>
+                            <trusted type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                            </trusted>
+                            <detour type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                            </detour>
+                            <bootstrap type="CSVListField">
+                                <default></default>
+                                <Required>N</Required>
+                            </bootstrap>
+                            <domain type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                            </domain>
+                            <enable_http3 type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                            </enable_http3>
+                        </upstream>
+                    </upstreams>
                     <command type="TextField">
                         <default></default>
                         <Required>N</Required>

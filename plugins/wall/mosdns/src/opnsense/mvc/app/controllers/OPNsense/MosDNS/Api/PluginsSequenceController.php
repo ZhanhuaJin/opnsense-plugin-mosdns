@@ -115,7 +115,7 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
     public function getSequenceAction($uuid = null)
     {
         $this->sessionClose();
-        return $this->getBase('sequence', 'plugins.sequence.sequence', $uuid);
+        return $this->getBase('plugins.sequence.sequence', 'plugins.sequence.sequence', $uuid);
     }
 
     /**
@@ -125,7 +125,7 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
      */
     public function setSequenceAction($uuid = null)
     {
-        return $this->setBase('sequence', 'plugins.sequence.sequence', $uuid);
+        return $this->setBase('plugins.sequence.sequence', 'plugins.sequence.sequence', $uuid);
     }
 
     /**
@@ -134,7 +134,7 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
      */
     public function addSequenceAction()
     {
-        return $this->addBase('sequence', 'plugins.sequence.sequence');
+        return $this->addBase('plugins.sequence.sequence', 'plugins.sequence.sequence');
     }
 
     /**

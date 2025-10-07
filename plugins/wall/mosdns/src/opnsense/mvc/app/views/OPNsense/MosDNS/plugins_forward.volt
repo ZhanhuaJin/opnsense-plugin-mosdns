@@ -1,14 +1,15 @@
 <div id="forward" class="tab-pane fade in active">
 <div class="content-box" style="padding-bottom: 1.5em;">
-<table id="{{ formGridForward['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridForward['edit_dialog_id'] }}" data-editAlert="{{ formGridForward['edit_alert_id'] }}">
+<div class="table-responsive">
+<table id="grid-forward" class="table table-condensed table-hover table-striped" style="width: 100%;">
     <thead>
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
             <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Tag') }}</th>
+            <th data-column-id="upstream" data-type="string">{{ lang._('Upstream') }}</th>
             <th data-column-id="concurrent" data-width="10em" data-type="string">{{ lang._('Concurrent') }}</th>
-            <th data-column-id="upstream" data-width="25em" data-type="string">{{ lang._('Upstream') }}</th>
-            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false" data-align="right" data-header-align="right">{{ lang._('Commands') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
         </tr>
     </tfoot>
 </table>
+</div>
 
 <!-- Save button for Forward configuration -->
 <div class="col-md-12">
@@ -43,9 +45,7 @@
 <script>
 $(document).ready(function() {
     // Forward Grid
-    var forwardGridId = "{{ formGridForward['table_id'] }}";
-    if (forwardGridId && $("#" + forwardGridId).length > 0) {
-        $("#" + forwardGridId).UIBootgrid({
+    $("#grid-forward").UIBootgrid({
             search: '/api/mosdns/plugins/searchForward',
             get: '/api/mosdns/plugins/getForward/',
             set: '/api/mosdns/plugins/setForward/',
@@ -56,12 +56,7 @@ $(document).ready(function() {
                 selection: true,
                 multiSelect: true,
                 rowSelect: true,
-                rowCount: [7, 14, 20, 50, 100, -1],
-                formatters: {
-                    "uuid": function(column, row) {
-                        return "";  // Hide ID column
-                    }
-                }
+                rowCount: [7, 14, 20, 50, 100, -1]
             }
         }).on("loaded.rs.jquery.bootgrid", function() {
             // Override the add button behavior
@@ -133,7 +128,6 @@ $(document).ready(function() {
                 }
             });
         });
-    }
     
     // Initialize Save button
     $("#saveForwardAct").SimpleActionButton();

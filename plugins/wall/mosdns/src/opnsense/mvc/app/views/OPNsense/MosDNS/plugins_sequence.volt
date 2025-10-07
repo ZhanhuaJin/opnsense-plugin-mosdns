@@ -1,13 +1,14 @@
 <div id="sequence" class="tab-pane fade">
 <div class="content-box" style="padding-bottom: 1.5em;">
-<table id="grid-sequence" class="table table-condensed table-hover table-striped" data-editDialog="dialog_sequence">
+<div class="table-responsive">
+<table id="grid-sequence" class="table table-condensed table-hover table-striped" style="width: 100%;">
     <thead>
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
-            <th data-column-id="sequence" data-width="30em" data-type="string">{{ lang._('Sequence') }}</th>
-            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Tag') }}</th>
+            <th data-column-id="exec" data-type="string">{{ lang._('Exec') }}</th>
+            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false" data-align="right" data-header-align="right">{{ lang._('Commands') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
         </tr>
     </tfoot>
 </table>
+</div>
 
 <!-- Save button for Sequence configuration -->
 <div class="col-md-12">

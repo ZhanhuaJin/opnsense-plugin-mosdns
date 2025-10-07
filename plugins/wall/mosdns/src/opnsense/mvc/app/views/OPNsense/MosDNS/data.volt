@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
-        $("#{{formGridDataSource['table_id']}}").UIBootgrid(
+        $("#grid-datasource").UIBootgrid(
             {   search:'/api/mosdns/data/searchDataSource',
                 get:'/api/mosdns/data/getDataSource/',
                 set:'/api/mosdns/data/setDataSource/',

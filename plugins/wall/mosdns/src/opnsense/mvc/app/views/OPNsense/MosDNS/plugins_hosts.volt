@@ -1,14 +1,14 @@
 <div id="hosts" class="tab-pane fade">
 <div class="content-box" style="padding-bottom: 1.5em;">
-<table id="{{ formGridHosts['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridHosts['edit_dialog_id'] }}" data-editAlert="{{ formGridHosts['edit_alert_id'] }}">
+<div class="table-responsive">
+<table id="grid-hosts" class="table table-condensed table-hover table-striped" style="width: 100%;">
     <thead>
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
-            <th data-column-id="hostname" data-width="20em" data-type="string">{{ lang._('Hostname') }}</th>
-            <th data-column-id="ip_address" data-width="15em" data-type="string">{{ lang._('IP Address') }}</th>
-            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Tag') }}</th>
+            <th data-column-id="file" data-type="string">{{ lang._('File') }}</th>
+            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false" data-align="right" data-header-align="right">{{ lang._('Commands') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +23,7 @@
         </tr>
     </tfoot>
 </table>
+</div>
 
 <!-- Save button for Hosts configuration -->
 <div class="col-md-12">
@@ -43,9 +44,7 @@
 <script>
 $(document).ready(function() {
     // Hosts Grid
-    var hostsGridId = "{{ formGridHosts['table_id'] }}";
-    if (hostsGridId && $("#" + hostsGridId).length > 0) {
-        $("#" + hostsGridId).UIBootgrid({
+    $("#grid-hosts").UIBootgrid({
             search: '/api/mosdns/plugins/searchHosts',
             get: '/api/mosdns/plugins/getHosts/',
             set: '/api/mosdns/plugins/setHosts/',
@@ -66,9 +65,6 @@ $(document).ready(function() {
         }).on("loaded.rs.jquery.bootgrid", function() {
             // Grid loaded successfully
         });
-    } else {
-        console.error('Hosts Grid element not found:', hostsGridId);
-    }
     
     // Initialize Save button
     $("#saveHostsAct").SimpleActionButton();

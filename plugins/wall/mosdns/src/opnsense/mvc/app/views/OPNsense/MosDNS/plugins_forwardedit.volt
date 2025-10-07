@@ -72,10 +72,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             $('#forward').addClass('active in').show();
                             
                             // Reload the forward grid
-                            var forwardGridId = "{{ formGridForward['table_id'] }}";
-                            if (forwardGridId && $("#" + forwardGridId).length > 0) {
-                                $("#" + forwardGridId).bootgrid('reload');
-                            }
+                            $("#grid-forward").bootgrid('reload');
                         }
                     });
                 });

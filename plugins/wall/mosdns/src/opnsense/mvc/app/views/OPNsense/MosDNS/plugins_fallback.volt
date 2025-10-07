@@ -1,14 +1,15 @@
 <div id="fallback" class="tab-pane fade">
 <div class="content-box" style="padding-bottom: 1.5em;">
-<table id="grid-fallback" class="table table-condensed table-hover table-striped" data-editDialog="dialog_fallback">
+<div class="table-responsive">
+<table id="grid-fallback" class="table table-condensed table-hover table-striped" data-editDialog="dialog_fallback" style="width: 100%;">
     <thead>
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
-            <th data-column-id="primary_server" data-width="20em" data-type="string">{{ lang._('Primary Server') }}</th>
-            <th data-column-id="fallback_server" data-width="20em" data-type="string">{{ lang._('Fallback Server') }}</th>
-            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Tag') }}</th>
+            <th data-column-id="primary" data-type="string">{{ lang._('Primary') }}</th>
+            <th data-column-id="secondary" data-type="string">{{ lang._('Secondary') }}</th>
+            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false" data-align="right" data-header-align="right">{{ lang._('Commands') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
         </tr>
     </tfoot>
 </table>
+</div>
 
 <!-- Save button for Fallback configuration -->
 <div class="col-md-12">

@@ -1,14 +1,14 @@
 <div id="redirect" class="tab-pane fade">
 <div class="content-box" style="padding-bottom: 1.5em;">
-<table id="{{ formGridRedirect['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridRedirect['edit_dialog_id'] }}" data-editAlert="{{ formGridRedirect['edit_alert_id'] }}">
+<div class="table-responsive">
+<table class="table table-condensed table-hover table-striped" id="grid-redirect" style="width: 100%;">
     <thead>
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
-            <th data-column-id="domain" data-width="20em" data-type="string">{{ lang._('Domain') }}</th>
-            <th data-column-id="target" data-width="20em" data-type="string">{{ lang._('Target') }}</th>
-            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Tag') }}</th>
+            <th data-column-id="target" data-type="string">{{ lang._('Target') }}</th>
+            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false" data-align="right" data-header-align="right">{{ lang._('Commands') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +23,7 @@
         </tr>
     </tfoot>
 </table>
+</div>
 
 <!-- Save button for Redirect configuration -->
 <div class="col-md-12">
@@ -43,9 +44,7 @@
 <script>
 $(document).ready(function() {
     // Redirect Grid
-    var redirectGridId = "{{ formGridRedirect['table_id'] }}";
-    if (redirectGridId && $("#" + redirectGridId).length > 0) {
-        $("#" + redirectGridId).UIBootgrid({
+    $("#grid-redirect").UIBootgrid({
             search: '/api/mosdns/plugins/searchRedirect',
             get: '/api/mosdns/plugins/getRedirect/',
             set: '/api/mosdns/plugins/setRedirect/',
@@ -66,7 +65,6 @@ $(document).ready(function() {
         }).on("loaded.rs.jquery.bootgrid", function() {
             // Grid loaded callback
         });
-    }
     
     // Initialize Save button
     $("#saveRedirectAct").SimpleActionButton();

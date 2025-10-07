@@ -1,14 +1,14 @@
 <div id="servers" class="tab-pane fade">
 <div class="content-box" style="padding-bottom: 1.5em;">
-<table id="grid-servers" class="table table-condensed table-hover table-striped" data-editDialog="dialog_servers">
+<div class="table-responsive">
+<table id="grid-servers" class="table table-condensed table-hover table-striped" data-editDialog="dialog_servers" style="width: 100%;">
     <thead>
         <tr>
             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Name') }}</th>
-            <th data-column-id="server_address" data-width="20em" data-type="string">{{ lang._('Server Address') }}</th>
-            <th data-column-id="server_type" data-width="10em" data-type="string">{{ lang._('Type') }}</th>
-            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+            <th data-column-id="name" data-width="15em" data-type="string">{{ lang._('Tag') }}</th>
+            <th data-column-id="addr" data-type="string">{{ lang._('Address') }}</th>
+            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false" data-align="right" data-header-align="right">{{ lang._('Commands') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +23,7 @@
         </tr>
     </tfoot>
 </table>
+</div>
 
 <!-- Save button for Servers configuration -->
 <div class="col-md-12">

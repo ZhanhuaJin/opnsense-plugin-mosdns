@@ -171,23 +171,31 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#forward">{{ lang._('Forward') }}</a></li>
+    <li style="display: none;"><a data-toggle="tab" href="#forwardedit">{{ lang._('Forward Edit') }}</a></li>
     <li><a data-toggle="tab" href="#redirect">{{ lang._('Redirect') }}</a></li>
     <li><a data-toggle="tab" href="#rules">{{ lang._('Rules') }}</a></li>
     <li><a data-toggle="tab" href="#hosts">{{ lang._('Hosts') }}</a></li>
     <li><a data-toggle="tab" href="#ipset">{{ lang._('IPSet') }}</a></li>
     <li><a data-toggle="tab" href="#sequence">{{ lang._('Sequence') }}</a></li>
+    <li style="display: none;"><a data-toggle="tab" href="#sequenceedit">{{ lang._('Sequence Edit') }}</a></li>
     <li><a data-toggle="tab" href="#fallback">{{ lang._('Fallback') }}</a></li>
     <li><a data-toggle="tab" href="#servers">{{ lang._('Servers') }}</a></li>
     <li><a data-toggle="tab" href="#cache">{{ lang._('Cache') }}</a></li>
 </ul>
 
-<div class="tab-content content-box col-xs-12 __mb" id="mainContent">
+<div class="tab-content content-box col-xs-12" id="mainContent">
     {{ partial("OPNsense/MosDNS/plugins_forward") }}
+    <div id="forwardedit" class="tab-pane fade" style="display: none;">
+        {{ partial("OPNsense/MosDNS/plugins_forwardedit") }}
+    </div>
     {{ partial("OPNsense/MosDNS/plugins_redirect") }}
     {{ partial("OPNsense/MosDNS/plugins_rules") }}
     {{ partial("OPNsense/MosDNS/plugins_hosts") }}
     {{ partial("OPNsense/MosDNS/plugins_ipset") }}
     {{ partial("OPNsense/MosDNS/plugins_sequence") }}
+    <div id="sequenceedit" class="tab-pane fade" style="display: none;">
+        {{ partial("OPNsense/MosDNS/plugins_sequenceedit") }}
+    </div>
     {{ partial("OPNsense/MosDNS/plugins_fallback") }}
     {{ partial("OPNsense/MosDNS/plugins_servers") }}
     {{ partial("OPNsense/MosDNS/plugins_cache") }}

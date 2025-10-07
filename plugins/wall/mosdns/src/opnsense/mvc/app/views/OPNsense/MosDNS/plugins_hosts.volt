@@ -1,4 +1,5 @@
 <div id="hosts" class="tab-pane fade">
+<div class="content-box" style="padding-bottom: 1.5em;">
 <table id="{{ formGridHosts['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridHosts['edit_dialog_id'] }}" data-editAlert="{{ formGridHosts['edit_alert_id'] }}">
     <thead>
         <tr>
@@ -73,6 +74,7 @@ $(document).ready(function() {
     $("#saveHostsAct").SimpleActionButton();
 });
 </script>
+</div>
 </div>
 
 <!-- Dialog for Hosts -->

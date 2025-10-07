@@ -1,4 +1,5 @@
 <div id="ipset" class="tab-pane fade">
+<div class="content-box" style="padding-bottom: 1.5em;">
 <table id="{{ formGridIPSet['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridIPSet['edit_dialog_id'] }}" data-editAlert="{{ formGridIPSet['edit_alert_id'] }}">
     <thead>
         <tr>
@@ -73,6 +74,7 @@ $(document).ready(function() {
     $("#saveIPSetAct").SimpleActionButton();
 });
 </script>
+</div>
 </div>
 
 <!-- Dialog for IPSet -->

@@ -1,4 +1,5 @@
 <div id="fallback" class="tab-pane fade">
+<div class="content-box" style="padding-bottom: 1.5em;">
 <table id="grid-fallback" class="table table-condensed table-hover table-striped" data-editDialog="dialog_fallback">
     <thead>
         <tr>
@@ -54,6 +55,7 @@ $(document).ready(function() {
     $("#saveFallbackAct").SimpleActionButton();
 });
 </script>
+</div>
 </div>
 
 <!-- Dialog for Fallback -->

@@ -198,8 +198,8 @@ class BaseConfigParser
                 continue;
             }
             
-            // Handle new plugin item (starts with - args: or just -)
-            if (preg_match('/^-\s*(.*)$/', $line, $matches) && $indent <= 4) {
+            // Handle new plugin item (starts with - and is at plugin level indentation)
+            if (preg_match('/^-\s*(.*)$/', $line, $matches) && $indent == 2) {
                 // Save previous plugin
                 if ($currentPlugin !== null) {
                     error_log("MosDNS YAML Debug: Saving previous plugin: " . json_encode($currentPlugin));
@@ -211,7 +211,7 @@ class BaseConfigParser
                 $inUpstreams = false;
                 $pluginIndent = $indent;
                 
-                error_log("MosDNS YAML Debug: Starting new plugin");
+                error_log("MosDNS YAML Debug: Starting new plugin at indent $indent");
                 
                 // Check if there's content after the dash
                 $content = trim($matches[1]);
@@ -253,14 +253,17 @@ class BaseConfigParser
                     continue;
                 }
                 
-                // Handle plugin-level fields (tag, type) - these come after args at plugin level
-                if ($indent > $pluginIndent && $indent <= $argsIndent) {
+                // Handle plugin-level fields (tag, type) - these come at plugin level indentation
+                if ($indent > $pluginIndent && !$inArgs) {
                     $currentPlugin[$key] = $value;
                     error_log("MosDNS YAML Debug: Set plugin[$key] = $value");
-                    // When we encounter tag or type, we're no longer in args
-                    if ($key === 'tag' || $key === 'type') {
-                        $inArgs = false;
-                        $inUpstreams = false;
+                    
+                    // When we encounter args, we enter args section
+                    if ($key === 'args' && empty($value)) {
+                        $inArgs = true;
+                        $argsIndent = $indent;
+                        $currentPlugin['args'] = array();
+                        error_log("MosDNS YAML Debug: Entering args section");
                     }
                     continue;
                 }

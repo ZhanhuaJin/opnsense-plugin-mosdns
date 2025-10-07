@@ -1,4 +1,5 @@
 <div id="cache" class="tab-pane fade">
+<div class="content-box" style="padding-bottom: 1.5em;">
     <h3><i class="fa fa-database"></i> {{ lang._('Cache Configuration') }}</h3>
     <p>{{ lang._('Configure DNS cache settings for MosDNS.') }}</p>
     
@@ -26,6 +27,7 @@ $(document).ready(function() {
     $("#saveCacheAct").SimpleActionButton();
 });
 </script>
+</div>
 </div>
 
 <!-- Dialog for Cache -->

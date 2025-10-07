@@ -1,4 +1,5 @@
 <div id="servers" class="tab-pane fade">
+<div class="content-box" style="padding-bottom: 1.5em;">
 <table id="grid-servers" class="table table-condensed table-hover table-striped" data-editDialog="dialog_servers">
     <thead>
         <tr>
@@ -54,6 +55,7 @@ $(document).ready(function() {
     $("#saveServersAct").SimpleActionButton();
 });
 </script>
+</div>
 </div>
 
 <!-- Dialog for Servers -->

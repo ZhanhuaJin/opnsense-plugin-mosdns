@@ -188,76 +188,24 @@
                 </redirect>
             </redirect>
             <sequence type="ArrayField">
-                <sequence type="ArrayField">
-                    <enabled type="BooleanField">
-                        <default>1</default>
-                        <Required>Y</Required>
-                    </enabled>
-                    <name type="TextField">
-                        <default></default>
-                        <Required>Y</Required>
-                        <mask>/^[a-zA-Z0-9_-]+$/u</mask>
-                        <ValidationMessage>Name should only contain alphanumeric characters, underscores and dashes</ValidationMessage>
-                    </name>
-                    <tag type="TextField">
-                        <default></default>
-                        <Required>N</Required>
-                    </tag>
-                    <type type="OptionField">
-                        <default>sequence</default>
-                        <Required>Y</Required>
-                        <OptionValues>
-                            <sequence>Sequence</sequence>
-                            <if>If</if>
-                            <parallel>Parallel</parallel>
-                        </OptionValues>
-                    </type>
-                    <args type="TextField">
-                        <default></default>
-                        <Required>N</Required>
-                    </args>
-                    <description type="TextField">
-                        <default></default>
-                        <Required>N</Required>
-                    </description>
-                    <rules type="ArrayField">
-                        <rule type="ArrayField">
-                            <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                            </enabled>
-                            <name type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <mask>/^[a-zA-Z0-9_-]+$/u</mask>
-                                <ValidationMessage>Name should only contain alphanumeric characters, underscores and dashes</ValidationMessage>
-                            </name>
-                            <tag type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                            </tag>
-                            <type type="OptionField">
-                                <default>exec</default>
-                                <Required>Y</Required>
-                                <OptionValues>
-                                    <exec>Exec</exec>
-                                    <if>If</if>
-                                    <matches>Matches</matches>
-                                    <goto>Goto</goto>
-                                    <return>Return</return>
-                                </OptionValues>
-                            </type>
-                            <args type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                            </args>
-                            <description type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                            </description>
-                        </rule>
-                    </rules>
-                </sequence>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <default></default>
+                    <Required>Y</Required>
+                    <mask>/^[a-zA-Z0-9_-]+$/u</mask>
+                    <ValidationMessage>Name should only contain alphanumeric characters, underscores and dashes</ValidationMessage>
+                </name>
+                <exec type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </exec>
+                <description type="TextField">
+                    <default></default>
+                    <Required>N</Required>
+                </description>
             </sequence>
             <servers type="ArrayField">
                 <servers type="ArrayField">

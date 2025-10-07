@@ -1,4 +1,5 @@
 <div id="redirect" class="tab-pane fade">
+<div class="content-box" style="padding-bottom: 1.5em;">
 <table id="{{ formGridRedirect['table_id'] }}" class="table table-condensed table-hover table-striped" data-editDialog="{{ formGridRedirect['edit_dialog_id'] }}" data-editAlert="{{ formGridRedirect['edit_alert_id'] }}">
     <thead>
         <tr>
@@ -71,6 +72,7 @@ $(document).ready(function() {
     $("#saveRedirectAct").SimpleActionButton();
 });
 </script>
+</div>
 </div>
 
 <!-- Dialog for Redirect -->

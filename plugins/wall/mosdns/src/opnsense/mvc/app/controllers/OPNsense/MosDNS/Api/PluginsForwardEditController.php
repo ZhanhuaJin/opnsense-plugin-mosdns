@@ -71,4 +71,92 @@ class PluginsForwardEditController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase('plugins.forward.forward.upstreams.upstream', $uuid);
     }
+
+    /**
+     * Check if a forward configuration exists by UUID
+     * This mimics the behavior of IPsec connection_exists API
+     */
+    public function forward_existsAction($uuid = null)
+    {
+        $this->sessionClose();
+        
+        if ($uuid === null) {
+            return array('exists' => false);
+        }
+        
+        try {
+            // Check if this is a forward- prefixed UUID (from XML or YAML)
+            if (strpos($uuid, 'forward-') === 0) {
+                // Handle forward-prefixed entries from XML or YAML
+                $rows = array();
+                $existingTags = array();
+                
+                // First check XML config
+                $xmlRows = BaseConfigParser::parseSystemConfigXml('Forward', $existingTags);
+                foreach ($xmlRows as $row) {
+                    if ($row['uuid'] === $uuid) {
+                        return array('exists' => true);
+                    }
+                }
+                
+                // Then check YAML config
+                $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
+                if (file_exists($yamlConfigPath)) {
+                    $yamlContent = file_get_contents($yamlConfigPath);
+                    if ($yamlContent !== false) {
+                        $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'forward', $existingTags);
+                        
+                        // Find the specific entry by UUID
+                        foreach ($yamlRows as $row) {
+                            if ($row['uuid'] === $uuid) {
+                                return array('exists' => true);
+                            }
+                        }
+                    }
+                }
+                
+                // If not found in XML or YAML, return false
+                return array('exists' => false);
+            }
+            
+            // Check if this is a legacy YAML-based UUID (backward compatibility)
+            if (strpos($uuid, 'yaml-') === 0) {
+                // Handle legacy YAML-based entries
+                $rows = array();
+                $existingTags = array();
+                
+                // Parse config.yaml using BaseConfigParser
+                $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
+                if (file_exists($yamlConfigPath)) {
+                    $yamlContent = file_get_contents($yamlConfigPath);
+                    if ($yamlContent !== false) {
+                        $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'forward', $existingTags);
+                        
+                        // Find the specific entry by UUID
+                        foreach ($yamlRows as $row) {
+                            if ($row['uuid'] === $uuid) {
+                                return array('exists' => true);
+                            }
+                        }
+                    }
+                }
+                
+                // If not found in YAML, return false
+                return array('exists' => false);
+            }
+            
+            // Handle model-based entries using the standard getBase method
+            $mdl = $this->getModel();
+            $node = $mdl->getNodeByReference('plugins.forward.forward.' . $uuid);
+            
+            if ($node !== null) {
+                return array('exists' => true);
+            } else {
+                return array('exists' => false);
+            }
+            
+        } catch (\Exception $e) {
+            return array('exists' => false);
+        }
+    }
 }

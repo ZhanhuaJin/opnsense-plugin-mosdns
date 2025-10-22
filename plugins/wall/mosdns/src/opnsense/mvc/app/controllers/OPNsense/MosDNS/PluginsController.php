@@ -479,6 +479,7 @@ class PluginsController extends ControllerBase
         $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_LAYOUT);
         $this->view->formDialogSequence = $this->getForm("dialogSequence");
         $this->view->formGridSequence = $this->getFormGrid('dialogSequence');
+        $this->view->formSequenceSettings = $this->getForm("plugins_sequence");
         $this->view->pick('OPNsense/MosDNS/sequence');
     }
 

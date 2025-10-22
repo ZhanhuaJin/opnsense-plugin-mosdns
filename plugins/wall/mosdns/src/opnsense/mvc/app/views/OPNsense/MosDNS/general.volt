@@ -42,6 +42,35 @@
             alert('Save functionality will be implemented when forms are configured.');
         });
 
+        // Import YAML configuration
+        $("#importYamlAct").click(function(){
+            var yamlContent = $("#yamlEditor").val().trim();
+            if (yamlContent === '') {
+                alert('{{ lang._("Please enter YAML configuration content.") }}');
+                return;
+            }
+            
+            $("#importYamlAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/mosdns/general/importYaml", sendData={'yaml': yamlContent}, callback=function(data,status) {
+                $("#importYamlAct_progress").removeClass("fa fa-spinner fa-pulse");
+                if (data && data.result === 'ok') {
+                    alert('{{ lang._("YAML configuration imported successfully!") }}');
+                    // Optionally clear the editor
+                    $("#yamlEditor").val('');
+                } else {
+                    var errorMsg = data && data.message ? data.message : '{{ lang._("Failed to import YAML configuration.") }}';
+                    alert('{{ lang._("Error: ") }}' + errorMsg);
+                }
+            });
+        });
+
+        // Clear YAML editor
+        $("#clearYamlAct").click(function(){
+            if (confirm('{{ lang._("Are you sure you want to clear the YAML editor?") }}')) {
+                $("#yamlEditor").val('');
+            }
+        });
+
         // Update service status
         updateServiceControlUI('mosdns');
     });
@@ -79,6 +108,39 @@
                         <button class="btn btn-default" id="restartAct" type="button"><b>{{ lang._('Restart') }}</b> <i id="restartAct_progress"></i></button>
                         <button class="btn btn-default" id="reconfigureAct" type="button"><b>{{ lang._('Reconfigure') }}</b> <i id="reconfigureAct_progress"></i></button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- YAML Configuration Import Section -->
+<div class="content-box" style="padding-bottom: 1.5em;">
+    <div class="col-md-12">
+        <h3>{{ lang._('YAML Configuration Import') }}</h3>
+        <p>{{ lang._('Import MosDNS configuration from YAML format. This will update the system configuration.') }}</p>
+        <hr />
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="yamlEditor">{{ lang._('YAML Configuration') }}</label>
+                    <textarea id="yamlEditor" class="form-control" rows="20" placeholder="{{ lang._('Paste your config.yaml content here...') }}" style="font-family: monospace; font-size: 12px;"></textarea>
+                    <small class="help-block">{{ lang._('Enter the complete MosDNS YAML configuration that you want to import into the system.') }}</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group" role="group">
+                    <button class="btn btn-primary" id="importYamlAct" type="button">
+                        <i class="fa fa-upload"></i> <b>{{ lang._('Import YAML') }}</b> 
+                        <i id="importYamlAct_progress"></i>
+                    </button>
+                    <button class="btn btn-default" id="clearYamlAct" type="button">
+                        <i class="fa fa-eraser"></i> <b>{{ lang._('Clear') }}</b>
+                    </button>
                 </div>
             </div>
         </div>

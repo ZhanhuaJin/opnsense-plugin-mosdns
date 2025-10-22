@@ -58,6 +58,13 @@ mosdns_prestart()
         return 1
     fi
     
+    # Check config file syntax
+    if ! /usr/local/bin/mosdns verify -c "${mosdns_config}" >/dev/null 2>&1; then
+        echo "Configuration file ${mosdns_config} has syntax errors!"
+        echo "Please check the configuration and try again."
+        return 1
+    fi
+    
     # Generate configuration from template
     /usr/local/opnsense/scripts/OPNsense/MosDNS/generate_config.sh
 }

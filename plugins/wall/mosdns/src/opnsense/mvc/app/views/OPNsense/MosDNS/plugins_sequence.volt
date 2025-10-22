@@ -68,9 +68,10 @@ $(document).ready(function() {
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function() {
-        // Override the add button behavior
+        // Override the add button behavior - use sequenceedit tab
         $(this).find('button[data-action="add"]').off('click').on('click', function(e) {
             e.preventDefault();
+            
             // Set title for new entry
             $('#sequenceedit-title').text('{{ lang._("Sequence New") }}');
             
@@ -97,8 +98,10 @@ $(document).ready(function() {
             }
         });
         
-        // Handle custom edit button clicks
-        $(this).on('click', '.command-edit', function(e) {
+    }).on("loaded.rs.jquery.bootgrid", function() {
+        // Override edit button behavior after grid is loaded - use sequenceedit tab
+        var grid = $(this);
+        grid.find('.command-edit').off('click').on('click', function(e) {
             e.preventDefault();
             var uuid = $(this).data('row-id');
             if (uuid) {
@@ -134,7 +137,7 @@ $(document).ready(function() {
         });
         
         // Handle custom delete button clicks
-        $(this).on('click', '.command-delete', function(e) {
+        grid.find('.command-delete').off('click').on('click', function(e) {
             e.preventDefault();
             var uuid = $(this).data('row-id');
             if (uuid && confirm('{{ lang._("Do you really want to delete this entry?") }}')) {
@@ -147,7 +150,7 @@ $(document).ready(function() {
         });
         
         // Handle custom copy button clicks
-        $(this).on('click', '.command-copy', function(e) {
+        grid.find('.command-copy').off('click').on('click', function(e) {
             e.preventDefault();
             var uuid = $(this).data('row-id');
             if (uuid) {
@@ -175,6 +178,3 @@ $(document).ready(function() {
 </script>
 </div>
 </div>
-
-<!-- Dialog for Sequence -->
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditSequence,'id':'dialog_sequence','label':lang._('Edit Sequence')])}}

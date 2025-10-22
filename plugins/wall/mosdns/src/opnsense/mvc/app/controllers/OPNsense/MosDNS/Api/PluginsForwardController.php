@@ -82,6 +82,8 @@ class PluginsForwardController extends ApiMutableModelControllerBase
             
             // Third, parse config.yaml using BaseConfigParser
             // This will now use forward- prefix for forward plugins
+            // NOTE: Removed YAML config parsing as per requirement to only use config.xml
+            /*
             $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
             error_log("MosDNS Forward Search: Checking YAML config at " . $yamlConfigPath);
             if (file_exists($yamlConfigPath)) {
@@ -97,7 +99,7 @@ class PluginsForwardController extends ApiMutableModelControllerBase
             } else {
                 error_log("MosDNS Forward Search: YAML config file does not exist");
             }
-            
+            */
             error_log("MosDNS Forward Search: Total entries found: " . count($rows));
             
             return array(
@@ -144,6 +146,8 @@ class PluginsForwardController extends ApiMutableModelControllerBase
                 }
                 
                 // Then check YAML config
+                // NOTE: Removed YAML config parsing as per requirement to only use config.xml
+                /*
                 $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
                 if (file_exists($yamlConfigPath)) {
                     $yamlContent = file_get_contents($yamlConfigPath);
@@ -158,6 +162,7 @@ class PluginsForwardController extends ApiMutableModelControllerBase
                         }
                     }
                 }
+                */
                 
                 // If not found in XML or YAML, return empty
                 return array();
@@ -175,6 +180,8 @@ class PluginsForwardController extends ApiMutableModelControllerBase
                 $existingTags = array();
                 
                 // Parse config.yaml using BaseConfigParser
+                // NOTE: Removed YAML config parsing as per requirement to only use config.xml
+                /*
                 $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
                 if (file_exists($yamlConfigPath)) {
                     $yamlContent = file_get_contents($yamlConfigPath);
@@ -189,6 +196,7 @@ class PluginsForwardController extends ApiMutableModelControllerBase
                         }
                     }
                 }
+                */
                 
                 // If not found in YAML, return empty
                 return array();

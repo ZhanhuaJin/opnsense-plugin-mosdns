@@ -94,89 +94,101 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <div class="content-box" style="padding-bottom: 1.5em;">
-    <h3 id="forwardedit-title">{{ lang._('Forward Edit') }}</h3>
-    
-    <!-- Forward Settings Form -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="forward_enabled">{{ lang._('Enable') }}</label>
-                <select id="forward_enabled" name="enabled" class="form-control selectpicker">
-                    <option value="1">{{ lang._('Yes') }}</option>
-                    <option value="0">{{ lang._('No') }}</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="forward_tag">{{ lang._('Tag') }}</label>
-                <input type="text" id="forward_tag" name="tag" class="form-control" placeholder="{{ lang._('Enter tag') }}">
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="forward_concurrent">{{ lang._('Concurrent') }}</label>
-                <input type="number" id="forward_concurrent" name="concurrent" class="form-control" min="1" value="1">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <!-- Empty column for layout balance -->
-        </div>
-    </div>
-    
-    <hr>
-    
-    <!-- Upstream Server Table -->
-    {{ partial("layout_partials/base_form",['fields':formForwardSettings,'id':'frm_forward_settings'])}}
-    
-    <div class="col-md-12">
-        <hr/>
-        <h4>{{ lang._('Upstream Servers') }}</h4>
-        <table id="grid-upstreams" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="dialog_forwardupstream" data-store-selection="true" data-store-selection-key="upstream.selection">
-            <thead>
-            <tr>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="addr" data-type="string">{{ lang._('Address') }}</th>
-                <th data-column-id="trusted" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Trusted') }}</th>
-                <th data-column-id="detour" data-type="string">{{ lang._('Detour') }}</th>
-                <th data-column-id="domain" data-type="string">{{ lang._('Domain') }}</th>
-                <th data-column-id="enable_http3" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('HTTP/3') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                </td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
-
-    <div class="col-md-12">
-        <hr/>
+    <div class="container-fluid">
+        <h3 id="forwardedit-title">{{ lang._('Forward Edit') }}</h3>
+        
+        <!-- Forward Settings Form -->
         <div class="row">
-            <div class="col-md-6">
-                <button class="btn btn-primary" id="saveForwardAct" type="button">
-                    <i class="fa fa-save"></i> <b>{{ lang._('Save') }}</b> <i id="saveForwardAct_progress"></i>
-                </button>
-            </div>
-            <div class="col-md-6 text-right">
-                <button class="btn btn-default" id="cancelForwardAct" type="button">
-                    <i class="fa fa-times"></i> <b>{{ lang._('Cancel') }}</b>
-                </button>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="forward_enabled">{{ lang._('Enable') }}</label>
+                            <select id="forward_enabled" name="enabled" class="form-control selectpicker">
+                                <option value="1">{{ lang._('Yes') }}</option>
+                                <option value="0">{{ lang._('No') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="forward_tag">{{ lang._('Tag') }}</label>
+                            <input type="text" id="forward_tag" name="tag" class="form-control" placeholder="{{ lang._('Enter tag') }}">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="forward_concurrent">{{ lang._('Concurrent') }}</label>
+                            <input type="number" id="forward_concurrent" name="concurrent" class="form-control" min="1" value="1">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Empty column for layout balance -->
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="clearfix"></div>
-        <br/>
+        
+        <hr>
+        
+        <!-- Upstream Server Table -->
+        {{ partial("layout_partials/base_form",['fields':formForwardSettings,'id':'frm_forward_settings'])}}
+        
+        <div class="row">
+            <div class="col-md-12">
+                <hr/>
+                <h4>{{ lang._('Upstream Servers') }}</h4>
+                <div class="table-responsive">
+                    <table id="grid-upstreams" class="table table-condensed table-hover table-striped" style="width: 100%;" data-editDialog="dialog_forwardupstream" data-store-selection="true" data-store-selection-key="upstream.selection">
+                        <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="addr" data-type="string">{{ lang._('Address') }}</th>
+                            <th data-column-id="trusted" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Trusted') }}</th>
+                            <th data-column-id="detour" data-type="string">{{ lang._('Detour') }}</th>
+                            <th data-column-id="domain" data-type="string">{{ lang._('Domain') }}</th>
+                            <th data-column-id="enable_http3" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('HTTP/3') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-primary" id="saveForwardAct" type="button">
+                            <i class="fa fa-save"></i> <b>{{ lang._('Save') }}</b> <i id="saveForwardAct_progress"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-default" id="cancelForwardAct" type="button">
+                            <i class="fa fa-times"></i> <b>{{ lang._('Cancel') }}</b>
+                        </button>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <br/>
+            </div>
+        </div>
     </div>
 </div>
 

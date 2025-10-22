@@ -40,6 +40,32 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
+<!-- YAML Configuration Import Section -->
+<div class="content-box" style="padding-bottom: 1.5em;">
+    {{ partial("layout_partials/base_form",['fields':[],'id':'frm_YamlImport'])}}
+    <div class="col-md-12">
+        <h3>{{ lang._('YAML Configuration Import') }}</h3>
+        <p>{{ lang._('Import MosDNS configuration from YAML format. This will update the system configuration.') }}</p>
+        <hr />
+        
+        <div class="form-group" style="margin-left: 0; margin-right: 0;">
+            <label for="yamlEditor">{{ lang._('YAML Configuration') }}</label>
+            <textarea id="yamlEditor" rows="30" placeholder="{{ lang._('Paste your config.yaml content here...') }}" style="font-family: monospace; font-size: 12px; min-height: 600px; resize: vertical; width: 100% !important; max-width: none !important; box-sizing: border-box; margin: 0; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #fff;"></textarea>
+            <small class="help-block">{{ lang._('Enter the complete MosDNS YAML configuration that you want to import into the system.') }}</small>
+        </div>
+        
+        <div class="btn-group" role="group">
+            <button class="btn btn-primary" id="importYamlAct" type="button">
+                <i class="fa fa-upload"></i> <b>{{ lang._('Import YAML') }}</b> 
+                <i id="importYamlAct_progress"></i>
+            </button>
+            <button class="btn btn-default" id="clearYamlAct" type="button">
+                <i class="fa fa-eraser"></i> <b>{{ lang._('Clear') }}</b>
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function() {
     var data_get_map = {'frm_GeneralSettings':"/api/mosdns/general/get"};
@@ -82,6 +108,40 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    // Import YAML configuration
+    $("#importYamlAct").click(function(){
+        var yamlContent = $("#yamlEditor").val().trim();
+        if (yamlContent === '') {
+            alert('{{ lang._("Please enter YAML configuration content.") }}');
+            return;
+        }
+        
+        $("#importYamlAct_progress").addClass("fa fa-spinner fa-pulse");
+        ajaxCall(url="/api/mosdns/general/importYaml", sendData={'yaml': yamlContent}, callback=function(data,status) {
+            $("#importYamlAct_progress").removeClass("fa fa-spinner fa-pulse");
+            if (data && data.result === 'ok') {
+                alert('{{ lang._("YAML configuration imported successfully!") }}');
+                // Optionally clear the editor
+                $("#yamlEditor").val('');
+                // Reload the form data
+                mapDataToFormUI(data_get_map).done(function(data){
+                    formatTokenizersUI();
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            } else {
+                var errorMsg = data && data.message ? data.message : '{{ lang._("Failed to import YAML configuration.") }}';
+                alert('{{ lang._("Error: ") }}' + errorMsg);
+            }
+        });
+    });
+
+    // Clear YAML editor
+    $("#clearYamlAct").click(function(){
+        if (confirm('{{ lang._("Are you sure you want to clear the YAML editor?") }}')) {
+            $("#yamlEditor").val('');
+        }
     });
 });
 </script>

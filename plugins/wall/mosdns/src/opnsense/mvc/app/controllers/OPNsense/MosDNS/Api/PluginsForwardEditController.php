@@ -100,6 +100,8 @@ class PluginsForwardEditController extends ApiMutableModelControllerBase
                 }
                 
                 // Then check YAML config
+                // NOTE: Removed YAML config parsing as per requirement to only use config.xml
+                /*
                 $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
                 if (file_exists($yamlConfigPath)) {
                     $yamlContent = file_get_contents($yamlConfigPath);
@@ -114,6 +116,7 @@ class PluginsForwardEditController extends ApiMutableModelControllerBase
                         }
                     }
                 }
+                */
                 
                 // If not found in XML or YAML, return false
                 return array('exists' => false);
@@ -126,6 +129,8 @@ class PluginsForwardEditController extends ApiMutableModelControllerBase
                 $existingTags = array();
                 
                 // Parse config.yaml using BaseConfigParser
+                // NOTE: Removed YAML config parsing as per requirement to only use config.xml
+                /*
                 $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
                 if (file_exists($yamlConfigPath)) {
                     $yamlContent = file_get_contents($yamlConfigPath);
@@ -140,6 +145,7 @@ class PluginsForwardEditController extends ApiMutableModelControllerBase
                         }
                     }
                 }
+                */
                 
                 // If not found in YAML, return false
                 return array('exists' => false);

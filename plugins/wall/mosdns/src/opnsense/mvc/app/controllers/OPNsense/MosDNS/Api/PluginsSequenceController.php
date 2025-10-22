@@ -54,13 +54,7 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
             // Debug: Log start of search
             error_log("MosDNS Sequence Search: Starting search operation");
             
-            // First, get data from system config.xml using BaseConfigParser
-            error_log("MosDNS Sequence Search: Parsing system config XML");
-            $xmlRows = BaseConfigParser::parseSystemConfigXml('Sequence', $existingTags);
-            error_log("MosDNS Sequence Search: Found " . count($xmlRows) . " entries from XML config");
-            $rows = array_merge($rows, $xmlRows);
-            
-            // Second, get data from config.xml (OPNsense model)
+            // Get data from config.xml (OPNsense model)
             error_log("MosDNS Sequence Search: Parsing OPNsense model config");
             $mdl = $this->getModel();
             $node = $mdl->getNodeByReference('plugins.sequence.sequence');
@@ -78,27 +72,15 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
                     error_log("MosDNS Sequence Search: No rows found in model config");
                 }
             } else {
-                error_log("MosDNS Sequence Search: No sequence node found in model");
+                error_log("MosDNS Sequence Search: plugins.sequence.sequence node not found in model");
             }
             
-            // Third, parse config.yaml using BaseConfigParser
-            $yamlConfigPath = '/usr/local/etc/mosdns/config.yaml';
-            error_log("MosDNS Sequence Search: Checking YAML config at " . $yamlConfigPath);
-            if (file_exists($yamlConfigPath)) {
-                error_log("MosDNS Sequence Search: YAML config file exists, parsing...");
-                $yamlContent = file_get_contents($yamlConfigPath);
-                if ($yamlContent !== false) {
-                    $yamlRows = BaseConfigParser::parseYamlConfig($yamlContent, 'sequence', $existingTags);
-                    error_log("MosDNS Sequence Search: Found " . count($yamlRows) . " entries from YAML config");
-                    $rows = array_merge($rows, $yamlRows);
-                } else {
-                    error_log("MosDNS Sequence Search: Failed to read YAML config file");
-                }
-            } else {
-                error_log("MosDNS Sequence Search: YAML config file does not exist");
-            }
+            // Sort by name
+            usort($rows, function($a, $b) {
+                return strcmp($a['name'], $b['name']);
+            });
             
-            error_log("MosDNS Sequence Search: Total entries found: " . count($rows));
+            error_log("MosDNS Sequence Search: Returning " . count($rows) . " total entries");
             
             return array(
                 'rows' => $rows,
@@ -115,6 +97,24 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
     public function getSequenceAction($uuid = null)
     {
         $this->sessionClose();
+        
+        // Debug: Log the call
+        error_log("MosDNS Sequence: getSequenceAction called with UUID: " . ($uuid ?? 'null'));
+        
+        // Check if the model node exists before calling getBase
+        $mdl = $this->getModel();
+        $node = $mdl->getNodeByReference('plugins.sequence.sequence');
+        
+        if ($node === null) {
+            error_log("MosDNS Sequence: plugins.sequence.sequence node not found in model");
+            return array(
+                'result' => 'failed',
+                'validations' => array(),
+                'sequence' => array()
+            );
+        }
+        
+        error_log("MosDNS Sequence: plugins.sequence.sequence node found, calling getBase");
         return $this->getBase('plugins.sequence.sequence', 'plugins.sequence.sequence', $uuid);
     }
 
@@ -144,7 +144,7 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
      */
     public function delSequenceAction($uuid = null)
     {
-        return $this->delBase('plugins.sequence.sequence', $uuid);
+        return $this->delBase('plugins.sequence.sequence', 'plugins.sequence.sequence', $uuid);
     }
 
     /**
@@ -154,6 +154,6 @@ class PluginsSequenceController extends ApiMutableModelControllerBase
      */
     public function toggleSequenceAction($uuid = null)
     {
-        return $this->toggleBase('plugins.sequence.sequence', $uuid);
+        return $this->toggleBase('plugins.sequence.sequence', 'plugins.sequence.sequence', $uuid);
     }
 }
